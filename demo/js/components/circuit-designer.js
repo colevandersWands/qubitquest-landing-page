@@ -480,6 +480,41 @@ class CircuitDesigner {
         
         this.addTwoQubitGate(gateType, column, control, target);
     }
+    
+    addTwoQubitGate(gateType, column, control, target) {
+        const gate = {
+            id: Date.now() + Math.random(),
+            type: gateType,
+            qubit: control,
+            target: target,
+            time: column
+        };
+        
+        this.circuit.operations.push(gate);
+        this.renderCircuit();
+        this.updateCircuitStats();
+        this.syncWithOtherPanels();
+    }
+
+    addGateToCircuit(gateType, column, qubit, angle = null) {
+        const gate = {
+            id: Date.now() + Math.random(),
+            type: gateType,
+            qubit: qubit,
+            time: column
+        };
+        
+        // Only add angle parameter for rotation gates
+        const rotationGates = ['RX', 'RY', 'RZ'];
+        if (rotationGates.includes(gateType) && angle !== null) {
+            gate.angle = angle;
+        }
+        
+        this.circuit.operations.push(gate);
+        this.renderCircuit();
+        this.updateCircuitStats();
+        this.syncWithOtherPanels();
+    }
 
     renderGateElement(workspace, operation) {
         const gate = this.gates[operation.type];
@@ -713,6 +748,9 @@ class CircuitDesigner {
     }
 
     formatAngle(angle) {
+        if (angle === null || angle === undefined) {
+            return '';
+        }
         if (Math.abs(angle - Math.PI) < 0.01) return 'π';
         if (Math.abs(angle - Math.PI/2) < 0.01) return 'π/2';
         if (Math.abs(angle - Math.PI/4) < 0.01) return 'π/4';
@@ -770,8 +808,8 @@ class CircuitDesigner {
         return Math.max(...this.circuit.operations.map(op => op.time)) + 1;
     }
 
-    syncWithOtherPanels() {
-        if (this.syncEngine) {
+    syncWithOtherPanels(preventLoop = false) {
+        if (this.syncEngine && !this.syncEngine.isUpdating) {
             // Generate code representation
             const code = this.generateQiskitCode();
             
@@ -788,6 +826,10 @@ class CircuitDesigner {
                 plainspeak: plainspeak,
                 circuit: this.circuit
             });
+            
+            console.log('Circuit synced with other panels');
+        } else if (this.syncEngine && this.syncEngine.isUpdating) {
+            console.log('Sync engine is updating, skipping circuit sync to prevent loop');
         }
     }
 
@@ -838,36 +880,183 @@ class CircuitDesigner {
     }
 
     formatAngleForCode(angle) {
+        // Add null safety check
+        if (angle === null || angle === undefined) {
+            return '0';
+        }
+        
         if (Math.abs(angle - Math.PI) < 0.01) return 'np.pi';
         if (Math.abs(angle - Math.PI/2) < 0.01) return 'np.pi/2';
         if (Math.abs(angle - Math.PI/4) < 0.01) return 'np.pi/4';
+        if (Math.abs(angle - Math.PI/3) < 0.01) return 'np.pi/3';
+        if (Math.abs(angle - 2*Math.PI/3) < 0.01) return '2*np.pi/3';
         return angle.toFixed(4);
     }
 
     generateNotation() {
+        return this.generateProfessionalNotation();
+    }
+
+    generateProfessionalNotation() {
         if (this.circuit.operations.length === 0) {
-            return `Initial state: $|0\\rangle^{\\otimes ${this.circuit.qubits}}$`;
+            return `$|\\psi_0\\rangle = |0\\rangle^{\\otimes ${this.circuit.qubits}}$`;
         }
 
-        let notation = `Initial: $|0\\rangle^{\\otimes ${this.circuit.qubits}}$<br><br>`;
+        // Sort operations by time to ensure correct order
+        const sortedOps = [...this.circuit.operations].sort((a, b) => a.time - b.time);
         
-        const hasH = this.circuit.operations.some(op => op.type === 'H');
-        const hasCNOT = this.circuit.operations.some(op => op.type === 'CNOT');
-        const hasRotation = this.circuit.operations.some(op => ['RX', 'RY', 'RZ'].includes(op.type));
+        let notation = [];
+        let stateNumber = 0;
+        
+        // Initial state
+        notation.push(`$|\\psi_0\\rangle = |0\\rangle^{\\otimes ${this.circuit.qubits}}$`);
+        
+        // Group operations by time step
+        const timeSteps = this.groupOperationsByTime(sortedOps);
+        
+        // Process each time step
+        for (const [time, operations] of Object.entries(timeSteps)) {
+            stateNumber++;
+            const stepNotation = this.generateTimeStepNotation(operations, stateNumber);
+            notation.push(stepNotation);
+            
+            // Add expansions for key operations
+            const expansions = this.expandKeyOperations(operations, stateNumber);
+            if (expansions.length > 0) {
+                notation.push(...expansions);
+            }
+        }
+        
+        // Add algorithm detection if applicable
+        const algorithmNote = this.detectQuantumAlgorithm();
+        if (algorithmNote) {
+            notation.push(`<br><em>${algorithmNote}</em>`);
+        }
+        
+        return notation.join('<br><br>');
+    }
 
-        if (hasH) {
-            notation += 'After Hadamard: $\\frac{1}{\\sqrt{2}}(|0\\rangle + |1\\rangle)$ superposition<br>';
+    groupOperationsByTime(operations) {
+        const groups = {};
+        for (const op of operations) {
+            if (!groups[op.time]) {
+                groups[op.time] = [];
+            }
+            groups[op.time].push(op);
         }
-        
-        if (hasCNOT) {
-            notation += 'After CNOT: Entangled state $\\frac{1}{\\sqrt{2}}(|00\\rangle + |11\\rangle)$<br>';
-        }
-        
-        if (hasRotation) {
-            notation += 'Rotations: $R_y(\\theta)|\\psi\\rangle = \\cos(\\frac{\\theta}{2})|0\\rangle + \\sin(\\frac{\\theta}{2})|1\\rangle$<br>';
-        }
+        return groups;
+    }
 
-        return notation;
+    generateTimeStepNotation(operations, stateNumber) {
+        // Handle parallel operations in same time step
+        const operators = operations.map(op => this.getOperatorNotation(op));
+        
+        // For single operation, show simple application
+        if (operators.length === 1) {
+            return `$|\\psi_{${stateNumber}}\\rangle = ${operators[0]} |\\psi_{${stateNumber-1}}\\rangle$`;
+        }
+        
+        // For multiple parallel operations, show properly
+        const operatorProduct = operators.join(' \\cdot ');
+        return `$|\\psi_{${stateNumber}}\\rangle = (${operatorProduct}) |\\psi_{${stateNumber-1}}\\rangle$`;
+    }
+
+    getOperatorNotation(operation) {
+        switch(operation.type) {
+            case 'H':
+                return `H_{${operation.qubit}}`;
+            case 'X':
+                return `X_{${operation.qubit}}`;
+            case 'Y':
+                return `Y_{${operation.qubit}}`;
+            case 'Z':
+                return `Z_{${operation.qubit}}`;
+            case 'RX':
+                return `R_x^{(${operation.qubit})}(${this.formatAngleForNotation(operation.angle)})`;
+            case 'RY':
+                return `R_y^{(${operation.qubit})}(${this.formatAngleForNotation(operation.angle)})`;
+            case 'RZ':
+                return `R_z^{(${operation.qubit})}(${this.formatAngleForNotation(operation.angle)})`;
+            case 'CNOT':
+                return `\\text{CNOT}_{${operation.qubit},${operation.target}}`;
+            case 'CZ':
+                return `\\text{CZ}_{${operation.qubit},${operation.target}}`;
+            case 'M':
+                return `M_{${operation.qubit}}`;
+            default:
+                return operation.type;
+        }
+    }
+
+    formatAngleForNotation(angle) {
+        if (angle === null || angle === undefined) return '';
+        if (Math.abs(angle - Math.PI) < 0.01) return '\\pi';
+        if (Math.abs(angle - Math.PI/2) < 0.01) return '\\pi/2';
+        if (Math.abs(angle - Math.PI/4) < 0.01) return '\\pi/4';
+        if (Math.abs(angle - Math.PI/3) < 0.01) return '\\pi/3';
+        if (Math.abs(angle - 2*Math.PI/3) < 0.01) return '2\\pi/3';
+        return angle.toFixed(3);
+    }
+
+    expandKeyOperations(operations, stateNumber) {
+        let expansions = [];
+        
+        for (const op of operations) {
+            if (op.type === 'H' && stateNumber === 1) {
+                // First Hadamard - show superposition creation
+                expansions.push(
+                    `$\\quad = \\frac{1}{\\sqrt{2}}(|0\\rangle + |1\\rangle)_{${op.qubit}} \\otimes |\\psi\\rangle_{\\text{rest}}$`
+                );
+            } else if (op.type === 'CNOT' && this.isFirstCNOT(op)) {
+                // Show entanglement creation for first CNOT
+                expansions.push(
+                    `$\\quad \\text{Creates entanglement between qubits } ${op.qubit} \\text{ and } ${op.target}$`
+                );
+            } else if (op.type.startsWith('R') && op.angle !== null) {
+                // Show rotation effect
+                const axis = op.type[1].toLowerCase();
+                expansions.push(
+                    `$\\quad R_${axis}(${this.formatAngleForNotation(op.angle)}) \\text{ rotates qubit } ${op.qubit} \\text{ around } ${axis}\\text{-axis}$`
+                );
+            }
+        }
+        
+        return expansions;
+    }
+
+    isFirstCNOT(operation) {
+        // Check if this is the first CNOT in the circuit
+        const cnotOps = this.circuit.operations.filter(op => op.type === 'CNOT');
+        return cnotOps.length > 0 && cnotOps[0].id === operation.id;
+    }
+
+    detectQuantumAlgorithm() {
+        const ops = this.circuit.operations;
+        
+        // Check for Bell state preparation
+        if (ops.length >= 2) {
+            const firstTwo = ops.slice(0, 2).sort((a, b) => a.time - b.time);
+            if (firstTwo[0].type === 'H' && firstTwo[1].type === 'CNOT' && 
+                firstTwo[1].qubit === firstTwo[0].qubit) {
+                return "Bell state preparation circuit";
+            }
+        }
+        
+        // Check for QFT pattern (multiple controlled rotations)
+        const controlledRotations = ops.filter(op => 
+            (op.type === 'CRZ' || op.type === 'CRY' || op.type === 'CRX'));
+        if (controlledRotations.length >= 3) {
+            return "Quantum Fourier Transform pattern detected";
+        }
+        
+        // Check for Grover's algorithm (H gates followed by oracle and diffusion)
+        const hGates = ops.filter(op => op.type === 'H');
+        const hasOracle = ops.some(op => op.type === 'CZ' || op.type === 'CNOT');
+        if (hGates.length >= this.circuit.qubits && hasOracle) {
+            return "Grover's algorithm structure";
+        }
+        
+        return null;
     }
 
     generatePlainspeak() {
@@ -907,9 +1096,133 @@ class CircuitDesigner {
 
     // Public API for external control
     loadCircuit(circuitData) {
+        if (!circuitData) {
+            console.warn('No circuit data provided to loadCircuit');
+            return;
+        }
+        
         this.circuit = circuitData;
         this.renderCircuit();
         this.updateCircuitStats();
+        console.log('Circuit loaded with', this.circuit.operations.length, 'operations');
+    }
+    
+    loadCircuitFromCode(code) {
+        // Parse Qiskit code and load into circuit designer
+        console.log('Loading circuit from code...');
+        
+        try {
+            if (this.syncEngine && typeof this.syncEngine.code2Circuit === 'function') {
+                // Use sync engine's enhanced parser
+                this.syncEngine.code2Circuit(code).then(circuitData => {
+                    if (circuitData && circuitData.operations) {
+                        this.loadCircuit(circuitData);
+                        console.log('Circuit loaded from code successfully');
+                    } else {
+                        console.warn('No valid circuit data parsed from code');
+                        this.clearCircuit();
+                    }
+                }).catch(error => {
+                    console.error('Error parsing code to circuit:', error);
+                    this.clearCircuit();
+                });
+            } else {
+                // Fallback to basic parsing
+                const circuitData = this.parseBasicQiskitCode(code);
+                this.loadCircuit(circuitData);
+            }
+        } catch (error) {
+            console.error('Error in loadCircuitFromCode:', error);
+            this.clearCircuit();
+        }
+    }
+    
+    parseBasicQiskitCode(code) {
+        // Fallback basic parser for circuit reconstruction
+        const operations = [];
+        const lines = code.split('\n');
+        let qubitCount = 4; // Default
+        let timeCounter = 0;
+        
+        // Extract qubit count
+        for (const line of lines) {
+            const match = line.match(/QuantumCircuit\s*\(\s*(\d+)/);
+            if (match) {
+                qubitCount = parseInt(match[1]);
+                break;
+            }
+        }
+        
+        // Parse basic gates
+        for (const line of lines) {
+            const trimmed = line.trim();
+            if (!trimmed || trimmed.startsWith('#')) continue;
+            
+            if (trimmed.includes('.h(')) {
+                const match = trimmed.match(/\.h\((\d+)\)/);
+                if (match) {
+                    operations.push({
+                        type: 'H',
+                        qubit: parseInt(match[1]),
+                        time: timeCounter++,
+                        id: this.generateGateId()
+                    });
+                }
+            }
+            
+            if (trimmed.includes('.cnot(')) {
+                const match = trimmed.match(/\.cnot\((\d+),\s*(\d+)\)/);
+                if (match) {
+                    operations.push({
+                        type: 'CNOT',
+                        qubit: parseInt(match[1]),
+                        target: parseInt(match[2]),
+                        time: timeCounter++,
+                        id: this.generateGateId()
+                    });
+                }
+            }
+            
+            if (trimmed.includes('.ry(')) {
+                const match = trimmed.match(/\.ry\(([^,]+),\s*(\d+)\)/);
+                if (match) {
+                    let angle = this.parseSimpleAngle(match[1]);
+                    operations.push({
+                        type: 'RY',
+                        angle: angle,
+                        qubit: parseInt(match[2]),
+                        time: timeCounter++,
+                        id: this.generateGateId()
+                    });
+                }
+            }
+            
+            if (trimmed.includes('.measure_all()')) {
+                for (let i = 0; i < qubitCount; i++) {
+                    operations.push({
+                        type: 'M',
+                        qubit: i,
+                        time: timeCounter,
+                        id: this.generateGateId()
+                    });
+                }
+                timeCounter++;
+            }
+        }
+        
+        return { operations, qubits: qubitCount };
+    }
+    
+    parseSimpleAngle(angleStr) {
+        // Simple angle parser for fallback
+        const cleaned = angleStr.toLowerCase().replace(/\s/g, '');
+        
+        if (cleaned.includes('pi/2') || cleaned.includes('π/2')) return Math.PI / 2;
+        if (cleaned.includes('pi/4') || cleaned.includes('π/4')) return Math.PI / 4;
+        if (cleaned.includes('pi') || cleaned.includes('π')) return Math.PI;
+        
+        const numeric = parseFloat(cleaned);
+        return isNaN(numeric) ? Math.PI / 2 : numeric;
     }
 
     getCircuit() {

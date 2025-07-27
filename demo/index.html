@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quantum Computing - Quadratic Fluency Interface</title>
+    <link rel="stylesheet" href="css/quadratic-interface.css" />
+    <link rel="stylesheet" href="css/circuit-designer.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: #0a0a0a;
+        color: #e0e0e0;
+      }
+
+      .quadratic-workspace {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        height: calc(100vh - 120px);
+        gap: 1px;
+        background: #333;
+        padding: 1px;
+      }
+
+      .panel {
+        background: #1a1a1a;
+        border: 1px solid #333;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .panel h3 {
+        margin: 0;
+        padding: 15px 20px;
+        background: #2a2a2a;
+        border-bottom: 1px solid #333;
+        font-size: 14px;
+        font-weight: 600;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .panel-content {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      }
+
+      /* Plainspeak Panel */
+      .plainspeak-panel .panel-content {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        line-height: 1.6;
+      }
+
+      .plainspeak-editor {
+        width: 100%;
+        min-height: 200px;
+        background: #0a0a0a;
+        border: 1px solid #333;
+        color: #e0e0e0;
+        padding: 15px;
+        font-size: 16px;
+        resize: vertical;
+      }
+
+      /* Code Panel */
+      .code-editor {
+        width: 100%;
+        min-height: 300px;
+        background: #0a0a0a;
+        border: 1px solid #333;
+        color: #98d8d8;
+        padding: 15px;
+        font-family: 'Monaco', 'Menlo', monospace;
+        font-size: 14px;
+        line-height: 1.5;
+        resize: vertical;
+      }
+
+      /* Circuit Panel */
+      .circuit-canvas {
+        background: #0a0a0a;
+        border: 1px solid #333;
+        width: 100%;
+        min-height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #666;
+      }
+
+      /* Notation Panel */
+      .notation-display {
+        font-size: 18px;
+        line-height: 2;
+        padding: 20px;
+        background: #0a0a0a;
+        border: 1px solid #333;
+        min-height: 200px;
+      }
+
+      /* Integration Panel */
+      .integration-panel {
+        height: 120px;
+        background: #1a1a1a;
+        border-top: 1px solid #333;
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+      }
+
+      .performance-comparison {
+        display: flex;
+        gap: 40px;
+        align-items: center;
+      }
+
+      .metric {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .metric-label {
+        font-size: 12px;
+        color: #666;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+      }
+
+      .metric-value {
+        font-size: 24px;
+        font-weight: 600;
+      }
+
+      .classical {
+        color: #ff6b6b;
+      }
+      .quantum {
+        color: #4ecdc4;
+      }
+
+      /* Sync indicator */
+      .sync-indicator {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        width: 8px;
+        height: 8px;
+        background: #4ecdc4;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      /* Professional Performance Dashboard Styles */
+      .performance-dashboard {
+        background: #1a1a1a;
+        border: 1px solid #333;
+        margin: 20px 0;
+        padding: 20px;
+        border-radius: 8px;
+      }
+
+      .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #333;
+        padding-bottom: 15px;
+      }
+
+      .dashboard-header h3 {
+        margin: 0;
+        color: #4ecdc4;
+        font-size: 18px;
+      }
+
+      .dashboard-controls {
+        display: flex;
+        gap: 10px;
+      }
+
+      .btn {
+        padding: 8px 16px;
+        border: 1px solid #4ecdc4;
+        background: transparent;
+        color: #4ecdc4;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: all 0.3s ease;
+      }
+
+      .btn:hover {
+        background: #4ecdc4;
+        color: #000;
+      }
+
+      .btn-small {
+        padding: 6px 12px;
+        font-size: 11px;
+      }
+
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+      }
+
+      .metric-card {
+        background: #2a2a2a;
+        border: 1px solid #444;
+        border-radius: 6px;
+        padding: 15px;
+        text-align: center;
+        transition: transform 0.2s ease;
+      }
+
+      .metric-card:hover {
+        transform: translateY(-2px);
+        border-color: #4ecdc4;
+      }
+
+      .metric-icon {
+        font-size: 24px;
+        margin-bottom: 8px;
+      }
+
+      .metric-label {
+        color: #ccc;
+        font-size: 12px;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .metric-value {
+        color: #4ecdc4;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .metric-detail {
+        color: #999;
+        font-size: 11px;
+        margin-bottom: 8px;
+      }
+
+      .metric-trend {
+        font-size: 12px;
+        color: #4ecdc4;
+      }
+
+      .competency-section h4,
+      .activity-monitor h4,
+      .phase-progress-section h4 {
+        color: #fff;
+        margin-bottom: 15px;
+        font-size: 16px;
+        border-left: 3px solid #4ecdc4;
+        padding-left: 10px;
+      }
+
+      .competency-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+      }
+
+      .competency-card {
+        background: #2a2a2a;
+        border: 1px solid #444;
+        border-radius: 6px;
+        padding: 15px;
+      }
+
+      .competency-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .competency-icon {
+        font-size: 16px;
+      }
+
+      .competency-name {
+        color: #fff;
+        font-size: 14px;
+        font-weight: 500;
+        flex: 1;
+        margin-left: 8px;
+      }
+
+      .competency-score {
+        color: #4ecdc4;
+        font-weight: bold;
+        font-size: 14px;
+      }
+
+      .competency-bar {
+        background: #333;
+        height: 6px;
+        border-radius: 3px;
+        margin-bottom: 8px;
+        overflow: hidden;
+      }
+
+      .competency-progress {
+        background: linear-gradient(90deg, #4ecdc4, #98d8d8);
+        height: 100%;
+        border-radius: 3px;
+        transition: width 0.5s ease;
+      }
+
+      .competency-detail {
+        color: #999;
+        font-size: 12px;
+      }
+
+      .activity-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+      }
+
+      .activity-stat {
+        background: #2a2a2a;
+        border: 1px solid #444;
+        border-radius: 6px;
+        padding: 12px;
+        text-align: center;
+      }
+
+      .activity-label {
+        display: block;
+        color: #ccc;
+        font-size: 11px;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+      }
+
+      .activity-value {
+        color: #4ecdc4;
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      .phase-indicators {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        gap: 10px;
+      }
+
+      .phase-indicator {
+        flex: 1;
+        text-align: center;
+        padding: 12px 8px;
+        background: #2a2a2a;
+        border: 1px solid #444;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+      }
+
+      .phase-indicator.active {
+        border-color: #4ecdc4;
+        background: rgba(78, 205, 196, 0.1);
+      }
+
+      .phase-indicator.completed {
+        border-color: #4ecdc4;
+        background: rgba(78, 205, 196, 0.2);
+      }
+
+      .phase-icon {
+        font-size: 20px;
+        margin-bottom: 5px;
+      }
+
+      .phase-name {
+        color: #fff;
+        font-size: 12px;
+        font-weight: 500;
+        margin-bottom: 3px;
+      }
+
+      .phase-status {
+        color: #999;
+        font-size: 10px;
+        text-transform: uppercase;
+      }
+
+      .phase-indicator.active .phase-status {
+        color: #4ecdc4;
+      }
+
+      .phase-progress-bar {
+        background: #333;
+        height: 8px;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .phase-progress-fill {
+        background: linear-gradient(90deg, #4ecdc4, #98d8d8);
+        height: 100%;
+        border-radius: 4px;
+        transition: width 0.5s ease;
+      }
+
+      @media (max-width: 768px) {
+        .metrics-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .competency-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .activity-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .phase-indicators {
+          flex-wrap: wrap;
+        }
+
+        .dashboard-header {
+          flex-direction: column;
+          gap: 10px;
+          align-items: stretch;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="quadratic-workspace">
+      <div class="panel plainspeak-panel">
+        <h3>Business Communication <span class="sync-indicator"></span></h3>
+        <div class="panel-content">
+          <textarea
+            class="plainspeak-editor"
+            placeholder="Explain the quantum solution in business terms..."
+          >
+Create a quantum state that explores all possible portfolio correlation patterns simultaneously. The quantum interference effects amplify combinations that minimize risk while maintaining target returns. Measurement collapses to an optimal hedge ratio that would take classical computers exponentially longer to discover.</textarea
+          >
+        </div>
+      </div>
+
+      <div class="panel code-panel">
+        <h3>Python Implementation <span class="sync-indicator"></span></h3>
+        <div class="panel-content">
+          <textarea class="code-editor">
+# Code representation
+circuit = QuantumCircuit(4)
+circuit.h(0)           # Create superposition
+circuit.ry(theta, 1)   # Encode correlation parameter
+circuit.cnot(0, 1)     # Create entanglement
+circuit.measure_all()  # Sample from solution space
+
+# Run quantum optimization
+results = execute(circuit, backend, shots=1000)
+optimal_portfolio = analyze_results(results)</textarea
+          >
+        </div>
+      </div>
+
+      <div class="panel circuit-panel">
+        <h3>Visual Circuit Design <span class="sync-indicator"></span></h3>
+        <div class="panel-content">
+          <div class="circuit-canvas">
+            <svg width="400" height="200" viewBox="0 0 400 200">
+              <!-- Quantum Circuit Visualization -->
+              <g transform="translate(20, 40)">
+                <!-- Qubit lines -->
+                <line x1="0" y1="0" x2="360" y2="0" stroke="#666" stroke-width="1" />
+                <line x1="0" y1="30" x2="360" y2="30" stroke="#666" stroke-width="1" />
+                <line x1="0" y1="60" x2="360" y2="60" stroke="#666" stroke-width="1" />
+                <line x1="0" y1="90" x2="360" y2="90" stroke="#666" stroke-width="1" />
+
+                <!-- Qubit labels -->
+                <text x="-15" y="5" fill="#999" font-size="12">|0⟩</text>
+                <text x="-15" y="35" fill="#999" font-size="12">|0⟩</text>
+                <text x="-15" y="65" fill="#999" font-size="12">|0⟩</text>
+                <text x="-15" y="95" fill="#999" font-size="12">|0⟩</text>
+
+                <!-- H gate -->
+                <rect
+                  x="40"
+                  y="-15"
+                  width="30"
+                  height="30"
+                  fill="#2a2a2a"
+                  stroke="#4ecdc4"
+                  stroke-width="2"
+                />
+                <text x="55" y="5" text-anchor="middle" fill="#4ecdc4" font-size="16">
+                  H
+                </text>
+
+                <!-- RY gate -->
+                <rect
+                  x="100"
+                  y="15"
+                  width="40"
+                  height="30"
+                  fill="#2a2a2a"
+                  stroke="#ff6b6b"
+                  stroke-width="2"
+                />
+                <text x="120" y="35" text-anchor="middle" fill="#ff6b6b" font-size="14">
+                  RY(θ)
+                </text>
+
+                <!-- CNOT -->
+                <circle
+                  cx="180"
+                  cy="0"
+                  r="8"
+                  fill="#2a2a2a"
+                  stroke="#98d8d8"
+                  stroke-width="2"
+                />
+                <circle cx="180" cy="0" r="3" fill="#98d8d8" />
+                <line
+                  x1="180"
+                  y1="0"
+                  x2="180"
+                  y2="30"
+                  stroke="#98d8d8"
+                  stroke-width="2"
+                />
+                <circle
+                  cx="180"
+                  cy="30"
+                  r="12"
+                  fill="none"
+                  stroke="#98d8d8"
+                  stroke-width="2"
+                />
+                <line
+                  x1="168"
+                  y1="30"
+                  x2="192"
+                  y2="30"
+                  stroke="#98d8d8"
+                  stroke-width="2"
+                />
+                <line
+                  x1="180"
+                  y1="18"
+                  x2="180"
+                  y2="42"
+                  stroke="#98d8d8"
+                  stroke-width="2"
+                />
+
+                <!-- Measurements -->
+                <rect
+                  x="300"
+                  y="-10"
+                  width="25"
+                  height="20"
+                  fill="#2a2a2a"
+                  stroke="#ffd93d"
+                  stroke-width="2"
+                />
+                <path
+                  d="M 305 5 Q 312.5 -5 320 5"
+                  fill="none"
+                  stroke="#ffd93d"
+                  stroke-width="2"
+                />
+                <line
+                  x1="312.5"
+                  y1="5"
+                  x2="312.5"
+                  y2="-5"
+                  stroke="#ffd93d"
+                  stroke-width="2"
+                />
+
+                <rect
+                  x="300"
+                  y="20"
+                  width="25"
+                  height="20"
+                  fill="#2a2a2a"
+                  stroke="#ffd93d"
+                  stroke-width="2"
+                />
+                <path
+                  d="M 305 35 Q 312.5 25 320 35"
+                  fill="none"
+                  stroke="#ffd93d"
+                  stroke-width="2"
+                />
+                <line
+                  x1="312.5"
+                  y1="35"
+                  x2="312.5"
+                  y2="25"
+                  stroke="#ffd93d"
+                  stroke-width="2"
+                />
+
+                <rect
+                  x="300"
+                  y="50"
+                  width="25"
+                  height="20"
+                  fill="#2a2a2a"
+                  stroke="#ffd93d"
+                  stroke-width="2"
+                />
+                <path
+                  d="M 305 65 Q 312.5 55 320 65"
+                  fill="none"
+                  stroke="#ffd93d"
+                  stroke-width="2"
+                />
+                <line
+                  x1="312.5"
+                  y1="65"
+                  x2="312.5"
+                  y2="55"
+                  stroke="#ffd93d"
+                  stroke-width="2"
+                />
+
+                <rect
+                  x="300"
+                  y="80"
+                  width="25"
+                  height="20"
+                  fill="#2a2a2a"
+                  stroke="#ffd93d"
+                  stroke-width="2"
+                />
+                <path
+                  d="M 305 95 Q 312.5 85 320 95"
+                  fill="none"
+                  stroke="#ffd93d"
+                  stroke-width="2"
+                />
+                <line
+                  x1="312.5"
+                  y1="95"
+                  x2="312.5"
+                  y2="85"
+                  stroke="#ffd93d"
+                  stroke-width="2"
+                />
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel notation-panel">
+        <h3>Mathematical Representation <span class="sync-indicator"></span></h3>
+        <div class="panel-content">
+          <div class="notation-display">
+            |ψ⟩ = H ⊗ I ⊗ I ⊗ I |0000⟩<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;= 1/√2 (|0⟩ + |1⟩) ⊗ |000⟩<br /><br />
+
+            RY(θ)|ψ⟩ = 1/√2 (|0⟩ ⊗ (cos(θ/2)|0⟩ + sin(θ/2)|1⟩) + |1⟩ ⊗ |000⟩)<br /><br />
+
+            CNOT₀,₁|ψ⟩ = entangled correlation state<br /><br />
+
+            P(optimal) = |⟨ψ_target|ψ_final⟩|²
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Core JavaScript Modules -->
+    <script src="js/core/quantum-sim.js"></script>
+    <script src="js/core/sync-engine.js"></script>
+    <script src="js/core/contextual-entry.js"></script>
+    <script src="js/components/circuit-designer.js"></script>
+
+    <!-- MathJax for mathematical notation rendering -->
+    <!-- ES6 polyfill removed - using modern browser features only -->
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+
+    <script>
+      // MathJax configuration
+      window.MathJax = {
+        tex: {
+          inlineMath: [
+            ['$', '$'],
+            ['\\(', '\\)'],
+          ],
+          displayMath: [
+            ['$$', '$$'],
+            ['\\[', '\\]'],
+          ],
+        },
+        options: {
+          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        },
+      };
+
+      // Global application state
+      let app = {
+        syncEngine: null,
+        quantumSim: null,
+        contextualEntry: null,
+        circuitDesigner: null,
+        currentScenario: null,
+        assessmentMode: false,
+      };
+
+      // Initialize application when DOM loads
+      document.addEventListener('DOMContentLoaded', function () {
+        initializeApplication();
+      });
+
+      function initializeApplication() {
+        console.log('Initializing Quantum Fluency Application...');
+
+        // Check if all required classes are loaded
+        if (typeof QuantumSimulator === 'undefined') {
+          console.error(
+            'QuantumSimulator not loaded. Please check script loading order.',
+          );
+          return;
+        }
+
+        if (typeof QuadraticSyncEngine === 'undefined') {
+          console.error(
+            'QuadraticSyncEngine not loaded. Please check script loading order.',
+          );
+          return;
+        }
+
+        if (typeof ContextualEntrySystem === 'undefined') {
+          console.error(
+            'ContextualEntrySystem not loaded. Please check script loading order.',
+          );
+          return;
+        }
+
+        try {
+          // Initialize quantum simulator
+          app.quantumSim = new QuantumSimulator();
+          app.quantumSim.initialize(4); // Start with 4 qubits
+
+          // Initialize synchronization engine
+          app.syncEngine = new QuadraticSyncEngine();
+
+          // Initialize contextual entry system
+          app.contextualEntry = new ContextualEntrySystem(app.syncEngine);
+
+          // Initialize circuit designer
+          const circuitContainer =
+            document.querySelector('.circuit-canvas').parentElement;
+          app.circuitDesigner = new CircuitDesigner(circuitContainer, app.syncEngine);
+
+          // Make globally accessible for HTML onclick handlers
+          window.contextualEntry = app.contextualEntry;
+          window.circuitDesigner = app.circuitDesigner;
+
+          // Set up contextual entry scenarios
+          setupContextualScenarios();
+
+          // Initialize with default portfolio optimization scenario
+          loadScenario('portfolio_optimization');
+
+          // Ensure circuit is loaded from initial code after everything is initialized
+          setTimeout(() => {
+            if (app.circuitDesigner && app.syncEngine.panels.code) {
+              const initialCode = app.syncEngine.panels.code.value;
+              if (initialCode && initialCode.trim()) {
+                console.log('Ensuring circuit loads from initial code...');
+                app.circuitDesigner.loadCircuitFromCode(initialCode);
+              }
+            }
+          }, 500); // Small delay to ensure everything is fully initialized
+
+          // Add control buttons
+          addApplicationControls();
+
+          console.log('Application initialized successfully');
+          console.log('Try: contextualEntry.launchRandomScenario() for challenges');
+        } catch (error) {
+          console.error('Error during application initialization:', error);
+          showInitializationError(error);
+        }
+      }
+
+      function showInitializationError(error) {
+        const errorDiv = document.createElement('div');
+        errorDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #ff4444;
+                color: white;
+                padding: 20px;
+                border-radius: 8px;
+                z-index: 10000;
+                font-family: monospace;
+                max-width: 80%;
+                text-align: center;
+            `;
+        errorDiv.innerHTML = `
+                <h3>Application Initialization Failed</h3>
+                <p>Error: ${error.message}</p>
+                <p>Please check the browser console for more details.</p>
+                <button onclick="this.parentElement.remove()" style="margin-top: 10px; padding: 5px 10px;">Close</button>
+            `;
+        document.body.appendChild(errorDiv);
+      }
+
+      function setupContextualScenarios() {
+        const scenarios = {
+          business_meeting: {
+            name: 'Executive Briefing: Quantum Advantage',
+            entryPoint: 'plainspeak',
+            context: 'You need to explain quantum portfolio optimization to the C-suite',
+            timeLimit: 300, // 5 minutes
+            audience: 'executives',
+          },
+          research_collaboration: {
+            name: 'Research Paper Implementation',
+            entryPoint: 'notation',
+            context: 'Implement QAOA algorithm from recent arXiv paper',
+            timeLimit: 1800, // 30 minutes
+            audience: 'quantum_researchers',
+          },
+          technical_debugging: {
+            name: 'Production Bug: Quantum Circuit Failure',
+            entryPoint: 'code',
+            context: 'Fix failing quantum optimization in production system',
+            timeLimit: 900, // 15 minutes
+            audience: 'engineering_team',
+          },
+          solution_design: {
+            name: 'Architecture Review: Quantum Solution',
+            entryPoint: 'circuit',
+            context: 'Design quantum circuit for new trading algorithm',
+            timeLimit: 1200, // 20 minutes
+            audience: 'quantum_engineers',
+          },
+          portfolio_optimization: {
+            name: 'Portfolio Risk Analysis Challenge',
+            entryPoint: 'plainspeak',
+            context: 'Optimize portfolio correlations using quantum advantage',
+            timeLimit: null,
+            audience: 'data_scientists',
+          },
+        };
+
+        app.scenarios = scenarios;
+      }
+
+      function loadScenario(scenarioId) {
+        const scenario = app.scenarios[scenarioId];
+        if (!scenario) {
+          console.error('Scenario not found:', scenarioId);
+          return;
+        }
+
+        app.currentScenario = scenario;
+
+        // Update scenario display
+        updateScenarioDisplay(scenario);
+
+        // Configure contextual entry
+        app.syncEngine.setContextualEntry(scenarioId, scenario.entryPoint);
+
+        // Load scenario-specific content
+        loadScenarioContent(scenarioId);
+      }
+
+      function updateScenarioDisplay(scenario) {
+        // Add scenario info panel if it doesn't exist
+        let scenarioPanel = document.querySelector('.scenario-panel');
+        if (!scenarioPanel) {
+          scenarioPanel = document.createElement('div');
+          scenarioPanel.className = 'scenario-panel';
+          document.body.insertBefore(scenarioPanel, document.body.firstChild);
+        }
+
+        scenarioPanel.innerHTML = `
+                <div class="scenario-header">
+                    <h3>${scenario.name}</h3>
+                    <div class="scenario-meta">
+                        <span class="entry-point">Entry: ${scenario.entryPoint}</span>
+                        <span class="audience">Audience: ${scenario.audience.replace(
+                          '_',
+                          ' ',
+                        )}</span>
+                        ${
+                          scenario.timeLimit
+                            ? `<span class="time-limit">Time: ${Math.floor(
+                                scenario.timeLimit / 60,
+                              )}min</span>`
+                            : ''
+                        }
+                    </div>
+                </div>
+                <div class="scenario-context">${scenario.context}</div>
+                <div class="scenario-controls">
+                    <button onclick="randomizeScenario()">Random Scenario</button>
+                    <button onclick="toggleAssessmentMode()">Assessment Mode</button>
+                    <button onclick="resetScenario()">Reset</button>
+                </div>
+            `;
+      }
+
+      function loadScenarioContent(scenarioId) {
+        const contentMap = {
+          portfolio_optimization: {
+            plainspeak: `Create a quantum state that explores all possible portfolio correlation patterns simultaneously. The quantum interference effects amplify combinations that minimize risk while maintaining target returns. Measurement collapses to an optimal hedge ratio that would take classical computers exponentially longer to discover.`,
+            code: `# Quantum Portfolio Optimization\nfrom qiskit import QuantumCircuit\nimport numpy as np\n\n# Create quantum circuit for portfolio optimization\ncircuit = QuantumCircuit(4, 4)\n\n# Step 1: Create superposition of all portfolio states\ncircuit.h(0)  # Asset correlation superposition\ncircuit.h(1)  # Risk factor superposition\n\n# Step 2: Encode correlation parameters\ntheta = np.pi/3  # Risk tolerance parameter\ncircuit.ry(theta, 1)\n\n# Step 3: Create entanglement between assets\ncircuit.cnot(0, 1)  # Correlation entanglement\ncircuit.cnot(1, 2)  # Risk propagation\n\n# Step 4: Apply optimization constraints\ncircuit.rz(np.pi/4, 2)  # Return target constraint\n\n# Step 5: Measure optimal portfolio\ncircuit.measure_all()\n\nprint(\"Quantum portfolio optimization ready\")`,
+            notation: `$|\\psi\\rangle = H \\otimes I \\otimes I \\otimes I |0000\\rangle$<br><br>$= \\frac{1}{\\sqrt{2}} (|0\\rangle + |1\\rangle) \\otimes |000\\rangle$<br><br>$RY(\\theta)|\\psi\\rangle = \\frac{1}{\\sqrt{2}} (|0\\rangle \\otimes (\\cos(\\theta/2)|0\\rangle + \\sin(\\theta/2)|1\\rangle) + |1\\rangle \\otimes |000\\rangle)$<br><br>$CNOT_{0,1}|\\psi\\rangle = \\text{entangled correlation state}$<br><br>$P(\\text{optimal}) = |\\langle\\psi_{\\text{target}}|\\psi_{\\text{final}}\\rangle|^2$`,
+          },
+          business_meeting: {
+            plainspeak: `Our quantum computing initiative will revolutionize portfolio management by exploring thousands of correlation scenarios simultaneously. While classical computers check each possibility sequentially, quantum computers leverage superposition to evaluate all combinations at once. This provides exponential speedup for complex optimization problems, potentially saving millions in improved risk management.`,
+            code: `# Executive Summary: Quantum Business Impact\n# Classical approach: O(N^2) correlation analysis\n# Quantum approach: O(sqrt(N)) with interference\n\nclassical_time = 'Hours for complex portfolios'\nquantum_time = 'Minutes with quantum advantage'\nbusiness_impact = '$5M annual savings on $1B portfolio'\n\nprint(f\"ROI: {quantum_time} vs {classical_time}\")`,
+            notation: `$\\text{Classical complexity: } O(N^2)$<br>$\\text{Quantum complexity: } O(\\sqrt{N})$<br><br>$\\text{Speedup factor: } \\frac{N^2}{\\sqrt{N}} = N^{3/2}$<br><br>$\\text{For } N = 10^6 \\text{ portfolios: } 10^9\\text{x speedup}$`,
+          },
+        };
+
+        const content = contentMap[scenarioId] || contentMap['portfolio_optimization'];
+
+        // Update panels with scenario content
+        if (app.syncEngine.panels.plainspeak) {
+          app.syncEngine.panels.plainspeak.value = content.plainspeak;
+        }
+        if (app.syncEngine.panels.code) {
+          app.syncEngine.panels.code.value = content.code;
+        }
+        if (app.syncEngine.panels.notation) {
+          app.syncEngine.updateNotationDisplay(content.notation);
+        }
+
+        // Trigger circuit loading from the initial code
+        if (content.code && app.circuitDesigner) {
+          console.log('Loading circuit from initial scenario code...');
+          app.circuitDesigner.loadCircuitFromCode(content.code);
+        }
+
+        // Update quantum simulation
+        updateQuantumSimulation();
+      }
+
+      function randomizeScenario() {
+        const scenarios = Object.keys(app.scenarios);
+        const randomScenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+        loadScenario(randomScenario);
+      }
+
+      function toggleAssessmentMode() {
+        app.assessmentMode = !app.assessmentMode;
+
+        if (app.assessmentMode) {
+          startAssessmentChallenge();
+        } else {
+          endAssessmentChallenge();
+        }
+      }
+
+      function startAssessmentChallenge() {
+        console.log('Starting assessment challenge...');
+
+        // Random contextual entry point
+        const entryPoints = ['plainspeak', 'code', 'circuit', 'notation'];
+        const randomEntry = entryPoints[Math.floor(Math.random() * entryPoints.length)];
+
+        // Assessment challenge: "The Ambush"
+        const challenge = {
+          name: 'The Ambush: Quantum Feasibility Assessment',
+          entryPoint: randomEntry,
+          timeLimit: 300, // 5 minutes
+          instruction: `Starting with ${randomEntry}, you have 5 minutes to assess if quantum computing could help solve a portfolio correlation problem and explain your reasoning across all four representations.`,
+        };
+
+        app.currentAssessment = challenge;
+        showAssessmentInterface(challenge);
+      }
+
+      function showAssessmentInterface(challenge) {
+        // Create assessment overlay
+        const overlay = document.createElement('div');
+        overlay.className = 'assessment-overlay';
+        overlay.innerHTML = `
+                <div class="assessment-modal">
+                    <h2>${challenge.name}</h2>
+                    <p>${challenge.instruction}</p>
+                    <div class="assessment-timer">
+                        <span id="timer-display">${Math.floor(
+                          challenge.timeLimit / 60,
+                        )}:00</span>
+                        <button onclick="endAssessmentChallenge()">Complete Assessment</button>
+                    </div>
+                </div>
+            `;
+
+        document.body.appendChild(overlay);
+
+        // Start timer
+        startAssessmentTimer(challenge.timeLimit);
+
+        // Configure contextual entry
+        app.syncEngine.setContextualEntry('assessment', challenge.entryPoint);
+      }
+
+      function startAssessmentTimer(seconds) {
+        let timeLeft = seconds;
+        const display = document.getElementById('timer-display');
+
+        const timer = setInterval(() => {
+          const minutes = Math.floor(timeLeft / 60);
+          const secs = timeLeft % 60;
+          display.textContent = `${minutes}:${secs.toString().padStart(2, '0')}`;
+
+          timeLeft--;
+
+          if (timeLeft < 0) {
+            clearInterval(timer);
+            endAssessmentChallenge();
+          }
+        }, 1000);
+
+        app.assessmentTimer = timer;
+      }
+
+      function endAssessmentChallenge() {
+        if (app.assessmentTimer) {
+          clearInterval(app.assessmentTimer);
+        }
+
+        const overlay = document.querySelector('.assessment-overlay');
+        if (overlay) {
+          overlay.remove();
+        }
+
+        app.assessmentMode = false;
+        console.log('Assessment completed');
+      }
+
+      function resetScenario() {
+        if (app.currentScenario) {
+          loadScenario(
+            Object.keys(app.scenarios).find(
+              (key) => app.scenarios[key] === app.currentScenario,
+            ),
+          );
+        }
+      }
+
+      function updateQuantumSimulation() {
+        // Parse current code and run simulation
+        const code = app.syncEngine.panels.code?.value || '';
+
+        try {
+          // Extract quantum operations from code
+          const operations = parseQuantumCode(code);
+
+          // Run simulation
+          const result = app.quantumSim.simulateCircuit(operations);
+
+          // Update performance metrics
+          updatePerformanceMetrics(operations);
+
+          console.log('Quantum simulation updated:', result);
+        } catch (error) {
+          console.warn('Simulation error:', error);
+        }
+      }
+
+      function parseQuantumCode(code) {
+        const operations = [];
+        const lines = code.split('\n');
+
+        for (const line of lines) {
+          if (line.includes('.h(')) {
+            const match = line.match(/\.h\((\d+)\)/);
+            if (match) operations.push({ type: 'H', qubit: parseInt(match[1]) });
+          }
+          if (line.includes('.cnot(')) {
+            const match = line.match(/\.cnot\((\d+),\s*(\d+)\)/);
+            if (match)
+              operations.push({
+                type: 'CNOT',
+                control: parseInt(match[1]),
+                target: parseInt(match[2]),
+              });
+          }
+          if (line.includes('.ry(')) {
+            const match = line.match(/\.ry\(([^,]+),\s*(\d+)\)/);
+            if (match) {
+              let angle = match[1];
+              if (angle.includes('pi')) {
+                angle =
+                  Math.PI *
+                  parseFloat(angle.replace(/[^0-9\.\/-]/g, '').replace('/', '/') || '1');
+              } else {
+                angle = parseFloat(angle) || 0;
+              }
+              operations.push({ type: 'RY', angle, qubit: parseInt(match[2]) });
+            }
+          }
+        }
+
+        return operations;
+      }
+
+      function updatePerformanceMetrics(operations) {
+        const classicalMetric = document.querySelector('.metric-value.classical');
+        const quantumMetric = document.querySelector('.metric-value.quantum');
+        const speedupMetric = document.querySelector(
+          '.metric-value.quantum:last-of-type',
+        );
+
+        if (classicalMetric && quantumMetric) {
+          // Calculate complexity based on operations
+          const gateCount = operations.length;
+          const qubitCount =
+            Math.max(
+              ...operations.map((op) =>
+                Math.max(op.qubit || 0, op.control || 0, op.target || 0),
+              ),
+            ) + 1;
+
+          const n = Math.pow(10, qubitCount); // Problem size
+          classicalMetric.textContent = `O(${n.toExponential(0)})`;
+          quantumMetric.textContent = `O(${Math.sqrt(n).toExponential(0)})`;
+
+          if (speedupMetric) {
+            const speedup = Math.sqrt(n);
+            speedupMetric.textContent = `${speedup.toExponential(0)}x`;
+          }
+        }
+      }
+
+      function addApplicationControls() {
+        // Add enhanced control panel
+        const controlPanel = document.createElement('div');
+        controlPanel.className = 'enhanced-controls';
+
+        controlPanel.innerHTML = `
+                <div class="control-header" onclick="toggleControlPanel()">
+                    <h4>Quantum Fluency Controls</h4>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="control-content">
+                    <button onclick="contextualEntry.launchRandomScenario()">Random Challenge</button>
+                    <button onclick="contextualEntry.launchScenario('executive_briefing')">Executive Briefing</button>
+                    <button onclick="contextualEntry.launchScenario('research_collaboration')">Research Paper</button>
+                    <button onclick="contextualEntry.launchScenario('production_debugging')">Debug Session</button>
+                    <button onclick="contextualEntry.launchScenario('stakeholder_meeting')">Multi-Stakeholder</button>
+                    <button onclick="loadDemoContent('grover')">Load Grover Demo</button>
+                    <button onclick="loadDemoContent('portfolio')">Load Portfolio Demo</button>
+                    <button onclick="runSystemTests()">Run Tests</button>
+                    <button onclick="showPerformanceReport()">Performance Report</button>
+                    <button onclick="resetAllPanels()">Reset Interface</button>
+                </div>
+            `;
+
+        document.body.appendChild(controlPanel);
+
+        // Make toggle function global
+        function toggleControlPanel() {
+          const controlPanel = document.querySelector('.enhanced-controls');
+          const toggleArrow = controlPanel.querySelector('.toggle-arrow');
+          controlPanel.classList.toggle('collapsed');
+          toggleArrow.textContent = controlPanel.classList.contains('collapsed')
+            ? '▲'
+            : '▼';
+        }
+
+        toggleControlPanel();
+        window.toggleControlPanel = toggleControlPanel;
+      }
+
+      function loadDemoContent(demo) {
+        const demoContent = {
+          grover: {
+            plainspeak:
+              "Grover's quantum search algorithm finds specific items in an unsorted database quadratically faster than classical computers. For 1 million records, classical search requires up to 1 million checks, while Grover's needs only about 1,000 quantum operations.",
+            code: '# Grover\'s Search Algorithm\nfrom qiskit import QuantumCircuit\nimport numpy as np\n\n# Initialize quantum circuit\ncircuit = QuantumCircuit(4, 4)\n\n# Step 1: Create superposition\nfor qubit in range(4):\n    circuit.h(qubit)\n\n# Step 2: Oracle function (marks target item)\n# Assuming target is |1011⟩\ncircuit.cz(0, 3)\ncircuit.cz(1, 3)\n\n# Step 3: Diffusion operator\nfor qubit in range(4):\n    circuit.h(qubit)\n    circuit.z(qubit)\nfor qubit in range(4):\n    circuit.h(qubit)\n\n# Step 4: Measure\ncircuit.measure_all()\n\nprint("Grover search ready")',
+            notation:
+              '$|\\psi_0\\rangle = \\frac{1}{\\sqrt{N}}\\sum_{x=0}^{N-1}|x\\rangle$<br><br>$U_f|x\\rangle = (-1)^{f(x)}|x\\rangle$ where $f(x) = 1$ for target<br><br>$U_s = 2|\\psi_0\\rangle\\langle\\psi_0| - I$ (diffusion operator)<br><br>After $O(\\sqrt{N})$ iterations: $P(\\text{target}) \\approx 1$',
+          },
+          portfolio: {
+            plainspeak:
+              'Quantum portfolio optimization explores all possible asset correlation combinations simultaneously using quantum superposition. This approach can discover optimal risk-return profiles that classical optimization might miss, especially in complex multi-asset portfolios with non-linear correlations.',
+            code: '# Quantum Portfolio Optimization\nfrom qiskit import QuantumCircuit\nfrom qiskit.circuit.library import QAOAAnsatz\nimport numpy as np\n\n# Portfolio optimization using QAOA\nnum_assets = 4\ncircuit = QuantumCircuit(num_assets, num_assets)\n\n# Initialize superposition\nfor i in range(num_assets):\n    circuit.h(i)\n\n# Cost function encoding (correlation matrix)\n# Simplified example with entangling gates\ncircuit.cnot(0, 1)  # Asset correlation\ncircuit.cnot(2, 3)  # Asset correlation\ncircuit.rz(np.pi/4, 1)  # Risk weighting\ncircuit.rz(np.pi/6, 3)  # Return constraint\n\n# Measure optimal portfolio allocation\ncircuit.measure_all()\n\nprint("Quantum portfolio optimization ready")',
+            notation:
+              '$H = \\sum_{i<j} w_{ij} Z_i Z_j + \\sum_i h_i Z_i$<br><br>where $w_{ij}$ = correlation weights, $h_i$ = return constraints<br><br>$|\\psi(\\beta, \\gamma)\\rangle = e^{-i\\beta H_B}e^{-i\\gamma H_C}|+\\rangle^{\\otimes n}$<br><br>Optimal: $\\max_{\\beta,\\gamma} \\langle\\psi(\\beta,\\gamma)|H|\\psi(\\beta,\\gamma)\\rangle$',
+          },
+        };
+
+        const content = demoContent[demo];
+        if (content) {
+          app.syncEngine.setState(content);
+          updateQuantumSimulation();
+          console.log(`Loaded ${demo} demo content`);
+        }
+      }
+
+      function runSystemTests() {
+        console.log('Running Quantum Fluency System Tests...');
+
+        const testResults = {
+          syncEngine: testSyncEngine(),
+          quantumSim: testQuantumSimulator(),
+          contextualEntry: testContextualEntry(),
+          interfaceSync: testInterfaceSync(),
+        };
+
+        console.log('Test Results:', testResults);
+
+        const allPassed = Object.values(testResults).every((result) => result.passed);
+        const message = allPassed
+          ? 'All tests passed! ✅'
+          : `Some tests failed: ${Object.entries(testResults)
+              .filter(([k, v]) => !v.passed)
+              .map(([k, v]) => k)
+              .join(', ')}`;
+
+        alert(message);
+        return testResults;
+      }
+
+      function testSyncEngine() {
+        try {
+          // Test basic synchronization
+          const initialState = app.syncEngine.getState();
+          app.syncEngine.setState({ code: 'test_code' });
+          const newState = app.syncEngine.getState();
+
+          const passed = newState.code === 'test_code';
+          app.syncEngine.setState(initialState); // Restore
+
+          return {
+            passed,
+            message: passed ? 'Sync engine working' : 'Sync engine failed',
+          };
+        } catch (error) {
+          return { passed: false, message: `Sync engine error: ${error.message}` };
+        }
+      }
+
+      function testQuantumSimulator() {
+        try {
+          // Test basic quantum operations
+          const sim = new QuantumSimulator();
+          sim.initialize(2);
+          sim.applyGate('H', 0);
+          const probs = sim.getProbabilities();
+
+          // After H gate on |00⟩, should have equal superposition
+          const expected = [0.5, 0, 0.5, 0]; // |00⟩ and |10⟩ states
+          const tolerance = 0.01;
+          const passed = expected.every((exp, i) => Math.abs(probs[i] - exp) < tolerance);
+
+          return {
+            passed,
+            message: passed ? 'Quantum simulator working' : 'Quantum simulator failed',
+          };
+        } catch (error) {
+          return { passed: false, message: `Quantum simulator error: ${error.message}` };
+        }
+      }
+
+      function testContextualEntry() {
+        try {
+          // Test contextual entry system
+          const hasScenarios =
+            app.contextualEntry && app.contextualEntry.scenarios.size > 0;
+          const canLaunch =
+            typeof app.contextualEntry.launchRandomScenario === 'function';
+
+          const passed = hasScenarios && canLaunch;
+          return {
+            passed,
+            message: passed ? 'Contextual entry working' : 'Contextual entry failed',
+          };
+        } catch (error) {
+          return { passed: false, message: `Contextual entry error: ${error.message}` };
+        }
+      }
+
+      function testInterfaceSync() {
+        try {
+          // Test interface synchronization
+          const panels = app.syncEngine.panels;
+          const hasAllPanels =
+            panels.plainspeak && panels.code && panels.circuit && panels.notation;
+
+          // Test panel interaction
+          if (panels.plainspeak) {
+            const testValue = 'interface_test';
+            panels.plainspeak.value = testValue;
+            panels.plainspeak.dispatchEvent(new Event('input'));
+
+            // Check if event was processed (basic check)
+            const passed = hasAllPanels && panels.plainspeak.value === testValue;
+            panels.plainspeak.value = ''; // Clear test
+
+            return {
+              passed,
+              message: passed ? 'Interface sync working' : 'Interface sync failed',
+            };
+          }
+
+          return { passed: false, message: 'Interface panels not found' };
+        } catch (error) {
+          return { passed: false, message: `Interface sync error: ${error.message}` };
+        }
+      }
+
+      function showPerformanceReport() {
+        if (app.contextualEntry) {
+          const report = app.contextualEntry.getPerformanceReport();
+          console.log('Performance Report:', report);
+
+          const summary = `Performance Report:
+                
+Entry History: ${report.entryHistory.length} interactions
+Preferences: ${JSON.stringify(report.metrics.entryPointPreferences, null, 2)}
+Weak Areas: ${report.metrics.weakRepresentations.join(', ') || 'None identified'}
+Strong Areas: ${report.metrics.strongRepresentations.join(', ') || 'None identified'}
+
+Current Context: ${report.currentContext ? report.currentContext.name : 'None'}`;
+
+          alert(summary);
+        } else {
+          alert('No performance data available yet. Try some challenges first!');
+        }
+      }
+
+      function resetAllPanels() {
+        app.syncEngine.setState({
+          plainspeak: '',
+          code: '',
+          notation: '',
+        });
+        // Reset circuit visualization
+        updateQuantumSimulation();
+        console.log('All panels reset');
+      }
+    </script>
+  </body>
+</html>

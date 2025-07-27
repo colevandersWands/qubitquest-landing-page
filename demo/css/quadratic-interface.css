@@ -813,6 +813,37 @@
     margin-bottom: 0;
 }
 
+/* Collapsible control panel styles */
+.enhanced-controls .control-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.enhanced-controls .control-header h4 {
+    margin: 0;
+}
+
+.enhanced-controls .toggle-arrow {
+    color: #4ecdc4;
+    font-size: 12px;
+    transition: transform 0.2s ease;
+}
+
+.enhanced-controls.collapsed .control-content {
+    display: none;
+}
+
+.enhanced-controls.collapsed {
+    padding: 10px 15px;
+}
+
+.enhanced-controls.collapsed .toggle-arrow {
+    transform: rotate(180deg);
+}
+
 /* Animation for smooth transitions */
 @keyframes slideInFromTop {
     from {
