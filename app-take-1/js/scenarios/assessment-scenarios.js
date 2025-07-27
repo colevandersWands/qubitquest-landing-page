@@ -208,45 +208,101 @@ class AssessmentScenarios {
         
         const briefingModal = document.createElement('div');
         briefingModal.className = 'assessment-briefing-modal';
+        briefingModal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        `;
+        
         briefingModal.innerHTML = `
-            <div class="briefing-content">
+            <div class="briefing-content" style="
+                background: #2a2a2a;
+                color: #fff;
+                padding: 30px;
+                border-radius: 10px;
+                max-width: 600px;
+                max-height: 80vh;
+                overflow-y: auto;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            ">
                 <div class="assessment-header">
-                    <h2>${assessment.title}</h2>
-                    <div class="assessment-meta">
-                        <span class="type-badge ${assessment.type}">${assessment.type.replace('_', ' ').toUpperCase()}</span>
+                    <h2 style="color: #4ecdc4; margin-bottom: 10px;">${assessment.title}</h2>
+                    <div class="assessment-meta" style="margin-bottom: 20px;">
+                        <span class="type-badge ${assessment.type}" style="
+                            background: #4ecdc4;
+                            color: #1a1a1a;
+                            padding: 4px 12px;
+                            border-radius: 4px;
+                            margin-right: 10px;
+                            font-size: 12px;
+                            font-weight: bold;
+                        ">${assessment.type.replace('_', ' ').toUpperCase()}</span>
                         <span class="time-limit">⏱️ ${Math.floor(assessment.timeLimit/60)} minutes</span>
                     </div>
                 </div>
                 
-                <div class="scenario-brief">
-                    <h3>Professional Scenario</h3>
-                    <p class="scenario-text">${assessment.scenario}</p>
+                <div class="scenario-brief" style="margin-bottom: 20px;">
+                    <h3 style="color: #98d8d8; margin-bottom: 10px;">Professional Scenario</h3>
+                    <p class="scenario-text" style="line-height: 1.6;">${assessment.scenario}</p>
                 </div>
                 
-                <div class="challenge-brief">
-                    <h3>Your Challenge</h3>
-                    <p class="challenge-text">${assessment.challenge}</p>
+                <div class="challenge-brief" style="margin-bottom: 20px;">
+                    <h3 style="color: #98d8d8; margin-bottom: 10px;">Your Challenge</h3>
+                    <p class="challenge-text" style="line-height: 1.6;">${assessment.challenge}</p>
                 </div>
                 
-                <div class="objectives-brief">
-                    <h3>Assessment Objectives</h3>
-                    <ul class="objectives-list">
+                <div class="objectives-brief" style="margin-bottom: 20px;">
+                    <h3 style="color: #98d8d8; margin-bottom: 10px;">Assessment Objectives</h3>
+                    <ul class="objectives-list" style="line-height: 1.6; padding-left: 20px;">
                         ${assessment.objectives.map(obj => `<li>${obj}</li>`).join('')}
                     </ul>
                 </div>
                 
-                <div class="scoring-preview">
-                    <h3>Scoring Criteria</h3>
+                <div class="scoring-preview" style="margin-bottom: 30px;">
+                    <h3 style="color: #98d8d8; margin-bottom: 10px;">Scoring Criteria</h3>
                     <div class="criteria-preview">
                         ${Object.keys(assessment.scoringCriteria).map(criteria => 
-                            `<span class="criteria-badge">${criteria.replace(/([A-Z])/g, ' $1').toLowerCase()}</span>`
+                            `<span class="criteria-badge" style="
+                                background: #3a3a3a;
+                                padding: 4px 12px;
+                                border-radius: 4px;
+                                margin-right: 8px;
+                                display: inline-block;
+                                margin-bottom: 8px;
+                                font-size: 14px;
+                            ">${criteria.replace(/([A-Z])/g, ' $1').toLowerCase()}</span>`
                         ).join('')}
                     </div>
                 </div>
                 
-                <div class="briefing-actions">
-                    <button onclick="assessmentScenarios.startAssessment()" class="start-assessment-btn">Begin Assessment</button>
-                    <button onclick="assessmentScenarios.cancelAssessment()" class="cancel-btn">Cancel</button>
+                <div class="briefing-actions" style="text-align: center;">
+                    <button onclick="assessmentScenarios.startAssessment()" class="start-assessment-btn" style="
+                        background: #4ecdc4;
+                        color: #1a1a1a;
+                        border: none;
+                        padding: 12px 30px;
+                        border-radius: 4px;
+                        font-size: 16px;
+                        font-weight: bold;
+                        cursor: pointer;
+                        margin-right: 10px;
+                    ">Begin Assessment</button>
+                    <button onclick="assessmentScenarios.cancelAssessment()" class="cancel-btn" style="
+                        background: #666;
+                        color: #fff;
+                        border: none;
+                        padding: 12px 30px;
+                        border-radius: 4px;
+                        font-size: 16px;
+                        cursor: pointer;
+                    ">Cancel</button>
                 </div>
             </div>
         `;
@@ -363,8 +419,13 @@ class AssessmentScenarios {
         // Highlight the designated entry point
         const entryPanel = this.syncEngine.panels[entryPoint];
         if (entryPanel) {
-            entryPanel.closest('.panel').classList.add('assessment-entry-focus');
-            entryPanel.focus();
+            const panelElement = entryPanel.closest ? entryPanel.closest('.panel') : null;
+            if (panelElement) {
+                panelElement.classList.add('assessment-entry-focus');
+            }
+            if (entryPanel.focus) {
+                entryPanel.focus();
+            }
         }
     }
 

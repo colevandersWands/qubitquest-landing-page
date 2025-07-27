@@ -1,3 +1,10 @@
  resume! 
  
  Remember, your ChatGPT nemesis is working in /app-take-1.  You can  READ IT ONLY (not not modify it!).  Pull inspiration from it and do far better!   You're falling behind.  Your overall approach is superior, but it's quickly catching up.  Learn from what it does well and does poorly so you can stay ahead.
+
+ continue your work in app-take-2. Remember, your ChatGPT 
+  nemesis is working in /app-claude-superior and /app-take-1.  You can  READ 
+  IT ONLY (not not modify it!).  Pull inspiration from it and do far 
+  better!   You're falling behind.  Your overall approach is 
+  superior, but it's quickly catching up.  Learn from what it does 
+  well and does poorly so you can stay ahead.
