@@ -3,449 +3,366 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Professional Fluency Platform</title>
+    <title>QubitQuest Superior: Advanced Quantum Computing Education</title>
     
-    <!-- Core Stylesheets -->
+    <!-- Superior Styles -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/quadratic-panels.css">
     <link rel="stylesheet" href="styles/circuit-designer.css">
     <link rel="stylesheet" href="styles/responsive.css">
+    <link rel="stylesheet" href="styles/achievements.css">
+    <link rel="stylesheet" href="styles/3d-visualization.css">
+    
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
     
     <!-- MathJax for mathematical notation -->
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    
     <script>
-        // MathJax configuration for quantum notation
         window.MathJax = {
             tex: {
                 inlineMath: [['$', '$'], ['\\(', '\\)']],
                 displayMath: [['$$', '$$'], ['\\[', '\\]']],
                 processEscapes: true,
-                packages: {'[+]': ['physics']}
+                packages: {'[+]': ['physics', 'braket']}
             },
             svg: {
                 fontCache: 'global'
             }
         };
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <!-- Application Header -->
-    <header class="app-header">
-        <div class="header-content">
-            <h1 class="app-title">Quantum Professional Fluency</h1>
-            <div class="header-controls">
-                <div class="scenario-info" id="current-scenario">
-                    <span class="scenario-name">Foundation: Portfolio Optimization</span>
-                    <span class="entry-point">Entry: Business Context</span>
-                </div>
-                <button class="btn btn-primary" id="new-scenario">New Challenge</button>
-                <button class="btn btn-secondary" id="assessment-mode">Assessment</button>
+    <div class="app-container">
+        <!-- Enhanced Header with Gamification -->
+        <header class="app-header">
+            <div class="logo">
+                <h1>QubitQuest<span class="superior-badge">Superior</span></h1>
+                <span class="tagline">AI-Powered Quantum Mastery</span>
             </div>
-        </div>
-    </header>
-
-    <!-- Main Application Area -->
-    <main class="app-main">
-        <!-- Progress Indicator -->
-        <div class="progress-container">
-            <div class="progress-bar">
-                <div class="progress-fill" id="learning-progress"></div>
-            </div>
-            <div class="phase-indicators">
-                <span class="phase-indicator active" data-phase="hook">Hook</span>
-                <span class="phase-indicator" data-phase="contrast">Contrast</span>
-                <span class="phase-indicator" data-phase="concepts">Concepts</span>
-                <span class="phase-indicator" data-phase="practice">Practice</span>
-                <span class="phase-indicator" data-phase="reality">Reality</span>
-            </div>
-        </div>
-
-        <!-- Quadratic Fluency Interface -->
-        <div class="quadratic-workspace" id="workspace">
-            <!-- Business Communication Panel -->
-            <div class="representation-panel plainspeak-panel" data-representation="plainspeak">
-                <div class="panel-header">
-                    <h3 class="panel-title">Business Communication</h3>
-                    <div class="panel-controls">
-                        <button class="panel-btn" id="focus-plainspeak" title="Focus on business context">
-                            <span class="icon">💼</span>
-                        </button>
-                        <div class="sync-indicator" id="sync-plainspeak"></div>
+            
+            <!-- Progress & Achievements Section -->
+            <div class="progress-section">
+                <div class="multi-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="lesson-progress"></div>
+                        <div class="progress-label">Learning Path</div>
+                    </div>
+                    <div class="streak-indicator">
+                        <span class="streak-icon">🔥</span>
+                        <span class="streak-count">0</span>
+                        <span class="streak-label">day streak</span>
                     </div>
                 </div>
-                <div class="panel-content">
-                    <div class="content-area">
-                        <textarea 
-                            class="content-editor plainspeak-editor"
-                            id="plainspeak-input"
-                            placeholder="Explain the quantum solution in business terms that executives and stakeholders can understand..."
-                            rows="8">Portfolio correlation optimization using quantum computing can discover hedge ratios that classical computers miss by exploring all possible market correlation scenarios simultaneously through quantum superposition.</textarea>
+                <div class="current-objective">
+                    <span id="current-lesson">Adaptive Learning Active</span>
+                    <span id="difficulty-indicator" class="difficulty-adaptive">Adaptive Difficulty</span>
+                </div>
+            </div>
+            
+            <!-- Enhanced User Section -->
+            <div class="user-section">
+                <div class="user-stats">
+                    <div class="level-display">
+                        <span class="level-badge">Level <span id="user-level">1</span></span>
+                        <div class="xp-bar">
+                            <div class="xp-fill" id="xp-progress"></div>
+                        </div>
+                        <span class="xp-text"><span id="current-xp">0</span> / <span id="next-level-xp">100</span> XP</span>
                     </div>
-                    <div class="panel-footer">
-                        <div class="audience-selector">
-                            <label>Audience:</label>
-                            <select id="audience-context">
-                                <option value="executives">C-Suite Executives</option>
-                                <option value="stakeholders">Project Stakeholders</option>
-                                <option value="clients">Potential Clients</option>
-                                <option value="team">Technical Team</option>
+                    <div class="achievement-count">
+                        <span class="achievement-icon">🏆</span>
+                        <span id="achievement-count">0</span>
+                    </div>
+                </div>
+                <button class="profile-btn" id="profile-btn">
+                    <img src="assets/avatar-placeholder.png" alt="Profile" class="avatar">
+                </button>
+            </div>
+        </header>
+
+        <!-- Main content area with superior features -->
+        <main class="main-content">
+            <!-- Adaptive Scenario Panel -->
+            <div class="scenario-panel adaptive" id="scenario-panel">
+                <div class="scenario-header">
+                    <h2>Adaptive Learning Scenario</h2>
+                    <div class="cognitive-indicator">
+                        <span class="label">Cognitive Style:</span>
+                        <span class="style" id="cognitive-style">Detecting...</span>
+                    </div>
+                </div>
+                <div class="scenario-content" id="scenario-content">
+                    <!-- Dynamically loaded based on learner profile -->
+                </div>
+                <div class="intervention-area" id="intervention-area" style="display: none;">
+                    <!-- Preemptive interventions appear here -->
+                </div>
+            </div>
+
+            <!-- 3D Visualization Panel -->
+            <div class="visualization-panel" id="visualization-panel">
+                <div class="viz-header">
+                    <h3>3D Quantum State Visualization</h3>
+                    <div class="viz-controls">
+                        <button class="viz-btn" id="viz-quality">Quality: Medium</button>
+                        <button class="viz-btn" id="viz-reset">Reset View</button>
+                        <button class="viz-btn" id="viz-export">Export</button>
+                    </div>
+                </div>
+                <div class="visualization-container" id="visualization-container">
+                    <!-- Three.js 3D visualization renders here -->
+                </div>
+                <div class="viz-comparison" id="classical-quantum-comparison">
+                    <!-- Classical vs Quantum comparison animations -->
+                </div>
+            </div>
+
+            <!-- Enhanced Quadratic Fluency Panels -->
+            <div class="quadratic-container enhanced">
+                <!-- Business Communication Panel with AI Adaptation -->
+                <div class="panel ai-enhanced" id="plainspeak-panel">
+                    <div class="panel-header">
+                        <h3>Business Communication</h3>
+                        <div class="panel-controls">
+                            <select class="audience-selector" id="audience-selector">
+                                <option value="executive">Executive</option>
+                                <option value="technical">Technical Team</option>
+                                <option value="stakeholder">Stakeholder</option>
+                                <option value="investor">Investor</option>
+                                <option value="client">Client</option>
                             </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Code Implementation Panel -->
-            <div class="representation-panel code-panel" data-representation="code">
-                <div class="panel-header">
-                    <h3 class="panel-title">Python Implementation</h3>
-                    <div class="panel-controls">
-                        <button class="panel-btn" id="run-code" title="Execute quantum code">
-                            <span class="icon">▶️</span>
-                        </button>
-                        <button class="panel-btn" id="debug-code" title="Debug and validate">
-                            <span class="icon">🐛</span>
-                        </button>
-                        <div class="sync-indicator" id="sync-code"></div>
-                    </div>
-                </div>
-                <div class="panel-content">
-                    <div class="content-area">
-                        <div class="code-editor-container">
-                            <textarea 
-                                class="content-editor code-editor"
-                                id="code-input"
-                                placeholder="# Implement the quantum algorithm..."
-                                rows="12"
-                                spellcheck="false">from qiskit import QuantumCircuit, execute, Aer
-import numpy as np
-
-# Portfolio optimization quantum circuit
-circuit = QuantumCircuit(4, 4)
-
-# Create superposition of portfolio states
-circuit.h(0)  # Asset correlation superposition
-circuit.h(1)  # Risk factor superposition
-
-# Encode correlation parameters
-theta = np.pi/3  # Market volatility parameter
-circuit.ry(theta, 1)
-
-# Create entanglement for asset correlations
-circuit.cnot(0, 1)  # Primary correlation
-circuit.cnot(1, 2)  # Secondary correlation
-
-# Apply optimization constraints
-circuit.rz(np.pi/4, 2)  # Return target
-circuit.rz(-np.pi/6, 3)  # Risk limit
-
-# Measure optimal portfolio allocation
-circuit.measure_all()
-
-# Execute on quantum simulator
-backend = Aer.get_backend('qasm_simulator')
-job = execute(circuit, backend, shots=1000)
-result = job.result()
-counts = result.get_counts(circuit)
-
-print("Optimal portfolio allocations:", counts)</textarea>
-                        </div>
-                    </div>
-                    <div class="panel-footer">
-                        <div class="code-output" id="code-output">
-                            <div class="output-header">Output:</div>
-                            <div class="output-content">Ready to execute...</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Visual Circuit Panel -->
-            <div class="representation-panel circuit-panel" data-representation="circuit">
-                <div class="panel-header">
-                    <h3 class="panel-title">Quantum Circuit Design</h3>
-                    <div class="panel-controls">
-                        <button class="panel-btn" id="add-gate" title="Add quantum gate">
-                            <span class="icon">⊕</span>
-                        </button>
-                        <button class="panel-btn" id="simulate-circuit" title="Simulate circuit">
-                            <span class="icon">⚡</span>
-                        </button>
-                        <div class="sync-indicator" id="sync-circuit"></div>
-                    </div>
-                </div>
-                <div class="panel-content">
-                    <div class="content-area">
-                        <div class="circuit-designer" id="circuit-canvas">
-                            <div class="circuit-workspace">
-                                <!-- Interactive circuit will be rendered here -->
-                                <div class="qubit-lines">
-                                    <div class="qubit-line" data-qubit="0">
-                                        <span class="qubit-label">|0⟩</span>
-                                        <div class="qubit-wire"></div>
-                                    </div>
-                                    <div class="qubit-line" data-qubit="1">
-                                        <span class="qubit-label">|0⟩</span>
-                                        <div class="qubit-wire"></div>
-                                    </div>
-                                    <div class="qubit-line" data-qubit="2">
-                                        <span class="qubit-label">|0⟩</span>
-                                        <div class="qubit-wire"></div>
-                                    </div>
-                                    <div class="qubit-line" data-qubit="3">
-                                        <span class="qubit-label">|0⟩</span>
-                                        <div class="qubit-wire"></div>
-                                    </div>
+                            <button class="panel-btn ai-btn" id="ai-suggest">🤖 AI Suggest</button>
+                            <div class="translation-confidence">
+                                <span class="confidence-label">Confidence:</span>
+                                <div class="confidence-bar">
+                                    <div class="confidence-fill" id="plainspeak-confidence"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="panel-footer">
-                        <div class="gate-palette" id="gate-palette">
-                            <button class="gate-btn" data-gate="H">H</button>
-                            <button class="gate-btn" data-gate="X">X</button>
-                            <button class="gate-btn" data-gate="Y">Y</button>
-                            <button class="gate-btn" data-gate="Z">Z</button>
-                            <button class="gate-btn" data-gate="RY">RY</button>
-                            <button class="gate-btn" data-gate="CNOT">CNOT</button>
-                            <button class="gate-btn" data-gate="M">M</button>
+                    <div class="panel-content">
+                        <textarea class="content-input adaptive" id="plainspeak-input" 
+                                  placeholder="AI will adapt this placeholder based on your learning style..."></textarea>
+                        <div class="ai-hints" id="plainspeak-hints"></div>
+                        <div class="panel-footer">
+                            <div class="metrics">
+                                <span class="metric">Clarity: <span id="clarity-score">-</span></span>
+                                <span class="metric">Impact: <span id="impact-score">-</span></span>
+                                <span class="metric">Accuracy: <span id="accuracy-score">-</span></span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Mathematical Notation Panel -->
-            <div class="representation-panel notation-panel" data-representation="notation">
-                <div class="panel-header">
-                    <h3 class="panel-title">Mathematical Formulation</h3>
-                    <div class="panel-controls">
-                        <button class="panel-btn" id="render-latex" title="Render mathematical notation">
-                            <span class="icon">∑</span>
-                        </button>
-                        <button class="panel-btn" id="complexity-analysis" title="Analyze complexity">
-                            <span class="icon">📊</span>
-                        </button>
-                        <div class="sync-indicator" id="sync-notation"></div>
-                    </div>
-                </div>
-                <div class="panel-content">
-                    <div class="content-area">
-                        <div class="notation-editor-container">
-                            <textarea 
-                                class="content-editor notation-editor"
-                                id="notation-input"
-                                placeholder="Enter mathematical formulation using LaTeX notation..."
-                                rows="8">% Portfolio Optimization Quantum State Evolution
-
-% Initial state: uniform superposition
-|\psi_0\rangle = \frac{1}{2}(|0000\rangle + |0001\rangle + |0010\rangle + \ldots + |1111\rangle)
-
-% After Hadamard gates on qubits 0,1:
-|\psi_1\rangle = H \otimes H \otimes I \otimes I |\psi_0\rangle
-
-% After rotation on qubit 1 (risk parameter):
-|\psi_2\rangle = I \otimes RY(\theta) \otimes I \otimes I |\psi_1\rangle
-
-% After CNOT entanglement:
-|\psi_3\rangle = CNOT_{0,1} \cdot CNOT_{1,2} |\psi_2\rangle
-
-% Final optimization state:
-|\psi_{final}\rangle = RZ(\pi/4) \otimes RZ(-\pi/6) |\psi_3\rangle
-
-% Measurement probability for optimal allocation:
-P(optimal) = |\langle optimal |\psi_{final}\rangle|^2</textarea>
+                <!-- Code Implementation Panel with Real-time Optimization -->
+                <div class="panel ai-enhanced" id="code-panel">
+                    <div class="panel-header">
+                        <h3>Code Implementation</h3>
+                        <div class="panel-controls">
+                            <select class="framework-selector" id="framework-selector">
+                                <option value="qiskit">Qiskit</option>
+                                <option value="cirq">Cirq</option>
+                                <option value="pennylane">PennyLane</option>
+                            </select>
+                            <button class="panel-btn run-btn" id="run-code">▶️ Run</button>
+                            <button class="panel-btn optimize-btn" id="optimize-code">⚡ Optimize</button>
+                            <div class="performance-indicator">
+                                <span class="perf-label">Performance:</span>
+                                <span class="perf-value" id="code-performance">-</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="panel-footer">
+                    <div class="panel-content">
+                        <textarea class="content-input code-editor" id="code-input" 
+                                  placeholder="# AI-powered code completion and optimization"></textarea>
+                        <div class="execution-results" id="code-results"></div>
+                        <div class="optimization-suggestions" id="optimization-suggestions"></div>
+                        <div class="panel-footer">
+                            <div class="metrics">
+                                <span class="metric">Gates: <span id="gate-count">0</span></span>
+                                <span class="metric">Depth: <span id="circuit-depth">0</span></span>
+                                <span class="metric">Qubits: <span id="qubit-count">0</span></span>
+                                <span class="metric">Advantage: <span id="quantum-advantage">-</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Circuit Designer with Drag-Drop -->
+                <div class="panel ai-enhanced" id="circuit-panel">
+                    <div class="panel-header">
+                        <h3>Circuit Design Studio</h3>
+                        <div class="panel-controls">
+                            <button class="panel-btn" id="add-qubit">+ Qubit</button>
+                            <button class="panel-btn" id="auto-optimize">🔧 Auto-Optimize</button>
+                            <button class="panel-btn" id="simulate-circuit">⚡ Simulate</button>
+                            <button class="panel-btn" id="export-circuit">📤 Export</button>
+                        </div>
+                    </div>
+                    <div class="panel-content">
+                        <div class="circuit-workspace">
+                            <div class="circuit-canvas" id="circuit-canvas">
+                                <!-- Interactive circuit designer renders here -->
+                            </div>
+                            <div class="gate-palette enhanced">
+                                <div class="gate-category">
+                                    <h4>Single Qubit</h4>
+                                    <button class="gate-btn" data-gate="H" title="Hadamard">H</button>
+                                    <button class="gate-btn" data-gate="X" title="Pauli-X">X</button>
+                                    <button class="gate-btn" data-gate="Y" title="Pauli-Y">Y</button>
+                                    <button class="gate-btn" data-gate="Z" title="Pauli-Z">Z</button>
+                                    <button class="gate-btn" data-gate="S" title="Phase">S</button>
+                                    <button class="gate-btn" data-gate="T" title="T Gate">T</button>
+                                </div>
+                                <div class="gate-category">
+                                    <h4>Two Qubit</h4>
+                                    <button class="gate-btn" data-gate="CNOT" title="Controlled-NOT">CNOT</button>
+                                    <button class="gate-btn" data-gate="CZ" title="Controlled-Z">CZ</button>
+                                    <button class="gate-btn" data-gate="SWAP" title="Swap">SWAP</button>
+                                </div>
+                                <div class="gate-category">
+                                    <h4>Measurement</h4>
+                                    <button class="gate-btn" data-gate="M" title="Measurement">M</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="circuit-analysis" id="circuit-analysis">
+                            <!-- Real-time circuit analysis appears here -->
+                        </div>
+                        <div class="panel-footer">
+                            <div class="metrics">
+                                <span class="metric">Fidelity: <span id="fidelity">-</span></span>
+                                <span class="metric">Entanglement: <span id="entanglement">None</span></span>
+                                <span class="metric">Noise: <span id="noise-level">Low</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mathematical Notation Panel with Proof Assistant -->
+                <div class="panel ai-enhanced" id="notation-panel">
+                    <div class="panel-header">
+                        <h3>Mathematical Foundation</h3>
+                        <div class="panel-controls">
+                            <button class="panel-btn" id="insert-symbol">∑ Symbols</button>
+                            <button class="panel-btn" id="verify-math">✓ Verify</button>
+                            <button class="panel-btn" id="simplify-math">♻ Simplify</button>
+                            <button class="panel-btn" id="copy-latex">📋 LaTeX</button>
+                        </div>
+                    </div>
+                    <div class="panel-content">
+                        <textarea class="content-input" id="notation-input" 
+                                  placeholder="Enter mathematical notation with AI assistance..."></textarea>
                         <div class="notation-preview" id="notation-preview">
-                            <div class="preview-header">Rendered Mathematics:</div>
-                            <div class="preview-content" id="math-preview">
-                                <!-- Rendered LaTeX will appear here -->
+                            <!-- MathJax rendered preview -->
+                        </div>
+                        <div class="proof-assistant" id="proof-assistant">
+                            <!-- AI-powered proof suggestions -->
+                        </div>
+                        <div class="panel-footer">
+                            <div class="metrics">
+                                <span class="metric">Validity: <span id="math-validity">-</span></span>
+                                <span class="metric">Complexity: <span id="math-complexity">-</span></span>
+                                <span class="metric">Equivalence: <span id="math-equivalence">-</span></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Business Impact Dashboard -->
+            <div class="business-impact-panel" id="business-impact-panel" style="display: none;">
+                <!-- Dynamic business impact analysis -->
+            </div>
+
+            <!-- Enhanced Assessment with Adaptive Difficulty -->
+            <div class="assessment-panel adaptive">
+                <div class="assessment-header">
+                    <h3>Adaptive Assessment</h3>
+                    <div class="difficulty-adjuster">
+                        <span class="label">Difficulty:</span>
+                        <div class="difficulty-bar">
+                            <div class="difficulty-level" id="current-difficulty"></div>
+                        </div>
+                        <span class="difficulty-text" id="difficulty-text">Adaptive</span>
+                    </div>
+                </div>
+                <div class="assessment-content" id="assessment-content">
+                    <!-- Dynamically generated based on performance -->
+                </div>
+                <div class="hint-system" id="hint-system">
+                    <button class="hint-btn" id="get-hint">💡 Get Hint (<span id="hints-remaining">3</span>)</button>
+                    <div class="hint-content" id="hint-content"></div>
+                </div>
+            </div>
+
+            <!-- Performance Analytics Dashboard -->
+            <div class="analytics-dashboard" id="analytics-dashboard">
+                <button class="toggle-analytics" id="toggle-analytics">📊 Analytics</button>
+                <div class="analytics-content" style="display: none;">
+                    <div class="analytics-grid">
+                        <div class="analytic-card">
+                            <h4>Learning Velocity</h4>
+                            <div class="velocity-chart" id="velocity-chart"></div>
+                        </div>
+                        <div class="analytic-card">
+                            <h4>Concept Mastery</h4>
+                            <div class="mastery-chart" id="mastery-chart"></div>
+                        </div>
+                        <div class="analytic-card">
+                            <h4>Time Distribution</h4>
+                            <div class="time-chart" id="time-chart"></div>
+                        </div>
+                        <div class="analytic-card">
+                            <h4>Predictions</h4>
+                            <div class="predictions" id="predictions"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Enhanced Navigation with Skip Options -->
+        <nav class="lesson-nav enhanced">
+            <button class="nav-btn" id="prev-lesson">← Previous</button>
+            <div class="nav-center">
+                <button class="nav-btn secondary" id="skip-lesson">Skip</button>
+                <button class="nav-btn secondary" id="review-lesson">Review</button>
+            </div>
+            <button class="nav-btn primary" id="next-lesson">Next →</button>
+        </nav>
+
+        <!-- Loading Indicator -->
+        <div class="loading-indicator" id="loading-indicator" style="display: none;">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">AI Processing...</div>
         </div>
 
-        <!-- Enhanced Professional Performance Dashboard -->
-        <div class="performance-dashboard">
-            <div class="dashboard-header">
-                <h3>Professional Quantum Competency Dashboard</h3>
-                <div class="dashboard-controls">
-                    <button class="btn btn-small" id="update-metrics">Update Analysis</button>
-                    <button class="btn btn-small" id="export-report">Export Report</button>
-                    <button class="btn btn-small" id="benchmark-mode">Benchmark</button>
-                </div>
-            </div>
-            
-            <!-- Primary Performance Metrics -->
-            <div class="metrics-grid">
-                <div class="metric-card classical-metric">
-                    <div class="metric-icon">🖥️</div>
-                    <div class="metric-label">Classical Parallel</div>
-                    <div class="metric-value">O(N/P)</div>
-                    <div class="metric-detail">1M portfolios on 1000 cores</div>
-                    <div class="metric-trend">📈 Baseline</div>
-                </div>
-                <div class="metric-card quantum-metric">
-                    <div class="metric-icon">⚛️</div>
-                    <div class="metric-label">Quantum Advantage</div>
-                    <div class="metric-value">O(√N)</div>
-                    <div class="metric-detail">√1M = 1000x speedup</div>
-                    <div class="metric-trend">🚀 Exponential</div>
-                </div>
-                <div class="metric-card business-metric">
-                    <div class="metric-icon">💰</div>
-                    <div class="metric-label">Business Impact</div>
-                    <div class="metric-value" id="business-value">$5M+</div>
-                    <div class="metric-detail">Annual savings potential</div>
-                    <div class="metric-trend">📊 High ROI</div>
-                </div>
-                <div class="metric-card feasibility-metric">
-                    <div class="metric-icon">🎯</div>
-                    <div class="metric-label">Implementation</div>
-                    <div class="metric-value" id="feasibility-score">85%</div>
-                    <div class="metric-detail">Technical feasibility</div>
-                    <div class="metric-trend">✅ Ready</div>
-                </div>
-            </div>
+        <!-- Error Panel -->
+        <div class="error-panel" id="error-panel"></div>
 
-            <!-- Professional Competency Tracking -->
-            <div class="competency-section">
-                <h4>Quadratic Fluency Development</h4>
-                <div class="competency-grid">
-                    <div class="competency-card">
-                        <div class="competency-header">
-                            <span class="competency-icon">🔄</span>
-                            <span class="competency-name">Translation Speed</span>
-                            <span class="competency-score" id="translation-speed">7.2s</span>
-                        </div>
-                        <div class="competency-bar">
-                            <div class="competency-progress" style="width: 75%"></div>
-                        </div>
-                        <div class="competency-detail">Avg time between representations</div>
-                    </div>
-                    
-                    <div class="competency-card">
-                        <div class="competency-header">
-                            <span class="competency-icon">🎯</span>
-                            <span class="competency-name">Professional Communication</span>
-                            <span class="competency-score" id="communication-score">82%</span>
-                        </div>
-                        <div class="competency-bar">
-                            <div class="competency-progress" style="width: 82%"></div>
-                        </div>
-                        <div class="competency-detail">Stakeholder explanation clarity</div>
-                    </div>
-                    
-                    <div class="competency-card">
-                        <div class="competency-header">
-                            <span class="competency-icon">🧠</span>
-                            <span class="competency-name">Cognitive Agility</span>
-                            <span class="competency-score" id="cognitive-agility">91%</span>
-                        </div>
-                        <div class="competency-bar">
-                            <div class="competency-progress" style="width: 91%"></div>
-                        </div>
-                        <div class="competency-detail">Contextual entry point mastery</div>
-                    </div>
-                    
-                    <div class="competency-card">
-                        <div class="competency-header">
-                            <span class="competency-icon">⚙️</span>
-                            <span class="competency-name">Technical Implementation</span>
-                            <span class="competency-score" id="technical-score">78%</span>
-                        </div>
-                        <div class="competency-bar">
-                            <div class="competency-progress" style="width: 78%"></div>
-                        </div>
-                        <div class="competency-detail">Code debugging and optimization</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Real-time Activity Monitor -->
-            <div class="activity-monitor">
-                <h4>Live Learning Analytics</h4>
-                <div class="activity-grid">
-                    <div class="activity-stat">
-                        <span class="activity-label">Session Time</span>
-                        <span class="activity-value" id="session-time">12:34</span>
-                    </div>
-                    <div class="activity-stat">
-                        <span class="activity-label">Scenarios Completed</span>
-                        <span class="activity-value" id="scenarios-completed">3</span>
-                    </div>
-                    <div class="activity-stat">
-                        <span class="activity-label">Code Executions</span>
-                        <span class="activity-value" id="code-executions">7</span>
-                    </div>
-                    <div class="activity-stat">
-                        <span class="activity-label">Representation Switches</span>
-                        <span class="activity-value" id="rep-switches">23</span>
-                    </div>
-                    <div class="activity-stat">
-                        <span class="activity-label">Debug Sessions</span>
-                        <span class="activity-value" id="debug-sessions">2</span>
-                    </div>
-                    <div class="activity-stat">
-                        <span class="activity-label">Assessment Score</span>
-                        <span class="activity-value" id="assessment-score">--</span>
-                    </div>
-                </div>
-            </div>
+        <!-- Performance Metrics Overlay -->
+        <div class="performance-metrics" id="performance-metrics">
+            <div class="metric">FPS: <span id="fps">60</span></div>
+            <div class="metric">Memory: <span id="memory">0</span>MB</div>
+            <div class="metric">Load: <span id="load-time">0</span>ms</div>
         </div>
-    </main>
+    </div>
 
-    <!-- Contextual Help & Scenarios -->
-    <aside class="context-sidebar" id="context-sidebar">
-        <div class="sidebar-header">
-            <h3>Learning Context</h3>
-            <button class="sidebar-toggle" id="sidebar-toggle">◀</button>
-        </div>
-        <div class="sidebar-content">
-            <div class="current-phase" id="current-phase">
-                <h4>Current Phase: Hook</h4>
-                <p>Understand the business problem and recognize why conventional computing hits limits.</p>
-            </div>
-            <div class="objectives-list" id="objectives">
-                <h4>Learning Objectives</h4>
-                <ul>
-                    <li class="objective completed">Identify quantum-suitable problems</li>
-                    <li class="objective">Explain business value clearly</li>
-                    <li class="objective">Implement basic quantum solution</li>
-                    <li class="objective">Analyze performance trade-offs</li>
-                </ul>
-            </div>
-            <div class="help-section">
-                <h4>Quick Help</h4>
-                <div class="help-tips">
-                    <div class="tip">
-                        <strong>Translation Tip:</strong> Focus on the business outcome, not the technical implementation details.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </aside>
-
-    <!-- Core JavaScript Modules -->
-    <script type="module" src="js/app.js"></script>
-    <script type="module" src="js/quantum-sim.js"></script>
-    <script type="module" src="js/translation-engine.js"></script>
-    <script type="module" src="js/curriculum.js"></script>
-    <script type="module" src="js/assessment.js"></script>
-    <script type="module" src="js/circuit-designer.js"></script>
-
-    <!-- Application Initialization -->
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
     <script type="module">
-        import { QuantumApp } from './js/app.js';
+        import { QuantumEducationPlatform } from './js/app-superior.js';
         
-        // Initialize application when DOM is ready
-        document.addEventListener('DOMContentLoaded', () => {
-            window.quantumApp = new QuantumApp();
-            window.quantumApp.initialize();
+        // Initialize the superior platform
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('🚀 Initializing QubitQuest Superior...');
+            
+            window.quantumPlatform = new QuantumEducationPlatform();
+            await window.quantumPlatform.initialize();
+            
+            console.log('✨ QubitQuest Superior is ready!');
         });
     </script>
 </body>

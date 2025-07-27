@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QubitQuest Test with Initialization</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #1a1a1a;
+            color: #fff;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+        .success { color: #4ecdc4; }
+        .error { color: #ff6b6b; }
+        button {
+            background: #4ecdc4;
+            color: #1a1a1a;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #45b8b0;
+        }
+        .panel {
+            background: #2a2a2a;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>QubitQuest Interactive Test</h1>
+    
+    <div class="test-section">
+        <h2>Initialization Status</h2>
+        <div id="init-status"></div>
+        <button onclick="initializeApp()">Initialize Application</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Components</h2>
+        <button onclick="testQuantumSim()">Test Quantum Simulator</button>
+        <button onclick="testSemanticTranslator()">Test Semantic Translator</button>
+        <button onclick="testAssessmentScenarios()">Test Assessment Scenarios</button>
+        <button onclick="testPhaseProgression()">Test Phase Progression</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Results</h2>
+        <div id="test-results"></div>
+    </div>
+
+    <!-- Minimal workspace for components that need DOM elements -->
+    <div style="display: none;">
+        <div class="quadratic-workspace">
+            <textarea class="plainspeak-editor"></textarea>
+            <textarea class="code-editor"></textarea>
+            <div class="circuit-canvas"><svg></svg></div>
+            <div class="notation-display"></div>
+        </div>
+        <div id="quantum-state-viz"></div>
+    </div>
+
+    <!-- Load all components -->
+    <script src="js/core/quantum-sim.js"></script>
+    <script src="js/core/semantic-translator.js"></script>
+    <script src="js/core/sync-engine.js"></script>
+    <script src="js/core/contextual-entry.js"></script>
+    <script src="js/core/contextual-intelligence.js"></script>
+    <script src="js/components/circuit-designer.js"></script>
+    <script src="js/scenarios/assessment-scenarios.js"></script>
+    <script src="js/learning/phase-progression.js"></script>
+    <script src="js/visualization/quantum-state-visualizer.js"></script>
+    
+    <script>
+        let app = {
+            syncEngine: null,
+            quantumSim: null,
+            contextualEntry: null,
+            contextualIntelligence: null,
+            circuitDesigner: null,
+            assessmentScenarios: null,
+            phaseProgression: null,
+            quantumStateVisualizer: null
+        };
+        
+        function updateStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('init-status');
+            const className = type === 'error' ? 'error' : (type === 'success' ? 'success' : '');
+            statusDiv.innerHTML += `<div class="${className}">${message}</div>`;
+        }
+        
+        function addResult(message, type = 'info') {
+            const resultsDiv = document.getElementById('test-results');
+            const className = type === 'error' ? 'error' : (type === 'success' ? 'success' : '');
+            resultsDiv.innerHTML += `<div class="panel ${className}">${message}</div>`;
+        }
+        
+        function initializeApp() {
+            updateStatus('Starting initialization...', 'info');
+            
+            try {
+                // Initialize quantum simulator
+                updateStatus('Initializing Quantum Simulator...', 'info');
+                app.quantumSim = new QuantumSimulator();
+                app.quantumSim.initialize(4);
+                updateStatus('✓ Quantum Simulator initialized', 'success');
+                
+                // Initialize sync engine
+                updateStatus('Initializing Sync Engine...', 'info');
+                app.syncEngine = new QuadraticSyncEngine();
+                updateStatus('✓ Sync Engine initialized', 'success');
+                
+                // Initialize contextual entry
+                updateStatus('Initializing Contextual Entry System...', 'info');
+                app.contextualEntry = new ContextualEntrySystem(app.syncEngine);
+                updateStatus('✓ Contextual Entry System initialized', 'success');
+                
+                // Initialize contextual intelligence
+                updateStatus('Initializing Contextual Intelligence...', 'info');
+                app.contextualIntelligence = new ContextualIntelligenceSystem(app.syncEngine);
+                updateStatus('✓ Contextual Intelligence initialized', 'success');
+                
+                // Initialize circuit designer (might fail if no proper container)
+                try {
+                    const circuitContainer = document.querySelector('.circuit-canvas').parentElement;
+                    app.circuitDesigner = new CircuitDesigner(circuitContainer, app.syncEngine);
+                    updateStatus('✓ Circuit Designer initialized', 'success');
+                } catch (e) {
+                    updateStatus('⚠ Circuit Designer initialization skipped (no container)', 'warning');
+                }
+                
+                // Initialize assessment scenarios
+                updateStatus('Initializing Assessment Scenarios...', 'info');
+                app.assessmentScenarios = new AssessmentScenarios(app.contextualEntry, app.syncEngine);
+                updateStatus('✓ Assessment Scenarios initialized', 'success');
+                
+                // Initialize phase progression
+                updateStatus('Initializing Phase Progression...', 'info');
+                app.phaseProgression = new PhaseProgressionSystem(app.syncEngine, app.contextualEntry, app.assessmentScenarios);
+                updateStatus('✓ Phase Progression initialized', 'success');
+                
+                // Initialize quantum state visualizer
+                updateStatus('Initializing Quantum State Visualizer...', 'info');
+                app.quantumStateVisualizer = new QuantumStateVisualizer('quantum-state-viz', app.quantumSim);
+                updateStatus('✓ Quantum State Visualizer initialized', 'success');
+                
+                // Make globally accessible
+                window.app = app;
+                window.assessmentScenarios = app.assessmentScenarios;
+                window.phaseProgression = app.phaseProgression;
+                window.quantumStateVisualizer = app.quantumStateVisualizer;
+                window.contextualEntry = app.contextualEntry;
+                
+                updateStatus('✅ All components initialized successfully!', 'success');
+                updateStatus('You can now use the test buttons or console commands.', 'info');
+                
+            } catch (error) {
+                updateStatus(`❌ Initialization error: ${error.message}`, 'error');
+                console.error(error);
+            }
+        }
+        
+        function testQuantumSim() {
+            try {
+                if (!app.quantumSim) {
+                    addResult('❌ Quantum Simulator not initialized', 'error');
+                    return;
+                }
+                
+                // Test basic quantum operations
+                app.quantumSim.initialize(2);
+                app.quantumSim.applyGate('H', 0);
+                app.quantumSim.applyCNOT(0, 1);
+                const state = app.quantumSim.getStateDescription();
+                
+                addResult(`✅ Quantum Simulation Test Passed
+                Created Bell state: ${state}`, 'success');
+                
+            } catch (error) {
+                addResult(`❌ Quantum Simulation Error: ${error.message}`, 'error');
+            }
+        }
+        
+        function testSemanticTranslator() {
+            try {
+                const translator = new SemanticTranslator();
+                const concepts = translator.extractQuantumConcepts('Create superposition and entanglement for portfolio optimization');
+                
+                addResult(`✅ Semantic Translation Test Passed
+                Extracted concepts: ${concepts.join(', ')}`, 'success');
+                
+            } catch (error) {
+                addResult(`❌ Semantic Translation Error: ${error.message}`, 'error');
+            }
+        }
+        
+        function testAssessmentScenarios() {
+            try {
+                if (!app.assessmentScenarios) {
+                    addResult('❌ Assessment Scenarios not initialized', 'error');
+                    return;
+                }
+                
+                const assessments = app.assessmentScenarios.getAllAssessments();
+                addResult(`✅ Assessment Scenarios Test Passed
+                Available assessments: ${assessments.length}
+                Types: ${assessments.map(a => a.type).join(', ')}`, 'success');
+                
+                // Show how to launch an assessment
+                addResult(`To launch an assessment, use:
+                assessmentScenarios.launchAssessment('ambush_portfolio_crisis')`, 'info');
+                
+            } catch (error) {
+                addResult(`❌ Assessment Scenarios Error: ${error.message}`, 'error');
+            }
+        }
+        
+        function testPhaseProgression() {
+            try {
+                if (!app.phaseProgression) {
+                    addResult('❌ Phase Progression not initialized', 'error');
+                    return;
+                }
+                
+                const scenarios = Object.keys(app.phaseProgression.scenarios);
+                addResult(`✅ Phase Progression Test Passed
+                Available scenarios: ${scenarios.join(', ')}
+                Current phase: ${app.phaseProgression.currentPhase}`, 'success');
+                
+                // Show how to start a scenario
+                addResult(`To start a learning scenario, use:
+                phaseProgression.startScenario('portfolio_optimization')`, 'info');
+                
+            } catch (error) {
+                addResult(`❌ Phase Progression Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Auto-check component availability on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const components = [
+                'QuantumSimulator',
+                'SemanticTranslator',
+                'QuadraticSyncEngine',
+                'ContextualEntrySystem',
+                'ContextualIntelligenceSystem',
+                'CircuitDesigner',
+                'AssessmentScenarios',
+                'PhaseProgressionSystem',
+                'QuantumStateVisualizer'
+            ];
+            
+            let allAvailable = true;
+            components.forEach(comp => {
+                if (typeof window[comp] === 'undefined') {
+                    updateStatus(`❌ ${comp} not loaded`, 'error');
+                    allAvailable = false;
+                } else {
+                    updateStatus(`✓ ${comp} available`, 'success');
+                }
+            });
+            
+            if (allAvailable) {
+                updateStatus('All components loaded successfully! Click "Initialize Application" to start.', 'success');
+            }
+        });
+    </script>
+</body>
+</html>

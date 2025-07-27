@@ -1,0 +1,394 @@
+/**
+ * 3D Quantum Visualization Styles
+ * Advanced styling for Three.js quantum state visualizations
+ */
+
+/* Visualization Panel */
+.visualization-panel {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    margin: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(74, 144, 226, 0.2);
+}
+
+.viz-header {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(74, 144, 226, 0.2);
+}
+
+.viz-header h3 {
+    color: #4a90e2;
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.viz-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.viz-btn {
+    background: rgba(74, 144, 226, 0.1);
+    border: 1px solid rgba(74, 144, 226, 0.3);
+    color: #4a90e2;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.viz-btn:hover {
+    background: rgba(74, 144, 226, 0.2);
+    border-color: #4a90e2;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+}
+
+/* Visualization Container */
+.visualization-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background: radial-gradient(ellipse at center, #0a0a0a 0%, #000000 100%);
+    cursor: grab;
+}
+
+.visualization-container:active {
+    cursor: grabbing;
+}
+
+/* Loading State */
+.visualization-container.loading::after {
+    content: 'Initializing Quantum Visualization...';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #4a90e2;
+    font-size: 16px;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Classical vs Quantum Comparison */
+.viz-comparison {
+    background: rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(74, 144, 226, 0.2);
+    padding: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.comparison-item {
+    text-align: center;
+    flex: 1;
+}
+
+.comparison-label {
+    color: #999;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.comparison-value {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.comparison-value.classical {
+    color: #e74c3c;
+}
+
+.comparison-value.quantum {
+    color: #4a90e2;
+}
+
+.comparison-description {
+    color: #666;
+    font-size: 12px;
+}
+
+/* Performance Indicator for 3D */
+.viz-performance {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    color: #999;
+    font-family: monospace;
+}
+
+.viz-performance span {
+    color: #50fa7b;
+}
+
+/* Quantum State Indicators */
+.quantum-state-info {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(74, 144, 226, 0.3);
+    min-width: 200px;
+}
+
+.state-property {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 12px;
+}
+
+.state-property:last-child {
+    margin-bottom: 0;
+}
+
+.state-label {
+    color: #999;
+}
+
+.state-value {
+    color: #4a90e2;
+    font-family: monospace;
+}
+
+/* Interactive Elements */
+.interactive-tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid #4a90e2;
+    border-radius: 6px;
+    padding: 10px;
+    color: white;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 1000;
+    box-shadow: 0 4px 16px rgba(74, 144, 226, 0.3);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.interactive-tooltip.visible {
+    opacity: 1;
+}
+
+.tooltip-title {
+    color: #4a90e2;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.tooltip-content {
+    color: #ccc;
+}
+
+/* Animation Controls */
+.animation-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(74, 144, 226, 0.3);
+}
+
+.anim-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(74, 144, 226, 0.1);
+    border: 1px solid rgba(74, 144, 226, 0.3);
+    color: #4a90e2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.anim-btn:hover {
+    background: rgba(74, 144, 226, 0.2);
+    transform: scale(1.1);
+}
+
+.anim-btn.active {
+    background: #4a90e2;
+    color: white;
+}
+
+/* Export Options */
+.export-menu {
+    position: absolute;
+    top: 50px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(74, 144, 226, 0.3);
+    border-radius: 8px;
+    padding: 10px;
+    display: none;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.export-menu.show {
+    display: block;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.export-option {
+    padding: 8px 16px;
+    color: #999;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.export-option:hover {
+    color: #4a90e2;
+    background: rgba(74, 144, 226, 0.1);
+}
+
+/* Quality Settings */
+.quality-indicator {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+}
+
+.quality-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #666;
+}
+
+.quality-dot.active {
+    background: #50fa7b;
+}
+
+.quality-low .quality-dot:nth-child(1) {
+    background: #50fa7b;
+}
+
+.quality-medium .quality-dot:nth-child(1),
+.quality-medium .quality-dot:nth-child(2) {
+    background: #50fa7b;
+}
+
+.quality-high .quality-dot {
+    background: #50fa7b;
+}
+
+/* 3D Visualization Overlays */
+.viz-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.measurement-overlay {
+    position: absolute;
+    background: radial-gradient(circle, rgba(142, 68, 173, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: measurementPulse 1s ease-out;
+    pointer-events: none;
+}
+
+@keyframes measurementPulse {
+    from {
+        transform: scale(0);
+        opacity: 1;
+    }
+    to {
+        transform: scale(3);
+        opacity: 0;
+    }
+}
+
+/* Gate Operation Overlay */
+.gate-operation-overlay {
+    position: absolute;
+    border: 2px solid #4a90e2;
+    background: rgba(74, 144, 226, 0.1);
+    animation: gateHighlight 0.5s ease;
+}
+
+@keyframes gateHighlight {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .visualization-container {
+        height: 300px;
+    }
+    
+    .viz-controls {
+        flex-wrap: wrap;
+    }
+    
+    .quantum-state-info {
+        font-size: 11px;
+        min-width: 150px;
+    }
+    
+    .animation-controls {
+        bottom: 10px;
+        right: 10px;
+    }
+}

@@ -734,13 +734,23 @@ optimal_portfolio = analyze_results(results)</textarea>
                 <div class="phase-progress-fill" style="width: 20%"></div>
             </div>
         </div>
+        
+        <!-- Quantum State Visualization -->
+        <div class="quantum-state-visualization-section" id="quantum-state-viz">
+            <!-- Quantum state visualizer will be initialized here -->
+        </div>
     </div>
 
     <!-- Core JavaScript Modules -->
     <script src="js/core/quantum-sim.js"></script>
+    <script src="js/core/semantic-translator.js"></script>
     <script src="js/core/sync-engine.js"></script>
     <script src="js/core/contextual-entry.js"></script>
+    <script src="js/core/contextual-intelligence.js"></script>
     <script src="js/components/circuit-designer.js"></script>
+    <script src="js/scenarios/assessment-scenarios.js"></script>
+    <script src="js/learning/phase-progression.js"></script>
+    <script src="js/visualization/quantum-state-visualizer.js"></script>
     
     <!-- MathJax for mathematical notation rendering -->
     <!-- ES6 polyfill removed - using modern browser features only -->
@@ -763,9 +773,16 @@ optimal_portfolio = analyze_results(results)</textarea>
             syncEngine: null,
             quantumSim: null,
             contextualEntry: null,
+            contextualIntelligence: null,
             circuitDesigner: null,
             currentScenario: null,
-            assessmentMode: false
+            assessmentMode: false,
+            performanceTracking: {
+                sessionStart: Date.now(),
+                interactions: 0,
+                translations: 0,
+                scenariosCompleted: 0
+            }
         };
         
         // Initialize application when DOM loads
@@ -803,13 +820,28 @@ optimal_portfolio = analyze_results(results)</textarea>
             // Initialize contextual entry system
             app.contextualEntry = new ContextualEntrySystem(app.syncEngine);
             
+            // Initialize contextual intelligence system
+            app.contextualIntelligence = new ContextualIntelligenceSystem(app.syncEngine);
+            
             // Initialize circuit designer
             const circuitContainer = document.querySelector('.circuit-canvas').parentElement;
             app.circuitDesigner = new CircuitDesigner(circuitContainer, app.syncEngine);
             
+            // Initialize assessment scenarios
+            app.assessmentScenarios = new AssessmentScenarios(app.contextualEntry, app.syncEngine);
+            
+            // Initialize phase progression system
+            app.phaseProgression = new PhaseProgressionSystem(app.syncEngine, app.contextualEntry, app.assessmentScenarios);
+            
+            // Initialize quantum state visualizer
+            app.quantumStateVisualizer = new QuantumStateVisualizer('quantum-state-viz', app.quantumSim);
+            
             // Make globally accessible for HTML onclick handlers
             window.contextualEntry = app.contextualEntry;
             window.circuitDesigner = app.circuitDesigner;
+            window.assessmentScenarios = app.assessmentScenarios;
+            window.phaseProgression = app.phaseProgression;
+            window.quantumStateVisualizer = app.quantumStateVisualizer;
             
             // Set up contextual entry scenarios
             setupContextualScenarios();
@@ -820,7 +852,15 @@ optimal_portfolio = analyze_results(results)</textarea>
                 // Add control buttons
                 addApplicationControls();
                 
-                console.log('Application initialized successfully');
+                // Enable mobile optimizations
+                app.contextualIntelligence.enableMobileOptimizations();
+                
+                // Start performance tracking
+                startPerformanceTracking();
+                
+                console.log('🚀 Quantum Fluency Application initialized successfully');
+                console.log('📱 Mobile optimizations: ' + (isMobileDevice() ? 'Enabled' : 'Desktop mode'));
+                console.log('🧠 Contextual Intelligence: Active');
                 console.log('Try: contextualEntry.launchRandomScenario() for challenges');
                 
             } catch (error) {
@@ -1150,17 +1190,29 @@ optimal_portfolio = analyze_results(results)</textarea>
             controlPanel.className = 'enhanced-controls';
             
             controlPanel.innerHTML = `
-                <h4>Quantum Fluency Controls</h4>
-                <button onclick="contextualEntry.launchRandomScenario()">Random Challenge</button>
-                <button onclick="contextualEntry.launchScenario('executive_briefing')">Executive Briefing</button>
-                <button onclick="contextualEntry.launchScenario('research_collaboration')">Research Paper</button>
-                <button onclick="contextualEntry.launchScenario('production_debugging')">Debug Session</button>
-                <button onclick="contextualEntry.launchScenario('stakeholder_meeting')">Multi-Stakeholder</button>
-                <button onclick="loadDemoContent('grover')">Load Grover Demo</button>
-                <button onclick="loadDemoContent('portfolio')">Load Portfolio Demo</button>
-                <button onclick="runSystemTests()">Run Tests</button>
-                <button onclick="showPerformanceReport()">Performance Report</button>
-                <button onclick="resetAllPanels()">Reset Interface</button>
+                <h4>🚀 Quantum Fluency Controls</h4>
+                <div class="control-section">
+                    <h5>Professional Scenarios</h5>
+                    <button onclick="launchProfessionalScenario('executive_briefing')" class="scenario-btn">👔 Executive Briefing</button>
+                    <button onclick="launchProfessionalScenario('stakeholder_meeting')" class="scenario-btn">👥 Stakeholder Meeting</button>
+                    <button onclick="launchProfessionalScenario('technical_deep_dive')" class="scenario-btn">🔧 Technical Review</button>
+                    <button onclick="launchProfessionalScenario('board_presentation')" class="scenario-btn">🏢 Board Presentation</button>
+                </div>
+                <div class="control-section">
+                    <h5>Challenges & Demos</h5>
+                    <button onclick="contextualEntry.launchRandomScenario()">🎲 Random Challenge</button>
+                    <button onclick="loadDemoContent('grover')">🔍 Grover's Algorithm</button>
+                    <button onclick="loadDemoContent('portfolio')">📊 Portfolio Optimization</button>
+                    <button onclick="loadDemoContent('quantum_ml')">🤖 Quantum ML</button>
+                </div>
+                <div class="control-section">
+                    <h5>Analytics & Tools</h5>
+                    <button onclick="showPerformanceReport()">📈 Performance Report</button>
+                    <button onclick="showContextualInsights()">🧠 AI Insights</button>
+                    <button onclick="exportLearningData()">💾 Export Progress</button>
+                    <button onclick="runSystemTests()">🧪 Run Tests</button>
+                    <button onclick="resetAllPanels()" class="reset-btn">🔄 Reset All</button>
+                </div>
             `;
             
             document.body.appendChild(controlPanel);
@@ -1311,6 +1363,299 @@ Current Context: ${report.currentContext ? report.currentContext.name : 'None'}`
             // Reset circuit visualization
             updateQuantumSimulation();
             console.log('All panels reset');
+        }
+        
+        // Enhanced performance tracking
+        function startPerformanceTracking() {
+            // Track all interactions
+            document.addEventListener('input', (e) => {
+                app.performanceTracking.interactions++;
+                updateActivityMetrics();
+            });
+            
+            // Track panel switches
+            document.addEventListener('click', (e) => {
+                if (e.target.closest('.panel')) {
+                    app.performanceTracking.panelSwitches = 
+                        (app.performanceTracking.panelSwitches || 0) + 1;
+                    updateActivityMetrics();
+                }
+            });
+            
+            // Update session timer
+            setInterval(updateSessionTimer, 1000);
+        }
+        
+        function updateSessionTimer() {
+            const elapsed = Date.now() - app.performanceTracking.sessionStart;
+            const minutes = Math.floor(elapsed / 60000);
+            const seconds = Math.floor((elapsed % 60000) / 1000);
+            
+            const timerElement = document.getElementById('session-time');
+            if (timerElement) {
+                timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }
+        
+        function updateActivityMetrics() {
+            // Update activity display
+            const metrics = {
+                'scenarios-completed': app.performanceTracking.scenariosCompleted,
+                'code-executions': app.performanceTracking.codeExecutions || 0,
+                'rep-switches': app.performanceTracking.panelSwitches || 0,
+                'debug-sessions': app.performanceTracking.debugSessions || 0
+            };
+            
+            for (const [id, value] of Object.entries(metrics)) {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = value;
+                }
+            }
+        }
+        
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                   (window.innerWidth <= 768);
+        }
+        
+        // Enhanced professional scenarios
+        function launchProfessionalScenario(scenarioType) {
+            if (app.contextualIntelligence) {
+                app.contextualIntelligence.launchProfessionalScenario(scenarioType)
+                    .then(simulation => {
+                        console.log(`Launched scenario: ${simulation.scenario.name}`);
+                        app.currentSimulation = simulation;
+                    })
+                    .catch(error => {
+                        console.error('Failed to launch scenario:', error);
+                    });
+            }
+        }
+        
+        // Real-time competency update
+        function updateCompetencyScores() {
+            if (!app.contextualIntelligence) return;
+            
+            const report = app.contextualIntelligence.getPerformanceReport();
+            
+            // Update translation speed
+            const translationSpeed = document.getElementById('translation-speed');
+            if (translationSpeed) {
+                translationSpeed.textContent = `${report.adaptationSpeed.toFixed(1)}ms`;
+            }
+            
+            // Update other competencies
+            const competencyMap = {
+                'communication-score': Math.round(report.audienceDetectionAccuracy * 100),
+                'cognitive-agility': Math.round(report.cognitiveLoadOptimization * 100),
+                'technical-score': Math.round(report.overallEffectiveness * 100)
+            };
+            
+            for (const [id, score] of Object.entries(competencyMap)) {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = `${score}%`;
+                    
+                    // Update progress bar
+                    const progressBar = element.closest('.competency-card')?.querySelector('.competency-progress');
+                    if (progressBar) {
+                        progressBar.style.width = `${score}%`;
+                    }
+                }
+            }
+        }
+        
+        // Update competency scores periodically
+        setInterval(updateCompetencyScores, 5000);
+    </script>
+    
+    <!-- Enhanced mobile styles -->
+    <style>
+        @media (max-width: 768px) {
+            .enhanced-controls {
+                bottom: 0;
+                left: 0;
+                right: 0;
+                max-height: 60vh;
+                overflow-y: auto;
+                border-radius: 20px 20px 0 0;
+                box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+            }
+            
+            .enhanced-controls button {
+                font-size: 14px;
+                padding: 12px 16px;
+                margin-bottom: 10px;
+            }
+            
+            .control-section {
+                margin-bottom: 20px;
+            }
+            
+            .control-section h5 {
+                color: #4ecdc4;
+                margin-bottom: 10px;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            
+            .scenario-btn {
+                background: linear-gradient(135deg, #2a2a2a, #3a3a3a) !important;
+                border: 1px solid #4ecdc4 !important;
+            }
+            
+            .reset-btn {
+                background: #ff6b6b !important;
+                border-color: #ff6b6b !important;
+            }
+            
+            /* Swipe to dismiss on mobile */
+            .enhanced-controls::before {
+                content: '';
+                position: absolute;
+                top: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 40px;
+                height: 4px;
+                background: #666;
+                border-radius: 2px;
+            }
+        }
+        
+        /* Performance optimizations */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+        
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .panel {
+                border: 2px solid #fff;
+            }
+            
+            .btn {
+                border-width: 2px;
+            }
+        }
+        
+        /* Print optimization */
+        @media print {
+            .enhanced-controls,
+            .context-intelligence,
+            .scenario-overlay,
+            .sync-indicator {
+                display: none !important;
+            }
+            
+            .quadratic-workspace {
+                display: block;
+            }
+            
+            .panel {
+                page-break-inside: avoid;
+                border: 1px solid #000;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+    
+    <!-- Additional helper functions -->
+    <script>
+        // Export learning data
+        function exportLearningData() {
+            const data = {
+                session: {
+                    start: app.performanceTracking.sessionStart,
+                    duration: Date.now() - app.performanceTracking.sessionStart,
+                    interactions: app.performanceTracking.interactions,
+                    scenariosCompleted: app.performanceTracking.scenariosCompleted
+                },
+                competencies: app.contextualIntelligence?.getPerformanceReport() || {},
+                currentState: app.syncEngine?.getState() || {},
+                timestamp: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `quantum-fluency-progress-${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            console.log('💾 Exported learning data');
+        }
+        
+        // Show contextual insights
+        function showContextualInsights() {
+            if (!app.contextualIntelligence) {
+                alert('Contextual Intelligence not initialized');
+                return;
+            }
+            
+            const insights = app.contextualIntelligence.getProfessionalContext();
+            const report = app.contextualIntelligence.getPerformanceReport();
+            
+            const insightText = `
+🧠 Contextual Intelligence Insights
+
+Current Context:
+- Audience: ${insights.audience}
+- Business Context: ${insights.businessContext}
+- Urgency Level: ${insights.urgencyLevel}
+- Cognitive Load: ${(insights.cognitiveLoad * 100).toFixed(0)}%
+
+Performance Metrics:
+- Adaptation Speed: ${report.adaptationSpeed.toFixed(1)}ms avg
+- Audience Detection: ${(report.audienceDetectionAccuracy * 100).toFixed(0)}% accurate
+- Business Value Predictions: ${(report.businessValueAccuracy * 100).toFixed(0)}% accurate
+- Overall Effectiveness: ${(report.overallEffectiveness * 100).toFixed(0)}%
+
+Competency Scores:
+- Business Communication: ${(insights.competencyScores?.businessCommunication * 100 || 0).toFixed(0)}%
+- Technical Implementation: ${(insights.competencyScores?.technicalImplementation * 100 || 0).toFixed(0)}%
+- Strategic Thinking: ${(insights.competencyScores?.strategicThinking * 100 || 0).toFixed(0)}%
+- Cognitive Agility: ${(insights.competencyScores?.cognitiveAgility * 100 || 0).toFixed(0)}%
+            `;
+            
+            alert(insightText);
+        }
+        
+        // Enhanced demo content
+        function loadDemoContent(demo) {
+            const demoContent = {
+                'grover': {
+                    plainspeak: 'Grover\'s quantum search algorithm finds specific items in an unsorted database quadratically faster than classical computers. For 1 million records, classical search requires up to 1 million checks, while Grover\'s needs only about 1,000 quantum operations.',
+                    code: '# Grover\'s Search Algorithm\nfrom qiskit import QuantumCircuit\nimport numpy as np\n\n# Initialize quantum circuit\ncircuit = QuantumCircuit(4, 4)\n\n# Step 1: Create superposition\nfor qubit in range(4):\n    circuit.h(qubit)\n\n# Step 2: Oracle function (marks target item)\n# Assuming target is |1011⟩\ncircuit.cz(0, 3)\ncircuit.cz(1, 3)\n\n# Step 3: Diffusion operator\nfor qubit in range(4):\n    circuit.h(qubit)\n    circuit.z(qubit)\nfor qubit in range(4):\n    circuit.h(qubit)\n\n# Step 4: Measure\ncircuit.measure_all()\n\nprint("Grover search ready")',
+                    notation: '$|\\psi_0\\rangle = \\frac{1}{\\sqrt{N}}\\sum_{x=0}^{N-1}|x\\rangle$<br><br>$U_f|x\\rangle = (-1)^{f(x)}|x\\rangle$ where $f(x) = 1$ for target<br><br>$U_s = 2|\\psi_0\\rangle\\langle\\psi_0| - I$ (diffusion operator)<br><br>After $O(\\sqrt{N})$ iterations: $P(\\text{target}) \\approx 1$'
+                },
+                'portfolio': {
+                    plainspeak: 'Quantum portfolio optimization explores all possible asset correlation combinations simultaneously using quantum superposition. This approach can discover optimal risk-return profiles that classical optimization might miss, especially in complex multi-asset portfolios with non-linear correlations.',
+                    code: '# Quantum Portfolio Optimization\nfrom qiskit import QuantumCircuit\nfrom qiskit.circuit.library import QAOAAnsatz\nimport numpy as np\n\n# Portfolio optimization using QAOA\nnum_assets = 4\ncircuit = QuantumCircuit(num_assets, num_assets)\n\n# Initialize superposition\nfor i in range(num_assets):\n    circuit.h(i)\n\n# Cost function encoding (correlation matrix)\n# Simplified example with entangling gates\ncircuit.cnot(0, 1)  # Asset correlation\ncircuit.cnot(2, 3)  # Asset correlation\ncircuit.rz(np.pi/4, 1)  # Risk weighting\ncircuit.rz(np.pi/6, 3)  # Return constraint\n\n# Measure optimal portfolio allocation\ncircuit.measure_all()\n\nprint("Quantum portfolio optimization ready")',
+                    notation: '$H = \\sum_{i<j} w_{ij} Z_i Z_j + \\sum_i h_i Z_i$<br><br>where $w_{ij}$ = correlation weights, $h_i$ = return constraints<br><br>$|\\psi(\\beta, \\gamma)\\rangle = e^{-i\\beta H_B}e^{-i\\gamma H_C}|+\\rangle^{\\otimes n}$<br><br>Optimal: $\\max_{\\beta,\\gamma} \\langle\\psi(\\beta,\\gamma)|H|\\psi(\\beta,\\gamma)\\rangle$'
+                },
+                'quantum_ml': {
+                    plainspeak: 'Quantum machine learning leverages quantum superposition and entanglement to process exponentially large feature spaces efficiently. Quantum kernels can capture complex patterns in data that classical kernels might miss, potentially offering advantages for certain classification and clustering tasks.',
+                    code: '# Quantum Machine Learning - Feature Map\nfrom qiskit import QuantumCircuit\nfrom qiskit.circuit.library import ZZFeatureMap\nimport numpy as np\n\n# Create quantum feature map\nnum_features = 3\nfeature_map = ZZFeatureMap(\n    feature_dimension=num_features,\n    reps=2,\n    entanglement="full"\n)\n\n# Sample data point\ndata = [0.5, -0.3, 0.8]\n\n# Bind parameters to create quantum state\nquantum_state = feature_map.bind_parameters(data)\n\n# Add classification layer\nqc = QuantumCircuit(num_features, 1)\nqc.compose(quantum_state, inplace=True)\n\n# Variational classification layer\nfor i in range(num_features):\n    qc.ry(np.pi/4, i)  # Trainable parameters\n    \nqc.cnot(0, 1)\nqc.cnot(1, 2)\nqc.ry(np.pi/3, 2)\n\n# Measure for classification\nqc.measure(2, 0)\n\nprint("Quantum ML circuit ready")',
+                    notation: '$|\\phi(\\mathbf{x})\\rangle = U_{\\phi(\\mathbf{x})}|0\\rangle^{\\otimes n}$<br><br>Feature map: $U_{\\phi(\\mathbf{x})} = \\prod_{k=1}^{d} U_{\\phi_k}(x_k)$<br><br>Kernel: $K(\\mathbf{x}_i, \\mathbf{x}_j) = |\\langle\\phi(\\mathbf{x}_i)|\\phi(\\mathbf{x}_j)\\rangle|^2$<br><br>Classification: $f(\\mathbf{x}) = \\text{sign}\\left(\\sum_i \\alpha_i y_i K(\\mathbf{x}_i, \\mathbf{x})\\right)$'
+                }
+            };
+            
+            const content = demoContent[demo];
+            if (content) {
+                app.syncEngine.setState(content);
+                updateQuantumSimulation();
+                console.log(`📦 Loaded ${demo} demo content`);
+                
+                // Track demo load
+                app.performanceTracking.demosLoaded = (app.performanceTracking.demosLoaded || 0) + 1;
+            }
         }
     </script>
 </body>

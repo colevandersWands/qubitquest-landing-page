@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QubitQuest Component Test</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #1a1a1a;
+            color: #fff;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+        .success { color: #4ecdc4; }
+        .error { color: #ff6b6b; }
+        .warning { color: #ffd93d; }
+        .component-status {
+            margin: 5px 0;
+            padding: 5px 10px;
+            background: #2a2a2a;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>QubitQuest Component Test Suite</h1>
+    
+    <div class="test-section">
+        <h2>Component Loading Status</h2>
+        <div id="component-status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Basic Functionality Tests</h2>
+        <div id="function-tests"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Integration Tests</h2>
+        <div id="integration-tests"></div>
+    </div>
+
+    <!-- Load all components -->
+    <script src="js/core/quantum-sim.js"></script>
+    <script src="js/core/semantic-translator.js"></script>
+    <script src="js/core/sync-engine.js"></script>
+    <script src="js/core/contextual-entry.js"></script>
+    <script src="js/core/contextual-intelligence.js"></script>
+    <script src="js/components/circuit-designer.js"></script>
+    <script src="js/scenarios/assessment-scenarios.js"></script>
+    <script src="js/learning/phase-progression.js"></script>
+    <script src="js/visualization/quantum-state-visualizer.js"></script>
+    
+    <script>
+        // Test suite
+        const tests = {
+            components: [
+                { name: 'QuantumSimulator', class: 'QuantumSimulator' },
+                { name: 'SemanticTranslator', class: 'SemanticTranslator' },
+                { name: 'QuadraticSyncEngine', class: 'QuadraticSyncEngine' },
+                { name: 'ContextualEntrySystem', class: 'ContextualEntrySystem' },
+                { name: 'ContextualIntelligenceSystem', class: 'ContextualIntelligenceSystem' },
+                { name: 'CircuitDesigner', class: 'CircuitDesigner' },
+                { name: 'AssessmentScenarios', class: 'AssessmentScenarios' },
+                { name: 'PhaseProgressionSystem', class: 'PhaseProgressionSystem' },
+                { name: 'QuantumStateVisualizer', class: 'QuantumStateVisualizer' }
+            ],
+            
+            runComponentTests() {
+                const statusDiv = document.getElementById('component-status');
+                let allLoaded = true;
+                
+                this.components.forEach(component => {
+                    const exists = typeof window[component.class] !== 'undefined';
+                    const status = exists ? 'success' : 'error';
+                    const icon = exists ? '' : 'L';
+                    
+                    statusDiv.innerHTML += `
+                        <div class="component-status ${status}">
+                            ${icon} ${component.name}: ${exists ? 'Loaded' : 'Missing'}
+                        </div>
+                    `;
+                    
+                    if (!exists) allLoaded = false;
+                });
+                
+                return allLoaded;
+            },
+            
+            runFunctionalTests() {
+                const testsDiv = document.getElementById('function-tests');
+                const results = [];
+                
+                // Test 1: Quantum Simulator
+                try {
+                    const sim = new QuantumSimulator();
+                    sim.initialize(2);
+                    sim.applyGate('H', 0);
+                    const state = sim.getStateDescription();
+                    results.push({
+                        name: 'Quantum Simulation',
+                        success: state.includes('|00é') && state.includes('|10é'),
+                        message: 'Hadamard gate applied successfully'
+                    });
+                } catch (e) {
+                    results.push({
+                        name: 'Quantum Simulation',
+                        success: false,
+                        message: e.message
+                    });
+                }
+                
+                // Test 2: Semantic Translation
+                try {
+                    const translator = new SemanticTranslator();
+                    const result = translator.extractQuantumConcepts('Create superposition and entanglement');
+                    results.push({
+                        name: 'Semantic Translation',
+                        success: result.includes('superposition') && result.includes('entanglement'),
+                        message: 'Concept extraction working'
+                    });
+                } catch (e) {
+                    results.push({
+                        name: 'Semantic Translation',
+                        success: false,
+                        message: e.message
+                    });
+                }
+                
+                // Test 3: Sync Engine
+                try {
+                    const syncEngine = new QuadraticSyncEngine();
+                    syncEngine.setState({ plainspeak: 'Test content' });
+                    const state = syncEngine.getState();
+                    results.push({
+                        name: 'Sync Engine',
+                        success: state.plainspeak === 'Test content',
+                        message: 'State management working'
+                    });
+                } catch (e) {
+                    results.push({
+                        name: 'Sync Engine',
+                        success: false,
+                        message: e.message
+                    });
+                }
+                
+                // Display results
+                results.forEach(result => {
+                    const status = result.success ? 'success' : 'error';
+                    const icon = result.success ? '' : 'L';
+                    testsDiv.innerHTML += `
+                        <div class="component-status ${status}">
+                            ${icon} ${result.name}: ${result.message}
+                        </div>
+                    `;
+                });
+                
+                return results.every(r => r.success);
+            },
+            
+            runIntegrationTests() {
+                const testsDiv = document.getElementById('integration-tests');
+                const results = [];
+                
+                // Test 1: Sync Engine with Semantic Translator
+                try {
+                    const syncEngine = new QuadraticSyncEngine();
+                    // Test if semantic translator is integrated
+                    const hasTranslator = syncEngine.semanticTranslator !== null;
+                    results.push({
+                        name: 'SyncEngine + SemanticTranslator Integration',
+                        success: hasTranslator,
+                        message: hasTranslator ? 'Integration successful' : 'Translator not integrated'
+                    });
+                } catch (e) {
+                    results.push({
+                        name: 'SyncEngine + SemanticTranslator Integration',
+                        success: false,
+                        message: e.message
+                    });
+                }
+                
+                // Display results
+                results.forEach(result => {
+                    const status = result.success ? 'success' : 'error';
+                    const icon = result.success ? '' : 'L';
+                    testsDiv.innerHTML += `
+                        <div class="component-status ${status}">
+                            ${icon} ${result.name}: ${result.message}
+                        </div>
+                    `;
+                });
+                
+                return results.every(r => r.success);
+            }
+        };
+        
+        // Run tests when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Running QubitQuest Component Tests...');
+            
+            const componentsLoaded = tests.runComponentTests();
+            console.log(`Components loaded: ${componentsLoaded}`);
+            
+            if (componentsLoaded) {
+                const functionalTestsPassed = tests.runFunctionalTests();
+                console.log(`Functional tests passed: ${functionalTestsPassed}`);
+                
+                const integrationTestsPassed = tests.runIntegrationTests();
+                console.log(`Integration tests passed: ${integrationTestsPassed}`);
+                
+                if (functionalTestsPassed && integrationTestsPassed) {
+                    document.body.innerHTML += `
+                        <div class="test-section success">
+                            <h2> All Tests Passed!</h2>
+                            <p>QubitQuest prototype is ready for use.</p>
+                        </div>
+                    `;
+                }
+            } else {
+                document.body.innerHTML += `
+                    <div class="test-section error">
+                        <h2>L Component Loading Failed</h2>
+                        <p>Please check the console for errors.</p>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
