@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quantum Professional Fluency Curriculum</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:400,600&display=swap">
+  <style>
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      margin: 0;
+    background: #f5f7fa;
+      color: #222;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    header.hero {
+      background: linear-gradient(90deg, #6c63ff 0%, #4a90e2 100%);
+      color: #fff;
+      padding: 64px 0 48px 0;
+      text-align: center;
+    }
+    .hero-title {
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5em;
+    }
+    .hero-subtitle {
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 1.5em;
+    }
+    .cta-btn {
+      background: #ffd863;
+      color: #222;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      padding: 0.9em 2.2em;
+      font-size: 1.1rem;
+      cursor: pointer;
+      margin: 0.5em 0.5em 0 0;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .cta-btn:hover {
+      background: #ffe89c;
+    }
+    section.section {
+      padding: 56px 0 36px 0;
+      background: #fff;
+      margin-bottom: 2rem;
+      border-radius: 18px;
+      box-shadow: 0 2px 16px #0001;
+    }
+    .section-title {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1.2em;
+      color: #4a4a7a;
+      text-align: center;
+    }
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2em;
+      margin: 2em 0 0 0;
+    }
+    .module-card {
+      background: #f8f9fa;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px #0001;
+      padding: 1.5em 1.2em;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .module-title {
+      font-size: 1.18rem;
+      font-weight: 600;
+      color: #6c63ff;
+      margin-bottom: 0.5em;
+    }
+    .module-context {
+      font-size: 1.02rem;
+      color: #444;
+      margin-bottom: 0.7em;
+    }
+    .module-outcome {
+      font-size: 1.01rem;
+      color: #2d6a4f;
+      margin-top: 0.7em;
+    }
+    .cycle-diagram {
+      display: flex;
+      justify-content: center;
+      margin: 2em 0 1em 0;
+    }
+    .cycle-diagram svg {
+      max-width: 600px;
+      width: 100%;
+      height: auto;
+    }
+    .cycle-caption {
+      text-align: center;
+      color: #555;
+      font-size: 1em;
+      margin-bottom: 2em;
+    }
+    .phase-breakdown {
+      max-width: 800px;
+      margin: 0 auto 2em auto;
+      background: #f8f9fa;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px #0001;
+      padding: 2em 1.5em;
+    }
+    .phase-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #4a90e2;
+      margin-top: 1.2em;
+      margin-bottom: 0.3em;
+    }
+    .ui-preview {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 40px;
+      max-width: 900px;
+      margin: 0 auto 2em auto;
+      background: #f8f9fa;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px #0001;
+      padding: 2em 1.5em;
+    }
+    .ui-diagram {
+      flex: 0 0 340px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ui-description {
+      flex: 1 1 320px;
+      font-size: 1.1rem;
+      color: #222;
+    }
+    .assessment-section {
+      background: #f0f4ff;
+      border-left: 6px solid #6c63ff;
+      margin-bottom: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px #0001;
+      padding: 2em 1.5em;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .assessment-section h2 {
+      color: #6c63ff;
+      font-size: 1.3rem;
+      margin-bottom: 0.7em;
+      text-align: left;
+    }
+    .assessment-section ul {
+      margin: 0.7em 0 0.7em 1.2em;
+      padding: 0;
+    }
+    .assessment-section li {
+      margin-bottom: 0.5em;
+    }
+    @media (max-width: 900px) {
+      .ui-preview {
+        flex-direction: column;
+        gap: 24px;
+      }
+      .ui-diagram {
+        margin-bottom: 12px;
+      }
+      .modules-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <div class="hero-title">The Quantum Professional Fluency Curriculum</div>
+      <div class="hero-subtitle">A revolutionary, scenario-driven journey to true quantum literacy for data professionals</div>
+      <a href="#modules" class="cta-btn">Explore Modules</a>
+      <a href="#cta" class="cta-btn">Join the Waitlist</a>
+    </div>
+  </header>
+
+  <section class="section" id="modules">
+    <div class="container">
+      <h2 class="section-title">Curriculum Modules</h2>
+      <div class="modules-grid">
+        <div class="module-card">
+          <div class="module-title">Module 0: Foundation Reset</div>
+          <div class="module-context"><b>Scenario:</b> Random Number Generation Crisis<br><b>Business Context:</b> ML model accuracy dropping due to compromised randomness</div>
+          <div class="module-outcome"><b>Key Outcome:</b> Understand quantum vs classical computational foundations; express the same algorithm in all four representations</div>
+        </div>
+        <div class="module-card">
+          <div class="module-title">Module 1: Communication Security Breach</div>
+          <div class="module-context"><b>Scenario:</b> $10M loss from intercepted trading algorithms<br><b>Business Context:</b> Board mandate for unbreakable communication security</div>
+          <div class="module-outcome"><b>Key Outcome:</b> Master quantum entanglement for security applications; explain and implement quantum key distribution</div>
+        </div>
+        <div class="module-card">
+          <div class="module-title">Module 2: Database Search Scaling Wall</div>
+          <div class="module-context"><b>Scenario:</b> 100M customer records, 30-second search times<br><b>Business Context:</b> Customer satisfaction dropping, linear scaling insufficient</div>
+          <div class="module-outcome"><b>Key Outcome:</b> Understand Grover's algorithm and quantum search advantage; compare classical and quantum scaling</div>
+        </div>
+        <div class="module-card">
+          <div class="module-title">Module 3: Portfolio Optimization Complexity</div>
+          <div class="module-context"><b>Scenario:</b> $50M annual losses from suboptimal portfolio allocations<br><b>Business Context:</b> Classical optimization stuck in local minima</div>
+          <div class="module-outcome"><b>Key Outcome:</b> Design hybrid quantum-classical optimization systems; implement QAOA and analyze business value</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">The 5-Phase Learning Cycle</h2>
+      <div class="cycle-diagram">
+        <!-- 5-phase cycle diagram -->
+        <svg viewBox="0 0 600 180" width="600" height="180">
+          <g font-family="Inter, Arial, sans-serif" font-size="18">
+            <circle cx="100" cy="90" r="38" fill="#e3eaff" stroke="#6c63ff" stroke-width="2"/>
+            <text x="100" y="95" text-anchor="middle" fill="#333">Hook</text>
+            <circle cx="220" cy="90" r="38" fill="#eaffea" stroke="#63ff6c" stroke-width="2"/>
+            <text x="220" y="95" text-anchor="middle" fill="#333">Contrast</text>
+            <circle cx="340" cy="90" r="38" fill="#ffeaea" stroke="#ff6c63" stroke-width="2"/>
+            <text x="340" y="95" text-anchor="middle" fill="#333">Concepts</text>
+            <circle cx="460" cy="90" r="38" fill="#fffbe3" stroke="#ffd863" stroke-width="2"/>
+            <text x="460" y="95" text-anchor="middle" fill="#333">Practice</text>
+            <circle cx="560" cy="90" r="28" fill="#f0f4ff" stroke="#6c63ff" stroke-width="2"/>
+            <text x="560" y="95" text-anchor="middle" fill="#333" font-size="15">Reality<br/>Check</text>
+            <!-- Arrows -->
+            <polyline points="138,90 182,90" stroke="#888" stroke-width="2" marker-end="url(#arrow)"/>
+            <polyline points="258,90 302,90" stroke="#888" stroke-width="2" marker-end="url(#arrow)"/>
+            <polyline points="378,90 422,90" stroke="#888" stroke-width="2" marker-end="url(#arrow)"/>
+            <polyline points="498,90 532,90" stroke="#888" stroke-width="2" marker-end="url(#arrow)"/>
+            <defs>
+              <marker id="arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L8,4 L0,8 L2,4 Z" fill="#888" />
+              </marker>
+            </defs>
+          </g>
+        </svg>
+      </div>
+      <div class="cycle-caption">
+        <em>Each module follows a 5-phase cycle: Hook → Contrast → Concepts → Practice → Reality Check</em>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Inside a Module: Example Breakdown</h2>
+      <div class="phase-breakdown">
+        <div class="phase-title">1. Hook</div>
+        <div>Real-world problem: "ML model accuracy is dropping due to compromised randomness."<br>Current approach: Pseudorandom generators; business impact: $2M annual loss.<br>Teaser: What if we could generate true randomness?</div>
+        <div class="phase-title">2. Contrast</div>
+        <div>Classical: Parallelized random number generation, scaling bottlenecks.<br>Quantum: Circuit, code, notation, and plainspeak all shown side-by-side.<br>Interactive: Change any representation, see others update.</div>
+        <div class="phase-title">3. Concepts</div>
+        <div>Superposition and measurement explained with business and data science analogies.<br>Hands-on: Manipulate quantum states, see probability distributions update.</div>
+        <div class="phase-title">4. Practice</div>
+        <div>Investigate: Analyze quantum vs classical randomness.<br>Modify: Adapt quantum circuit for new requirements.<br>Make: Build a production-ready quantum RNG service.</div>
+        <div class="phase-title">5. Reality Check</div>
+        <div>When is quantum randomness worth it? Business justification, technical feasibility, alternatives, and ROI.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Study Environment Preview</h2>
+      <div class="ui-preview">
+        <div class="ui-diagram">
+          <!-- Four-pane diagram reused -->
+          <svg width="320" height="220" viewBox="0 0 320 220" style="background:#f8f9fa; border-radius:12px; box-shadow:0 2px 8px #0001;">
+            <rect x="20" y="20" width="120" height="80" rx="10" fill="#e3eaff" stroke="#6c63ff" stroke-width="2"/>
+            <text x="80" y="65" text-anchor="middle" font-size="16" fill="#333">Plainspeak</text>
+            <rect x="180" y="20" width="120" height="80" rx="10" fill="#eaffea" stroke="#63ff6c" stroke-width="2"/>
+            <text x="240" y="65" text-anchor="middle" font-size="16" fill="#333">Code</text>
+            <rect x="20" y="120" width="120" height="80" rx="10" fill="#ffeaea" stroke="#ff6c63" stroke-width="2"/>
+            <text x="80" y="165" text-anchor="middle" font-size="16" fill="#333">Circuit</text>
+            <rect x="180" y="120" width="120" height="80" rx="10" fill="#fffbe3" stroke="#ffd863" stroke-width="2"/>
+            <text x="240" y="165" text-anchor="middle" font-size="16" fill="#333">Notation</text>
+            <!-- X in the center with arrow tips at both ends -->
+            <defs>
+              <marker id="arrowheadX" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L8,4 L0,8 L2,4 Z" fill="#888" />
+              </marker>
+            </defs>
+            <line x1="80" y1="60" x2="240" y2="160" stroke="#888" stroke-width="2.5" marker-start="url(#arrowheadX)" marker-end="url(#arrowheadX)"/>
+            <line x1="240" y1="60" x2="80" y2="160" stroke="#888" stroke-width="2.5" marker-start="url(#arrowheadX)" marker-end="url(#arrowheadX)"/>
+          </svg>
+        </div>
+        <div class="ui-description">
+          <p>
+            The study environment features a synchronized four-panel interface for real-world code-switching practice:
+          </p>
+          <ul>
+            <li><strong>Plainspeak Panel:</strong> Business context and stakeholder communication</li>
+            <li><strong>Code Panel:</strong> Python quantum algorithms and debugging</li>
+            <li><strong>Circuit Panel:</strong> Visual quantum circuit design and analysis</li>
+            <li><strong>Notation Panel:</strong> Mathematical formalism and research translation</li>
+          </ul>
+          <p><em>Quadratic Fluency: Learners practice code-switching equally between all representations</em></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="assessment-section">
+    <h2>Assessment Philosophy</h2>
+    <ul>
+      <li><strong>Professional competency, not physics knowledge:</strong> Assessment focuses on cognitive agility, code-switching, and real-world problem solving.</li>
+      <li><strong>Contextual entry:</strong> Learners start from any representation and must complete the others.</li>
+      <li><strong>Scenario-based:</strong> "The Ambush," "Translation Chain," "Debug Session," and "Pitch Meeting" simulate authentic workplace challenges.</li>
+      <li><strong>Formative and summative:</strong> Real-time feedback and integrated projects validate professional quantum fluency.</li>
+    </ul>
+  </section>
+
+  <section class="section" id="cta">
+    <div class="container" style="text-align:center;">
+      <h2 class="section-title">Ready to Build Quantum Fluency?</h2>
+      <a href="#" class="cta-btn">Join the Waitlist</a>
+      <a href="index.html" class="cta-btn" style="background:#6c63ff; color:#fff;">Back to Main Landing Page</a>
+    </div>
+  </section>
+
+</body>
+</html>
