@@ -158,6 +158,293 @@
             50% { opacity: 0.3; }
             100% { opacity: 1; }
         }
+
+        /* Professional Performance Dashboard Styles */
+        .performance-dashboard {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+        }
+
+        .dashboard-header h3 {
+            margin: 0;
+            color: #4ecdc4;
+            font-size: 18px;
+        }
+
+        .dashboard-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid #4ecdc4;
+            background: transparent;
+            color: #4ecdc4;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #4ecdc4;
+            color: #000;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 11px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            border-color: #4ecdc4;
+        }
+
+        .metric-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .metric-label {
+            color: #ccc;
+            font-size: 12px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-value {
+            color: #4ecdc4;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .metric-detail {
+            color: #999;
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+
+        .metric-trend {
+            font-size: 12px;
+            color: #4ecdc4;
+        }
+
+        .competency-section h4,
+        .activity-monitor h4,
+        .phase-progress-section h4 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 16px;
+            border-left: 3px solid #4ecdc4;
+            padding-left: 10px;
+        }
+
+        .competency-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .competency-card {
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 15px;
+        }
+
+        .competency-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .competency-icon {
+            font-size: 16px;
+        }
+
+        .competency-name {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            flex: 1;
+            margin-left: 8px;
+        }
+
+        .competency-score {
+            color: #4ecdc4;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .competency-bar {
+            background: #333;
+            height: 6px;
+            border-radius: 3px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+
+        .competency-progress {
+            background: linear-gradient(90deg, #4ecdc4, #98d8d8);
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .competency-detail {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .activity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .activity-stat {
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .activity-label {
+            display: block;
+            color: #ccc;
+            font-size: 11px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .activity-value {
+            color: #4ecdc4;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .phase-indicators {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+
+        .phase-indicator {
+            flex: 1;
+            text-align: center;
+            padding: 12px 8px;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .phase-indicator.active {
+            border-color: #4ecdc4;
+            background: rgba(78, 205, 196, 0.1);
+        }
+
+        .phase-indicator.completed {
+            border-color: #4ecdc4;
+            background: rgba(78, 205, 196, 0.2);
+        }
+
+        .phase-icon {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .phase-name {
+            color: #fff;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+
+        .phase-status {
+            color: #999;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+
+        .phase-indicator.active .phase-status {
+            color: #4ecdc4;
+        }
+
+        .phase-progress-bar {
+            background: #333;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .phase-progress-fill {
+            background: linear-gradient(90deg, #4ecdc4, #98d8d8);
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        @media (max-width: 768px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .competency-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .activity-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .phase-indicators {
+                flex-wrap: wrap;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+        }
     </style>
 </head>
 <body>
@@ -281,6 +568,170 @@ optimal_portfolio = analyze_results(results)</textarea>
             <div class="metric">
                 <div class="metric-label">Business Impact</div>
                 <div class="metric-value">$5M annual savings</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Professional Performance Dashboard -->
+    <div class="performance-dashboard">
+        <div class="dashboard-header">
+            <h3>Professional Quantum Competency Dashboard</h3>
+            <div class="dashboard-controls">
+                <button class="btn btn-small" id="update-metrics">Update Analysis</button>
+                <button class="btn btn-small" id="export-report">Export Report</button>
+                <button class="btn btn-small" id="benchmark-mode">Benchmark</button>
+            </div>
+        </div>
+        
+        <!-- Primary Performance Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card classical-metric">
+                <div class="metric-icon">🖥️</div>
+                <div class="metric-label">Classical Parallel</div>
+                <div class="metric-value">O(N/P)</div>
+                <div class="metric-detail">1M portfolios on 1000 cores</div>
+                <div class="metric-trend">📈 Baseline</div>
+            </div>
+            <div class="metric-card quantum-metric">
+                <div class="metric-icon">⚛️</div>
+                <div class="metric-label">Quantum Advantage</div>
+                <div class="metric-value">O(√N)</div>
+                <div class="metric-detail">√1M = 1000x speedup</div>
+                <div class="metric-trend">🚀 Exponential</div>
+            </div>
+            <div class="metric-card business-metric">
+                <div class="metric-icon">💰</div>
+                <div class="metric-label">Business Impact</div>
+                <div class="metric-value" id="business-value">$5M+</div>
+                <div class="metric-detail">Annual savings potential</div>
+                <div class="metric-trend">📊 High ROI</div>
+            </div>
+            <div class="metric-card feasibility-metric">
+                <div class="metric-icon">🎯</div>
+                <div class="metric-label">Implementation</div>
+                <div class="metric-value" id="feasibility-score">85%</div>
+                <div class="metric-detail">Technical feasibility</div>
+                <div class="metric-trend">✅ Ready</div>
+            </div>
+        </div>
+
+        <!-- Professional Competency Tracking -->
+        <div class="competency-section">
+            <h4>Quadratic Fluency Development</h4>
+            <div class="competency-grid">
+                <div class="competency-card">
+                    <div class="competency-header">
+                        <span class="competency-icon">🔄</span>
+                        <span class="competency-name">Translation Speed</span>
+                        <span class="competency-score" id="translation-speed">7.2s</span>
+                    </div>
+                    <div class="competency-bar">
+                        <div class="competency-progress" style="width: 75%"></div>
+                    </div>
+                    <div class="competency-detail">Avg time between representations</div>
+                </div>
+                
+                <div class="competency-card">
+                    <div class="competency-header">
+                        <span class="competency-icon">🎯</span>
+                        <span class="competency-name">Professional Communication</span>
+                        <span class="competency-score" id="communication-score">82%</span>
+                    </div>
+                    <div class="competency-bar">
+                        <div class="competency-progress" style="width: 82%"></div>
+                    </div>
+                    <div class="competency-detail">Stakeholder explanation clarity</div>
+                </div>
+                
+                <div class="competency-card">
+                    <div class="competency-header">
+                        <span class="competency-icon">🧠</span>
+                        <span class="competency-name">Cognitive Agility</span>
+                        <span class="competency-score" id="cognitive-agility">91%</span>
+                    </div>
+                    <div class="competency-bar">
+                        <div class="competency-progress" style="width: 91%"></div>
+                    </div>
+                    <div class="competency-detail">Contextual entry point mastery</div>
+                </div>
+                
+                <div class="competency-card">
+                    <div class="competency-header">
+                        <span class="competency-icon">⚙️</span>
+                        <span class="competency-name">Technical Implementation</span>
+                        <span class="competency-score" id="technical-score">78%</span>
+                    </div>
+                    <div class="competency-bar">
+                        <div class="competency-progress" style="width: 78%"></div>
+                    </div>
+                    <div class="competency-detail">Code debugging and optimization</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Real-time Activity Monitor -->
+        <div class="activity-monitor">
+            <h4>Live Learning Analytics</h4>
+            <div class="activity-grid">
+                <div class="activity-stat">
+                    <span class="activity-label">Session Time</span>
+                    <span class="activity-value" id="session-time">12:34</span>
+                </div>
+                <div class="activity-stat">
+                    <span class="activity-label">Scenarios Completed</span>
+                    <span class="activity-value" id="scenarios-completed">3</span>
+                </div>
+                <div class="activity-stat">
+                    <span class="activity-label">Code Executions</span>
+                    <span class="activity-value" id="code-executions">7</span>
+                </div>
+                <div class="activity-stat">
+                    <span class="activity-label">Representation Switches</span>
+                    <span class="activity-value" id="rep-switches">23</span>
+                </div>
+                <div class="activity-stat">
+                    <span class="activity-label">Debug Sessions</span>
+                    <span class="activity-value" id="debug-sessions">2</span>
+                </div>
+                <div class="activity-stat">
+                    <span class="activity-label">Assessment Score</span>
+                    <span class="activity-value" id="assessment-score">--</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5-Phase Learning Progress -->
+        <div class="phase-progress-section">
+            <h4>Learning Phase Progress</h4>
+            <div class="phase-indicators">
+                <div class="phase-indicator active" data-phase="hook">
+                    <div class="phase-icon">🪝</div>
+                    <div class="phase-name">Hook</div>
+                    <div class="phase-status">Active</div>
+                </div>
+                <div class="phase-indicator" data-phase="contrast">
+                    <div class="phase-icon">⚖️</div>
+                    <div class="phase-name">Contrast</div>
+                    <div class="phase-status">Pending</div>
+                </div>
+                <div class="phase-indicator" data-phase="concepts">
+                    <div class="phase-icon">🧩</div>
+                    <div class="phase-name">Concepts</div>
+                    <div class="phase-status">Pending</div>
+                </div>
+                <div class="phase-indicator" data-phase="practice">
+                    <div class="phase-icon">🛠️</div>
+                    <div class="phase-name">Practice</div>
+                    <div class="phase-status">Pending</div>
+                </div>
+                <div class="phase-indicator" data-phase="reality">
+                    <div class="phase-icon">🎯</div>
+                    <div class="phase-name">Reality</div>
+                    <div class="phase-status">Pending</div>
+                </div>
+            </div>
+            <div class="phase-progress-bar">
+                <div class="phase-progress-fill" style="width: 20%"></div>
             </div>
         </div>
     </div>

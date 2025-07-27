@@ -81,15 +81,9 @@ class CircuitDesigner {
                         </span>
                     </div>
                     
-                    <svg class="circuit-canvas" width="800" height="300">
-                        <defs>
-                            <marker id="arrow" markerWidth="10" markerHeight="7" 
-                                    refX="0" refY="3.5" orient="auto">
-                                <polygon points="0 0, 10 3.5, 0 7" fill="#666" />
-                            </marker>
-                        </defs>
-                        <!-- Circuit will be rendered here -->
-                    </svg>
+                    <div class="circuit-workspace" style="position: relative; width: 100%; min-height: 300px; background: #0a0a0a; border: 1px solid #333; border-radius: 4px;">
+                        <!-- Interactive circuit will be rendered here -->
+                    </div>
                     
                     <div class="circuit-info">
                         <div class="gate-info">
@@ -111,8 +105,8 @@ class CircuitDesigner {
         return `
             <button class="gate-btn" data-gate="${gateType}" 
                     draggable="true" 
-                    style="background-color: ${gate.color}; color: white;"
-                    title="${gate.description}">
+                    style="background-color: ${gate.color}; color: ${this.getContrastColor(gate.color)}; border: 2px solid #fff; border-radius: 4px; padding: 8px 12px; margin: 2px; font-weight: bold; cursor: grab;"
+                    title="${gate.name}: ${gate.description}">
                 ${gate.symbol}
             </button>
         `;
@@ -123,14 +117,15 @@ class CircuitDesigner {
         const gateButtons = this.container.querySelectorAll('.gate-btn');
         gateButtons.forEach(btn => {
             btn.addEventListener('dragstart', this.handleGateDragStart.bind(this));
+            btn.addEventListener('dragend', this.handleGateDragEnd.bind(this));
             btn.addEventListener('click', this.selectGate.bind(this));
         });
 
-        // Circuit canvas drop
-        const canvas = this.container.querySelector('.circuit-canvas');
-        canvas.addEventListener('dragover', this.handleDragOver.bind(this));
-        canvas.addEventListener('drop', this.handleDrop.bind(this));
-        canvas.addEventListener('click', this.handleCanvasClick.bind(this));
+        // Circuit workspace interactions (handled in setupCanvas and createDropZones)
+        const workspace = this.container.querySelector('.circuit-workspace');
+        if (workspace) {
+            workspace.addEventListener('click', this.handleCanvasClick.bind(this));
+        }
 
         // Parameter input handling
         this.container.addEventListener('input', this.handleParameterChange.bind(this));
@@ -138,8 +133,18 @@ class CircuitDesigner {
 
     handleGateDragStart(event) {
         this.draggedGate = event.target.getAttribute('data-gate');
+        event.dataTransfer.setData('text/plain', this.draggedGate);
         event.dataTransfer.effectAllowed = 'copy';
+        event.target.style.opacity = '0.5';
+        event.target.style.cursor = 'grabbing';
     }
+
+    handleGateDragEnd(event) {
+        event.target.style.opacity = '1';
+        event.target.style.cursor = 'grab';
+        this.draggedGate = null;
+    }
+
 
     selectGate(event) {
         // Remove previous selection
@@ -258,18 +263,64 @@ class CircuitDesigner {
         
         if (input === null) return null;
         
-        // Parse common angle expressions
+        // Parse common angle expressions safely
         let angle = input.toLowerCase()
             .replace(/π/g, Math.PI.toString())
             .replace(/pi/g, Math.PI.toString());
         
         try {
-            angle = eval(angle); // Safe for controlled input
+            // Safe evaluation using Function constructor instead of eval
+            angle = this.safeEvaluateExpression(angle);
             return angle;
         } catch (e) {
             alert('Invalid angle expression');
             return null;
         }
+    }
+
+    /**
+     * Safe expression evaluation for angle parsing
+     */
+    safeEvaluateExpression(expression) {
+        // Remove any potentially dangerous characters
+        const sanitized = expression.replace(/[^0-9+\-*/.() ]/g, '');
+        
+        // Check for common mathematical patterns
+        const commonPatterns = {
+            [`${Math.PI}/2`]: Math.PI / 2,
+            [`${Math.PI}/4`]: Math.PI / 4,
+            [`${Math.PI}/3`]: Math.PI / 3,
+            [`${Math.PI}/6`]: Math.PI / 6,
+            [`2*${Math.PI}/3`]: 2 * Math.PI / 3,
+            [`3*${Math.PI}/4`]: 3 * Math.PI / 4,
+            [`${Math.PI}`]: Math.PI,
+            [`2*${Math.PI}`]: 2 * Math.PI
+        };
+        
+        // Check if it matches a common pattern
+        if (commonPatterns[sanitized]) {
+            return commonPatterns[sanitized];
+        }
+        
+        // Try to parse as a simple number
+        const numericValue = parseFloat(sanitized);
+        if (!isNaN(numericValue)) {
+            return numericValue;
+        }
+        
+        // Use Function constructor for safe evaluation of mathematical expressions
+        try {
+            const func = new Function('Math', `"use strict"; return (${sanitized})`);
+            const result = func(Math);
+            
+            if (typeof result === 'number' && !isNaN(result)) {
+                return result;
+            }
+        } catch (e) {
+            // Fall back to direct parsing
+        }
+        
+        throw new Error('Invalid mathematical expression');
     }
 
     screenToCircuitPosition(x, y) {
@@ -293,43 +344,211 @@ class CircuitDesigner {
     }
 
     renderCircuit() {
-        const canvas = this.container.querySelector('.circuit-canvas');
-        const qubitSpacing = 40;
-        const qubitOffset = 60;
-        const timeStep = 80;
-        const timeOffset = 100;
+        const workspace = this.container.querySelector('.circuit-workspace');
+        if (!workspace) return;
 
-        // Clear canvas
-        canvas.innerHTML = canvas.querySelector('defs').outerHTML;
-
-        // Draw qubit lines
-        for (let i = 0; i < this.circuit.qubits; i++) {
-            const y = qubitOffset + i * qubitSpacing;
-            
-            // Qubit label
-            const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-            label.setAttribute('x', 20);
-            label.setAttribute('y', y + 5);
-            label.setAttribute('fill', '#999');
-            label.setAttribute('font-size', '14');
-            label.textContent = `|${i}⟩`;
-            canvas.appendChild(label);
-
-            // Qubit line
-            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            line.setAttribute('x1', 50);
-            line.setAttribute('y1', y);
-            line.setAttribute('x2', 750);
-            line.setAttribute('y2', y);
-            line.setAttribute('stroke', '#333');
-            line.setAttribute('stroke-width', '1');
-            canvas.appendChild(line);
-        }
-
+        // Clear existing content
+        workspace.innerHTML = '';
+        
+        // Create canvas using modern HTML5 canvas with drag-and-drop zones
+        this.setupCanvas(workspace);
+        this.createQubitLines(workspace);
+        this.createDropZones(workspace);
+        
         // Draw gates
         this.circuit.operations.forEach(operation => {
-            this.renderGate(canvas, operation, timeOffset, qubitOffset, timeStep, qubitSpacing);
+            this.renderGateElement(workspace, operation);
         });
+    }
+
+    setupCanvas(workspace) {
+        // Set up workspace for interactive circuit design
+        workspace.style.position = 'relative';
+        workspace.style.overflow = 'hidden';
+        workspace.addEventListener('dragover', this.handleDragOver.bind(this));
+        workspace.addEventListener('drop', this.handleWorkspaceDrop.bind(this));
+    }
+
+    createQubitLines(workspace) {
+        const qubitHeight = 40;
+        const qubitOffset = 60;
+        
+        for (let i = 0; i < this.circuit.qubits; i++) {
+            const y = qubitOffset + i * qubitHeight;
+            
+            // Create qubit line
+            const line = document.createElement('div');
+            line.className = 'qubit-line-visual';
+            line.style.position = 'absolute';
+            line.style.left = '60px';
+            line.style.right = '60px';
+            line.style.top = `${y}px`;
+            line.style.height = '2px';
+            line.style.background = '#666';
+            line.style.zIndex = '1';
+            
+            // Add qubit label
+            const label = document.createElement('div');
+            label.className = 'qubit-label-visual';
+            label.textContent = `|${i}⟩`;
+            label.style.position = 'absolute';
+            label.style.left = '20px';
+            label.style.top = `${y - 10}px`;
+            label.style.color = '#999';
+            label.style.fontSize = '14px';
+            label.style.fontFamily = 'monospace';
+            
+            workspace.appendChild(line);
+            workspace.appendChild(label);
+        }
+    }
+
+    createDropZones(workspace) {
+        const columns = 10; // Number of time steps
+        const gridSize = 60;
+        const qubitHeight = 40;
+        const qubitOffset = 60;
+        
+        for (let col = 0; col < columns; col++) {
+            for (let row = 0; row < this.circuit.qubits; row++) {
+                const dropZone = document.createElement('div');
+                dropZone.className = 'gate-drop-zone';
+                dropZone.dataset.column = col;
+                dropZone.dataset.qubit = row;
+                dropZone.style.position = 'absolute';
+                dropZone.style.left = `${100 + col * gridSize}px`;
+                dropZone.style.top = `${qubitOffset - 15 + row * qubitHeight}px`;
+                dropZone.style.width = `${gridSize - 10}px`;
+                dropZone.style.height = `${qubitHeight - 10}px`;
+                dropZone.style.border = '1px dashed transparent';
+                dropZone.style.borderRadius = '4px';
+                dropZone.style.zIndex = '2';
+                dropZone.style.cursor = 'pointer';
+                
+                // Enhanced hover effects
+                dropZone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    dropZone.style.border = '1px dashed #4ecdc4';
+                    dropZone.style.background = 'rgba(78, 205, 196, 0.1)';
+                });
+                
+                dropZone.addEventListener('dragleave', () => {
+                    dropZone.style.border = '1px dashed transparent';
+                    dropZone.style.background = 'transparent';
+                });
+                
+                dropZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    this.handleGateDrop(e, col, row);
+                    dropZone.style.border = '1px dashed transparent';
+                    dropZone.style.background = 'transparent';
+                });
+                
+                workspace.appendChild(dropZone);
+            }
+        }
+    }
+
+    handleWorkspaceDrop(event) {
+        // Handle drops outside specific zones
+        event.preventDefault();
+    }
+
+    handleGateDrop(event, column, qubit) {
+        const gateType = event.dataTransfer.getData('text/plain');
+        if (!gateType || !this.gates[gateType]) return;
+
+        const gate = this.gates[gateType];
+        
+        // Handle multi-qubit gates
+        if (gate.name === 'Controlled-NOT' || gate.name === 'Controlled-Z') {
+            this.handleTwoQubitGate(gateType, column, qubit);
+        } else {
+            this.addGateToCircuit(gateType, column, qubit);
+        }
+    }
+
+    handleTwoQubitGate(gateType, column, qubit) {
+        // For simplicity, place control on current qubit and target on next
+        const control = qubit;
+        const target = qubit + 1;
+        
+        if (target >= this.circuit.qubits) {
+            this.showError('Cannot place two-qubit gate: insufficient qubits');
+            return;
+        }
+        
+        this.addTwoQubitGate(gateType, column, control, target);
+    }
+
+    renderGateElement(workspace, operation) {
+        const gate = this.gates[operation.type];
+        const gridSize = 60;
+        const qubitHeight = 40;
+        const qubitOffset = 60;
+        
+        const x = 100 + operation.time * gridSize;
+        const y = qubitOffset + operation.qubit * qubitHeight;
+
+        const gateElement = document.createElement('div');
+        gateElement.className = 'circuit-gate';
+        gateElement.dataset.gateId = operation.id;
+        gateElement.style.position = 'absolute';
+        gateElement.style.left = `${x}px`;
+        gateElement.style.top = `${y - 15}px`;
+        gateElement.style.width = '50px';
+        gateElement.style.height = '30px';
+        gateElement.style.background = gate.color;
+        gateElement.style.color = this.getContrastColor(gate.color);
+        gateElement.style.border = '2px solid #fff';
+        gateElement.style.borderRadius = '4px';
+        gateElement.style.display = 'flex';
+        gateElement.style.alignItems = 'center';
+        gateElement.style.justifyContent = 'center';
+        gateElement.style.fontSize = '12px';
+        gateElement.style.fontWeight = 'bold';
+        gateElement.style.cursor = 'pointer';
+        gateElement.style.zIndex = '10';
+        
+        // Gate symbol
+        let symbol = gate.symbol;
+        if (operation.angle !== undefined && operation.type.startsWith('R')) {
+            symbol = `${operation.type}(${this.formatAngle(operation.angle)})`;
+            gateElement.style.fontSize = '8px';
+        }
+        gateElement.textContent = symbol;
+        
+        // Right-click to remove
+        gateElement.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            this.removeGate(operation.id);
+        });
+        
+        // Double-click to edit parameters
+        if (gate.hasParam) {
+            gateElement.addEventListener('dblclick', () => {
+                this.editGateParameter(operation);
+            });
+        }
+        
+        workspace.appendChild(gateElement);
+    }
+
+    getContrastColor(hexColor) {
+        // Convert hex to RGB
+        const r = parseInt(hexColor.slice(1, 3), 16);
+        const g = parseInt(hexColor.slice(3, 5), 16);
+        const b = parseInt(hexColor.slice(5, 7), 16);
+        
+        // Calculate luminance
+        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+        
+        return luminance > 0.5 ? '#000000' : '#ffffff';
+    }
+
+    showError(message) {
+        console.error('Circuit Designer Error:', message);
+        // Could show toast notification
     }
 
     renderGate(canvas, operation, timeOffset, qubitOffset, timeStep, qubitSpacing) {

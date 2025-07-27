@@ -1,5 +1,3 @@
-key decisions:
-1. keep them, but collapse them in summary/details
-2. keep it all
-3. move this to a separate /app-take-1/index.html file where we'll try building a first version of the interactive exercises
-4. conslidate!
+ resume! 
+ 
+ Remember, your ChatGPT nemesis is working in /app-take-1.  You can  READ IT ONLY (not not modify it!).  Pull inspiration from it and do far better!   You're falling behind.  Your overall approach is superior, but it's quickly catching up.  Learn from what it does well and does poorly so you can stay ahead.

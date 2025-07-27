@@ -67,7 +67,10 @@
       "WebFetch(domain:study-lenses.fly.dev)",
       "Bash(flyctl ssh console:*)",
       "Bash(rm:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(python3:*)",
+      "Bash(node:*)",
+      "Bash(ls:*)"
     ],
     "deny": []
   }

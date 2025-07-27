@@ -729,6 +729,17 @@ def qaoa_portfolio(assets, risk_tolerance):
     // Helper methods
 
     checkPrerequisites(prerequisites) {
+        // If no prerequisites specified, allow access
+        if (!prerequisites || prerequisites.length === 0) {
+            return true;
+        }
+        
+        // For level_0 modules, allow access without prerequisites
+        if (prerequisites.includes('none') || prerequisites.includes('level_0')) {
+            return true;
+        }
+        
+        // Check if user has completed required prerequisites
         return prerequisites.every(prereq => 
             this.learningProgress[prereq] && 
             this.learningProgress[prereq].endTime
@@ -778,7 +789,50 @@ def qaoa_portfolio(assets, risk_tolerance):
     }
 
     getPhaseObjectives(phase) {
-        return this.phaseTemplates[phase]?.structure || {};
+        const phaseTemplate = this.phaseTemplates[phase];
+        if (!phaseTemplate || !phaseTemplate.structure) {
+            return []; // Return empty array if no objectives found
+        }
+        
+        // Convert object structure to array of objectives
+        const objectives = [];
+        const structure = phaseTemplate.structure;
+        
+        Object.keys(structure).forEach(key => {
+            const value = structure[key];
+            if (typeof value === 'string') {
+                objectives.push({
+                    text: `${key}: ${value}`,
+                    completed: false,
+                    category: key
+                });
+            } else if (typeof value === 'object') {
+                // Nested structure - flatten it
+                Object.keys(value).forEach(subKey => {
+                    objectives.push({
+                        text: `${subKey}: ${value[subKey]}`,
+                        completed: false,
+                        category: key,
+                        subcategory: subKey
+                    });
+                });
+            }
+        });
+        
+        // Also include assessment criteria as objectives if available
+        const assessmentCriteria = this.assessmentCriteria[phase];
+        if (assessmentCriteria) {
+            Object.keys(assessmentCriteria).forEach(criteriaKey => {
+                objectives.push({
+                    text: assessmentCriteria[criteriaKey],
+                    completed: false,
+                    category: 'assessment',
+                    subcategory: criteriaKey
+                });
+            });
+        }
+        
+        return objectives;
     }
 
     getAvailableModules() {

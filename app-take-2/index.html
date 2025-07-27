@@ -8,6 +8,7 @@
     <!-- Core Stylesheets -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/quadratic-panels.css">
+    <link rel="stylesheet" href="styles/circuit-designer.css">
     <link rel="stylesheet" href="styles/responsive.css">
     
     <!-- MathJax for mathematical notation -->
@@ -268,32 +269,131 @@ P(optimal) = |\langle optimal |\psi_{final}\rangle|^2</textarea>
             </div>
         </div>
 
-        <!-- Performance Comparison Dashboard -->
+        <!-- Enhanced Professional Performance Dashboard -->
         <div class="performance-dashboard">
             <div class="dashboard-header">
-                <h3>Quantum vs Classical Performance Analysis</h3>
-                <button class="btn btn-small" id="update-metrics">Update Analysis</button>
+                <h3>Professional Quantum Competency Dashboard</h3>
+                <div class="dashboard-controls">
+                    <button class="btn btn-small" id="update-metrics">Update Analysis</button>
+                    <button class="btn btn-small" id="export-report">Export Report</button>
+                    <button class="btn btn-small" id="benchmark-mode">Benchmark</button>
+                </div>
             </div>
+            
+            <!-- Primary Performance Metrics -->
             <div class="metrics-grid">
                 <div class="metric-card classical-metric">
+                    <div class="metric-icon">🖥️</div>
                     <div class="metric-label">Classical Parallel</div>
                     <div class="metric-value">O(N/P)</div>
                     <div class="metric-detail">1M portfolios on 1000 cores</div>
+                    <div class="metric-trend">📈 Baseline</div>
                 </div>
                 <div class="metric-card quantum-metric">
+                    <div class="metric-icon">⚛️</div>
                     <div class="metric-label">Quantum Advantage</div>
                     <div class="metric-value">O(√N)</div>
                     <div class="metric-detail">√1M = 1000x speedup</div>
+                    <div class="metric-trend">🚀 Exponential</div>
                 </div>
                 <div class="metric-card business-metric">
+                    <div class="metric-icon">💰</div>
                     <div class="metric-label">Business Impact</div>
-                    <div class="metric-value">$5M+</div>
+                    <div class="metric-value" id="business-value">$5M+</div>
                     <div class="metric-detail">Annual savings potential</div>
+                    <div class="metric-trend">📊 High ROI</div>
                 </div>
                 <div class="metric-card feasibility-metric">
+                    <div class="metric-icon">🎯</div>
                     <div class="metric-label">Implementation</div>
                     <div class="metric-value" id="feasibility-score">85%</div>
                     <div class="metric-detail">Technical feasibility</div>
+                    <div class="metric-trend">✅ Ready</div>
+                </div>
+            </div>
+
+            <!-- Professional Competency Tracking -->
+            <div class="competency-section">
+                <h4>Quadratic Fluency Development</h4>
+                <div class="competency-grid">
+                    <div class="competency-card">
+                        <div class="competency-header">
+                            <span class="competency-icon">🔄</span>
+                            <span class="competency-name">Translation Speed</span>
+                            <span class="competency-score" id="translation-speed">7.2s</span>
+                        </div>
+                        <div class="competency-bar">
+                            <div class="competency-progress" style="width: 75%"></div>
+                        </div>
+                        <div class="competency-detail">Avg time between representations</div>
+                    </div>
+                    
+                    <div class="competency-card">
+                        <div class="competency-header">
+                            <span class="competency-icon">🎯</span>
+                            <span class="competency-name">Professional Communication</span>
+                            <span class="competency-score" id="communication-score">82%</span>
+                        </div>
+                        <div class="competency-bar">
+                            <div class="competency-progress" style="width: 82%"></div>
+                        </div>
+                        <div class="competency-detail">Stakeholder explanation clarity</div>
+                    </div>
+                    
+                    <div class="competency-card">
+                        <div class="competency-header">
+                            <span class="competency-icon">🧠</span>
+                            <span class="competency-name">Cognitive Agility</span>
+                            <span class="competency-score" id="cognitive-agility">91%</span>
+                        </div>
+                        <div class="competency-bar">
+                            <div class="competency-progress" style="width: 91%"></div>
+                        </div>
+                        <div class="competency-detail">Contextual entry point mastery</div>
+                    </div>
+                    
+                    <div class="competency-card">
+                        <div class="competency-header">
+                            <span class="competency-icon">⚙️</span>
+                            <span class="competency-name">Technical Implementation</span>
+                            <span class="competency-score" id="technical-score">78%</span>
+                        </div>
+                        <div class="competency-bar">
+                            <div class="competency-progress" style="width: 78%"></div>
+                        </div>
+                        <div class="competency-detail">Code debugging and optimization</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Real-time Activity Monitor -->
+            <div class="activity-monitor">
+                <h4>Live Learning Analytics</h4>
+                <div class="activity-grid">
+                    <div class="activity-stat">
+                        <span class="activity-label">Session Time</span>
+                        <span class="activity-value" id="session-time">12:34</span>
+                    </div>
+                    <div class="activity-stat">
+                        <span class="activity-label">Scenarios Completed</span>
+                        <span class="activity-value" id="scenarios-completed">3</span>
+                    </div>
+                    <div class="activity-stat">
+                        <span class="activity-label">Code Executions</span>
+                        <span class="activity-value" id="code-executions">7</span>
+                    </div>
+                    <div class="activity-stat">
+                        <span class="activity-label">Representation Switches</span>
+                        <span class="activity-value" id="rep-switches">23</span>
+                    </div>
+                    <div class="activity-stat">
+                        <span class="activity-label">Debug Sessions</span>
+                        <span class="activity-value" id="debug-sessions">2</span>
+                    </div>
+                    <div class="activity-stat">
+                        <span class="activity-label">Assessment Score</span>
+                        <span class="activity-value" id="assessment-score">--</span>
+                    </div>
                 </div>
             </div>
         </div>
