@@ -1,0 +1,398 @@
+/**
+ * Circuit Designer Styles
+ * 
+ * Visual styles for the interactive quantum circuit builder
+ */
+
+.circuit-designer {
+    display: flex;
+    height: 100%;
+    background: #0a0a0a;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Gate Palette */
+.gate-palette {
+    width: 220px;
+    background: #1a1a1a;
+    border-right: 1px solid #333;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+.gate-palette h4 {
+    color: #4ecdc4;
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.gate-category {
+    margin-bottom: 20px;
+}
+
+.gate-category h5 {
+    color: #999;
+    margin: 0 0 8px 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.gate-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+    gap: 8px;
+}
+
+.gate-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.gate-btn.selected {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(78, 205, 196, 0.5);
+    border: 2px solid #4ecdc4;
+}
+
+.gate-btn[draggable="true"] {
+    cursor: grab;
+}
+
+.gate-btn[draggable="true"]:active {
+    cursor: grabbing;
+}
+
+/* Circuit Canvas Container */
+.circuit-canvas-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #0a0a0a;
+}
+
+.circuit-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    background: #1a1a1a;
+    border-bottom: 1px solid #333;
+}
+
+.circuit-controls button {
+    background: #333;
+    border: 1px solid #666;
+    color: #e0e0e0;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.circuit-controls button:hover {
+    background: #4ecdc4;
+    color: #0a0a0a;
+    border-color: #4ecdc4;
+}
+
+.btn-clear {
+    background: #ff6b6b !important;
+    border-color: #ff6b6b !important;
+}
+
+.btn-clear:hover {
+    background: #e74c3c !important;
+    border-color: #e74c3c !important;
+    color: white !important;
+}
+
+.qubit-count {
+    color: #999;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.qubit-count select {
+    background: #333;
+    border: 1px solid #666;
+    color: #e0e0e0;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+/* Circuit Canvas */
+.circuit-canvas {
+    flex: 1;
+    background: #0a0a0a;
+    border: 1px solid #333;
+    margin: 10px;
+    border-radius: 6px;
+    cursor: crosshair;
+}
+
+.circuit-canvas:hover {
+    border-color: #4ecdc4;
+}
+
+/* Circuit Gates on Canvas */
+.circuit-gate {
+    transition: all 0.2s ease;
+}
+
+.circuit-gate:hover {
+    filter: brightness(1.2);
+    transform: scale(1.05);
+}
+
+.circuit-gate rect {
+    transition: all 0.2s ease;
+}
+
+.circuit-gate:hover rect {
+    stroke-width: 3;
+}
+
+/* Circuit Info Panel */
+.circuit-info {
+    background: #1a1a1a;
+    border-top: 1px solid #333;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gate-info {
+    color: #e0e0e0;
+    font-size: 13px;
+}
+
+.gate-info strong {
+    color: #4ecdc4;
+}
+
+.circuit-stats {
+    display: flex;
+    gap: 20px;
+    font-size: 12px;
+    color: #999;
+}
+
+.circuit-stats span {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.circuit-stats span:first-child {
+    color: #4ecdc4;
+    font-weight: bold;
+}
+
+/* Drag and Drop Effects */
+.gate-palette .gate-btn.dragging {
+    opacity: 0.5;
+    transform: rotate(5deg);
+}
+
+.circuit-canvas.drag-over {
+    border-color: #4ecdc4;
+    background: rgba(78, 205, 196, 0.05);
+}
+
+/* Parameter Input Styling */
+.angle-input {
+    background: rgba(78, 205, 196, 0.1);
+    border: 1px solid #4ecdc4;
+    color: #4ecdc4;
+    padding: 2px 6px;
+    border-radius: 3px;
+    width: 60px;
+    font-size: 10px;
+    margin-top: 5px;
+}
+
+.angle-input:focus {
+    outline: none;
+    background: rgba(78, 205, 196, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .circuit-designer {
+        flex-direction: column;
+    }
+    
+    .gate-palette {
+        width: 100%;
+        max-height: 200px;
+        border-right: none;
+        border-bottom: 1px solid #333;
+    }
+    
+    .gate-buttons {
+        grid-template-columns: repeat(auto-fill, minmax(35px, 1fr));
+    }
+    
+    .gate-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 12px;
+    }
+    
+    .circuit-controls {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .circuit-info {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .circuit-stats {
+        gap: 15px;
+    }
+}
+
+/* Accessibility */
+.gate-btn:focus {
+    outline: 2px solid #4ecdc4;
+    outline-offset: 2px;
+}
+
+.circuit-controls button:focus {
+    outline: 2px solid #4ecdc4;
+    outline-offset: 2px;
+}
+
+/* Animation for gate placement */
+@keyframes gate-place {
+    0% {
+        transform: scale(0) rotate(180deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2) rotate(90deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+.circuit-gate.placing {
+    animation: gate-place 0.3s ease-out;
+}
+
+/* Error states */
+.gate-btn.invalid {
+    background: #ff6b6b !important;
+    animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Loading states */
+.circuit-canvas.loading {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+.circuit-canvas.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border: 3px solid #333;
+    border-top: 3px solid #4ecdc4;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+    .circuit-designer {
+        border: 1px solid #333;
+    }
+    
+    .gate-btn {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .circuit-canvas {
+        background: #050505;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .gate-btn {
+        border: 2px solid #fff;
+    }
+    
+    .circuit-canvas {
+        border-width: 2px;
+    }
+    
+    .gate-info, .circuit-stats {
+        font-weight: bold;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .gate-btn,
+    .circuit-gate,
+    .circuit-controls button {
+        transition: none;
+    }
+    
+    .gate-place,
+    .shake,
+    .spin {
+        animation: none;
+    }
+    
+    .gate-btn:hover {
+        transform: none;
+    }
+}

@@ -1,0 +1,5 @@
+key decisions:
+1. keep them, but collapse them in summary/details
+2. keep it all
+3. move this to a separate /app-take-1/index.html file where we'll try building a first version of the interactive exercises
+4. conslidate!

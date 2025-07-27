@@ -1,0 +1,97 @@
+{
+  "ceo_quantum_investment": {
+    "title": "CEO Investment Decision: $5M Quantum Initiative",
+    "stakeholders": ["CEO", "CFO", "CTO", "Board Members"],
+    "businessContext": {
+      "company": "GlobalTech Financial Services",
+      "revenue": "$2.8B annually",
+      "challenge": "Portfolio optimization lagging competition",
+      "opportunity": "Quantum advantage in risk modeling"
+    },
+    "quadraticContent": {
+      "plainspeak": "Our quantum computing initiative represents a strategic investment in next-generation portfolio optimization technology. While classical computers analyze investment scenarios sequentially, quantum computers can explore multiple portfolio configurations simultaneously through quantum superposition. For our $2.8B portfolio management business, this quantum advantage could improve risk-adjusted returns by 15-25 basis points annually, generating $4.2-7M in additional revenue while reducing computational costs by 60%. The $5M investment includes quantum software development, cloud access, and team training, with ROI expected within 18 months as we capture quantum advantage in high-frequency portfolio rebalancing.",
+      "code": "# Quantum Portfolio Optimization Business Case\nimport numpy as np\n\n# Current classical approach performance\nclassical_compute_time = 4.5  # hours for full portfolio optimization\nclassical_annual_cost = 2.8e6  # $2.8M in compute infrastructure\nclassical_accuracy = 0.847  # 84.7% optimal allocation accuracy\n\n# Projected quantum approach\nquantum_compute_time = 0.3  # hours (15x speedup)\nquantum_annual_cost = 1.1e6  # $1.1M (60% cost reduction)\nquantum_accuracy = 0.925  # 92.5% accuracy (quantum advantage)\n\n# Business impact calculation\nportfolio_value = 2.8e9  # $2.8B under management\naccuracy_improvement = quantum_accuracy - classical_accuracy\nannual_value_gain = portfolio_value * accuracy_improvement * 0.0025  # 25bps\ncost_savings = classical_annual_cost - quantum_annual_cost\n\ntotal_annual_benefit = annual_value_gain + cost_savings\nquantum_investment = 5e6  # $5M initial investment\nroi_months = (quantum_investment / total_annual_benefit) * 12\n\nprint(f\"Annual Value Gain: ${annual_value_gain:,.0f}\")\nprint(f\"Annual Cost Savings: ${cost_savings:,.0f}\")\nprint(f\"Total Annual Benefit: ${total_annual_benefit:,.0f}\")\nprint(f\"ROI Timeline: {roi_months:.1f} months\")",
+      "notation": "\\text{Quantum Business Value} = \\Delta\\text{Accuracy} \\times \\text{Portfolio} \\times \\text{Margin}$<br><br>$\\text{ROI} = \\frac{\\text{Annual Benefit}}{\\text{Investment}} = \\frac{\\$7.0M}{\\$5M} = 140\\%$<br><br>$\\text{Payback Period} = \\frac{\\text{Investment}}{\\text{Monthly Benefit}} = \\frac{\\$5M}{\\$583K} = 8.6 \\text{ months}$<br><br>$\\text{NPV}_{3yr} = \\sum_{t=1}^{3} \\frac{\\$7M}{(1.08)^t} - \\$5M = \\$13.1M$",
+      "circuit": {
+        "qubits": 4,
+        "operations": [
+          {"type": "H", "qubit": 0, "time": 0},
+          {"type": "H", "qubit": 1, "time": 0},
+          {"type": "CNOT", "control": 0, "target": 1, "time": 1},
+          {"type": "RY", "angle": 0.785, "qubit": 2, "time": 2},
+          {"type": "CNOT", "control": 1, "target": 2, "time": 3}
+        ]
+      }
+    },
+    "challengeQuestions": [
+      "How does quantum advantage translate to competitive advantage?",
+      "What are the implementation risks and mitigation strategies?",
+      "How do we measure success and track ROI?",
+      "What's our competitive response strategy?"
+    ],
+    "scoringCriteria": {
+      "businessAcumen": 40,
+      "technicalCredibility": 30,
+      "communicationSkill": 20,
+      "stakeholderManagement": 10
+    }
+  },
+  
+  "cfo_budget_justification": {
+    "title": "CFO Budget Review: Quantum vs Traditional IT",
+    "stakeholders": ["CFO", "IT Director", "Risk Management Head"],
+    "businessContext": {
+      "company": "Meridian Asset Management",
+      "budget": "$45M IT budget under review",
+      "challenge": "Quantum initiative competing with traditional IT projects",
+      "pressure": "Shareholder demands for efficiency gains"
+    },
+    "quadraticContent": {
+      "plainspeak": "The quantum computing budget request of $5M represents a strategic technology investment with measurable financial returns. Our analysis shows quantum portfolio optimization will reduce computational infrastructure costs from $2.8M to $1.1M annually (60% reduction) while improving portfolio performance by 15-25 basis points. This translates to $4.2-7M in additional annual revenue. The 18-month payback period and 140% annual ROI significantly outperform our traditional IT investments, which average 36-month payback and 65% ROI. Quantum computing addresses our core business challenge - optimizing large-scale portfolios faster and more accurately than classical methods allow.",
+      "code": "# CFO Budget Analysis: Quantum vs Traditional IT ROI\nimport pandas as pd\n\n# Investment comparison data\ninvestments = pd.DataFrame({\n    'Project': ['Quantum Computing', 'Server Upgrade', 'Cloud Migration', 'ML Platform'],\n    'Investment': [5.0, 3.2, 4.1, 2.8],  # $M\n    'Annual_Benefit': [7.0, 1.8, 2.1, 1.5],  # $M\n    'Payback_Months': [8.6, 21.3, 23.4, 22.4],\n    'Annual_ROI': [140, 56, 51, 54],  # %\n    'Risk_Level': ['Medium', 'Low', 'Low', 'Medium']\n})\n\n# Calculate portfolio impact\nportfolio_performance = pd.DataFrame({\n    'Scenario': ['Current', 'With_Quantum'],\n    'Compute_Cost': [2.8, 1.1],  # $M annually\n    'Accuracy': [84.7, 92.5],  # % optimal\n    'Portfolio_Value': [2800, 2800],  # $M\n    'Value_Generation': [0, 7.0]  # $M additional annually\n})\n\nprint(\"Investment Comparison:\")\nprint(investments.sort_values('Annual_ROI', ascending=False))\nprint(\"\\nPortfolio Impact Analysis:\")\nprint(portfolio_performance)\n\n# Risk-adjusted returns\nquantum_risk_adjusted_roi = 140 * 0.8  # 80% confidence factor\ntraditional_average_roi = investments[investments['Project'] != 'Quantum Computing']['Annual_ROI'].mean()\n\nprint(f\"\\nQuantum Risk-Adjusted ROI: {quantum_risk_adjusted_roi}%\")\nprint(f\"Traditional IT Average ROI: {traditional_average_roi:.1f}%\")",
+      "notation": "\\text{Budget Allocation Optimization:}$<br><br>$\\max \\sum_{i} ROI_i \\times Budget_i \\text{ subject to } \\sum_{i} Budget_i \\leq B_{total}$<br><br>$ROI_{quantum} = 140\\% > ROI_{traditional} = 56\\%$<br><br>$\\text{Efficiency Ratio} = \\frac{\\text{Quantum Benefit}}{\\text{Quantum Cost}} = \\frac{\\$7M}{\\$5M} = 1.4$<br><br>$\\text{NPV Comparison: } NPV_{quantum} - NPV_{traditional} = \\$8.2M$",
+      "circuit": null
+    },
+    "challengeQuestions": [
+      "How does quantum ROI compare to other technology investments?",
+      "What are the financial risks and sensitivity factors?",
+      "How do we track and measure quantum value delivery?",
+      "What's the impact on overall IT budget allocation?"
+    ]
+  },
+
+  "board_strategic_presentation": {
+    "title": "Board Presentation: Quantum Strategy Roadmap",
+    "stakeholders": ["Board of Directors", "Executive Team", "External Advisors"],
+    "businessContext": {
+      "company": "Apex Financial Group",
+      "situation": "Competitive pressure from quantum-enabled firms",
+      "mandate": "Develop 3-year quantum strategy",
+      "scrutiny": "Fiduciary responsibility to shareholders"
+    },
+    "quadraticContent": {
+      "plainspeak": "Our quantum computing strategic initiative positions Apex Financial Group at the forefront of next-generation financial technology. As quantum computers become commercially viable, early adopters will capture significant competitive advantages in portfolio optimization, risk modeling, and algorithmic trading. Our three-year roadmap includes: Year 1 - quantum proof-of-concept and team development ($5M investment), Year 2 - production deployment for high-value portfolios ($3M additional), Year 3 - full-scale quantum advantage across all trading operations ($2M optimization). This $10M total investment protects our $15B assets under management from quantum-enabled competitors while generating an estimated $25-40M in additional annual revenue by Year 3 through superior portfolio performance and reduced computational costs.",
+      "code": "# Board Strategic Analysis: 3-Year Quantum Roadmap\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n# Strategic timeline and investment\nyears = np.array([2024, 2025, 2026, 2027])\ninvestment = np.array([0, 5, 3, 2])  # $M cumulative\nrevenue_impact = np.array([0, 2, 12, 28])  # $M additional annually\ncompetitive_advantage = np.array([0, 0.15, 0.35, 0.55])  # market edge factor\n\n# Competitive landscape analysis\ncompetitors_quantum_adoption = {\n    'Goldman Sachs': 'Production pilot - 2024',\n    'JPMorgan': 'Research phase - 2025', \n    'BlackRock': 'Partnership strategy - 2024',\n    'Citadel': 'Stealth development - 2024',\n    'Apex Financial': 'Strategic initiative - 2024'\n}\n\n# Market positioning analysis\ntotal_market = 450e9  # $450B quantitative finance market\nquantum_addressable = total_market * 0.25  # 25% quantum-addressable\nour_potential_share = quantum_addressable * 0.08  # 8% potential market share\n\nprint(\"Strategic Quantum Timeline:\")\nfor i, year in enumerate(years[1:], 1):\n    print(f\"{year}: Investment ${investment[i]}M, Revenue Impact ${revenue_impact[i]}M\")\n\nprint(f\"\\nQuantum Addressable Market: ${quantum_addressable/1e9:.0f}B\")\nprint(f\"Potential Revenue Opportunity: ${our_potential_share/1e9:.1f}B\")\nprint(f\"ROI by Year 3: {(revenue_impact[3]/investment.sum())*100:.0f}%\")",
+      "notation": "\\text{Strategic Value Model:}$<br><br>$V_{total} = \\sum_{t=1}^{3} \\frac{R_t - C_t}{(1+r)^t} + \\frac{V_{terminal}}{(1+r)^3}$<br><br>$\\text{Where: } R_t = \\text{Revenue impact year t}$<br>$C_t = \\text{Investment year t}$<br>$r = 0.12 \\text{ (cost of capital)}$<br><br>$V_{terminal} = \\frac{R_3 \\times (1+g)}{r-g} = \\frac{\\$28M \\times 1.15}{0.12-0.15} = \\$460M$<br><br>$\\text{Strategic NPV} = \\$387M$",
+      "circuit": {
+        "qubits": 6,
+        "operations": [
+          {"type": "H", "qubit": 0, "time": 0},
+          {"type": "H", "qubit": 1, "time": 0},
+          {"type": "H", "qubit": 2, "time": 0},
+          {"type": "CNOT", "control": 0, "target": 3, "time": 1},
+          {"type": "CNOT", "control": 1, "target": 4, "time": 1},
+          {"type": "CNOT", "control": 2, "target": 5, "time": 1},
+          {"type": "RY", "angle": 1.047, "qubit": 3, "time": 2},
+          {"type": "RY", "angle": 0.524, "qubit": 4, "time": 2}
+        ]
+      }
+    },
+    "challengeQuestions": [
+      "How does quantum strategy align with overall business strategy?",
+      "What are the competitive risks of not adopting quantum?",
+      "How do we manage execution risk over the 3-year timeline?",
+      "What governance structure ensures effective oversight?"
+    ]
+  }
+}

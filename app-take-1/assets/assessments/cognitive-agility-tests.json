@@ -1,0 +1,202 @@
+{
+  "ambush_assessments": {
+    "portfolio_crisis": {
+      "title": "The Ambush: Emergency Portfolio Crisis",
+      "timeLimit": 300,
+      "scenario": "URGENT: Trading algorithm showing 15% performance degradation. CTO suspects quantum interference patterns. Board meeting in 30 minutes - need immediate assessment.",
+      "quadraticContent": {
+        "plainspeak": "Trading algorithm performance has dropped 15% over the past week. The pattern suggests systematic bias rather than random market volatility. Traditional debugging shows no code errors, but the CTO suspects quantum interference patterns in our optimization calculations. Need immediate assessment of whether quantum computing could be causing this issue or could provide a solution.",
+        "code": "# Current trading algorithm showing performance issues\nimport numpy as np\nimport pandas as pd\n\n# Performance data showing systematic degradation\nperformance_data = pd.DataFrame({\n    'date': pd.date_range('2024-01-01', periods=7),\n    'expected_return': [0.0847, 0.0851, 0.0849, 0.0852, 0.0848, 0.0850, 0.0849],\n    'actual_return': [0.0847, 0.0845, 0.0823, 0.0831, 0.0798, 0.0776, 0.0723],\n    'degradation': [0.0000, -0.0006, -0.0026, -0.0021, -0.0050, -0.0074, -0.0126]\n})\n\n# Pattern suggests systematic bias, not random errors\ndegradation_trend = np.polyfit(range(7), performance_data['degradation'], 1)[0]\nprint(f\"Degradation trend: {degradation_trend:.4f} per day\")\nprint(\"Pattern indicates: Systematic bias, possibly quantum-related\")\n\n# Current optimization approach\ndef classical_portfolio_optimization(returns, correlations):\n    # Monte Carlo simulation with 1M scenarios\n    # Using standard PRNG - could this be the issue?\n    scenarios = np.random.multivariate_normal(returns, correlations, 1000000)\n    return np.mean(scenarios, axis=0)\n\n# Question: Could quantum randomness improve this?",
+        "notation": "\\text{Performance Analysis:}$<br><br>$\\text{Degradation Rate: } \\frac{d}{dt}R(t) = -0.0018 \\text{ per day}$<br><br>$\\text{Expected vs Actual: } E[R] - R_{actual} = 0.0126 \\text{ (Day 7)}$<br><br>$\\text{Statistical Significance: } p < 0.01 \\text{ (systematic bias)}$<br><br>$\\text{Hypothesis: } \\text{PRNG correlation bias} \\rightarrow \\text{suboptimal portfolio}$<br><br>$\\text{Quantum Solution: } |\\psi\\rangle = \\text{true random states}$",
+        "circuit": {
+          "qubits": 3,
+          "operations": [
+            {"type": "H", "qubit": 0, "time": 0},
+            {"type": "H", "qubit": 1, "time": 0},
+            {"type": "CNOT", "control": 0, "target": 2, "time": 1}
+          ]
+        }
+      },
+      "assessmentCriteria": [
+        "Quantum relevance assessment",
+        "Technical feasibility analysis", 
+        "Business impact evaluation",
+        "Clear recommendation with rationale"
+      ],
+      "scoringWeights": {
+        "rapidAnalysis": 25,
+        "quantumRelevance": 25,
+        "professionalCommunication": 25,
+        "practicalRecommendation": 25
+      }
+    },
+    
+    "regulatory_compliance": {
+      "title": "The Ambush: Quantum Regulatory Question",
+      "timeLimit": 300,
+      "scenario": "Federal regulator asks: 'How does your quantum random number generation ensure compliance with Basel III risk modeling requirements?' Need immediate technical and regulatory response.",
+      "quadraticContent": {
+        "plainspeak": "Basel III regulations require financial institutions to use robust, statistically valid random number generation for risk modeling and stress testing. Quantum random number generators provide cryptographically secure randomness that exceeds regulatory requirements through quantum mechanical uncertainty principles. Unlike pseudorandom number generators that can exhibit patterns or correlations under scrutiny, quantum randomness is fundamentally unpredictable and provides audit-trail evidence of true randomness through quantum measurement statistics.",
+        "code": "# Quantum RNG for Basel III Compliance\nfrom qiskit import QuantumCircuit, execute\nimport numpy as np\n\ndef quantum_random_generator(num_bits=1000):\n    \"\"\"Generate cryptographically secure random bits using quantum measurement\"\"\"\n    qubits_per_circuit = min(8, num_bits)  # Batch size\n    random_bits = []\n    \n    for batch in range(0, num_bits, qubits_per_circuit):\n        circuit = QuantumCircuit(qubits_per_circuit, qubits_per_circuit)\n        \n        # Create quantum superposition\n        for qubit in range(qubits_per_circuit):\n            circuit.h(qubit)\n        \n        # Measure to collapse superposition\n        circuit.measure_all()\n        \n        # Execute and get results\n        result = execute(circuit, shots=1).result()\n        counts = result.get_counts()\n        measurement = list(counts.keys())[0]\n        random_bits.extend([int(bit) for bit in measurement])\n    \n    return random_bits[:num_bits]\n\n# Basel III compliance validation\nrandom_data = quantum_random_generator(100000)\nprint(f\"Generated {len(random_data)} quantum random bits\")\nprint(f\"Statistical randomness tests: PASS (p > 0.01 for all tests)\")\nprint(\"Regulatory compliance: Basel III requirements satisfied\")",
+        "notation": "\\text{Basel III Quantum Compliance:}$<br><br>$H_0: \\text{True randomness (quantum uncertainty)}$<br>$H_1: \\text{Pseudorandomness (deterministic patterns)}$<br><br>$\\text{Quantum measurement: } |\\psi\\rangle = \\frac{1}{\\sqrt{2}}(|0\\rangle + |1\\rangle)$<br>$P(0) = P(1) = 0.5 \\text{ (exact)}$<br><br>$\\text{Regulatory Standards:}$<br>$\\chi^2 \\text{ test: } p > 0.01$<br>$\\text{Runs test: } p > 0.01$<br>$\\text{Entropy: } H = 1.0 \\text{ bit/bit}$",
+        "circuit": {
+          "qubits": 4,
+          "operations": [
+            {"type": "H", "qubit": 0, "time": 0},
+            {"type": "H", "qubit": 1, "time": 0},
+            {"type": "H", "qubit": 2, "time": 0},
+            {"type": "H", "qubit": 3, "time": 0},
+            {"type": "measure", "qubit": 0, "classical_bit": 0, "time": 1},
+            {"type": "measure", "qubit": 1, "classical_bit": 1, "time": 1},
+            {"type": "measure", "qubit": 2, "classical_bit": 2, "time": 1},
+            {"type": "measure", "qubit": 3, "classical_bit": 3, "time": 1}
+          ]
+        }
+      }
+    }
+  },
+
+  "translation_chain_assessments": {
+    "research_to_production": {
+      "title": "Translation Chain: Research → Production Pipeline",
+      "timeLimit": 1200,
+      "scenario": "New Nature paper on quantum portfolio optimization. Need to translate from academic notation → working prototype → executive business case.",
+      "startRepresentation": "notation",
+      "targetSequence": ["notation", "circuit", "code", "plainspeak"],
+      "academicPaper": {
+        "title": "Quantum Approximate Optimization for Portfolio Selection",
+        "abstract": "We demonstrate quantum advantage in portfolio optimization using QAOA with p=3 layers, achieving 23% improvement over classical methods for 50-asset portfolios.",
+        "keyEquation": "\\min_{x} x^T Q x + c^T x \\text{ subject to } \\sum_i x_i = 1, x_i \\geq 0",
+        "quantumCircuit": "Parameterized ansatz with problem and mixer Hamiltonians",
+        "results": "Outperforms classical methods on instances with >30 assets"
+      },
+      "translationChallenges": [
+        "Convert mathematical notation to implementable quantum circuit",
+        "Create working Qiskit prototype from circuit design",
+        "Develop business case from technical implementation",
+        "Present value proposition to non-technical executives"
+      ]
+    }
+  },
+
+  "debug_session_assessments": {
+    "quantum_circuit_failure": {
+      "title": "Debug Session: Quantum Portfolio Optimizer Failure",
+      "timeLimit": 900,
+      "scenario": "Production quantum portfolio optimizer returning suboptimal results. Use any representation to identify and fix the issue.",
+      "buggyCode": "from qiskit import QuantumCircuit, execute\nimport numpy as np\n\ndef portfolio_optimization_circuit(num_assets=4):\n    circuit = QuantumCircuit(num_assets, num_assets)\n    \n    # Initialize superposition\n    for i in range(num_assets):\n        circuit.h(i)\n    \n    # Apply cost function (INCORRECT - missing parameters)\n    for i in range(num_assets-1):\n        circuit.cz(i, i+1)  # BUG: No parameterization\n    \n    # Mixer layer (INCORRECT - wrong angles)\n    for i in range(num_assets):\n        circuit.rx(np.pi, i)  # BUG: Fixed angle, should be variable\n    \n    # Missing measurement!\n    return circuit\n\n# Execute circuit\ncircuit = portfolio_optimization_circuit()\nresult = execute(circuit, shots=1024).result()  # BUG: No backend specified\nprint(result.get_counts())",
+      "expectedFixes": [
+        "Add parameterized cost function with proper asset correlation encoding",
+        "Implement variable rotation angles for optimization",
+        "Add measurement operations to extract results",
+        "Specify quantum backend for execution",
+        "Add error handling and validation"
+      ],
+      "debuggingHints": [
+        "Check if cost function properly encodes portfolio constraints",
+        "Verify that mixer operations allow exploration of solution space",
+        "Ensure measurements extract optimization results",
+        "Validate circuit depth and parameter bounds"
+      ]
+    }
+  },
+
+  "pitch_meeting_assessments": {
+    "mixed_stakeholders": {
+      "title": "Pitch Meeting: Quantum Initiative Approval",
+      "timeLimit": 1800,
+      "scenario": "Present quantum computing initiative to mixed audience: CEO (business focus), CTO (technical details), CFO (financial metrics), Board Member (strategic vision).",
+      "stakeholderProfiles": {
+        "CEO": {
+          "focus": "business_value",
+          "questions": [
+            "What's the competitive advantage we gain?",
+            "How long until we see meaningful results?",
+            "What happens if competitors get there first?",
+            "How does this align with our 3-year strategy?"
+          ],
+          "preferences": "High-level business impact, competitive positioning, strategic narrative"
+        },
+        "CTO": {
+          "focus": "technical_feasibility", 
+          "questions": [
+            "What's the technical risk and complexity?",
+            "How do we integrate with existing infrastructure?",
+            "What talent and skills do we need?",
+            "What are the fallback options if quantum doesn't work?"
+          ],
+          "preferences": "Technical implementation details, architecture, risk mitigation"
+        },
+        "CFO": {
+          "focus": "financial_metrics",
+          "questions": [
+            "What's the total cost of ownership over 5 years?",
+            "How do you calculate the ROI projections?",
+            "What are the sensitivity factors in your model?",
+            "How does this compare to other technology investments?"
+          ],
+          "preferences": "Financial analysis, ROI calculations, budget impact, risk assessment"
+        },
+        "Board_Member": {
+          "focus": "strategic_risk",
+          "questions": [
+            "How does this protect our long-term market position?",
+            "What are the governance and oversight requirements?",
+            "What regulatory or compliance considerations exist?",
+            "How do we communicate this to shareholders?"
+          ],
+          "preferences": "Strategic vision, governance framework, regulatory compliance, stakeholder communication"
+        }
+      },
+      "presentationFlow": [
+        "Opening: Quantum opportunity and market context",
+        "Business case: Value proposition and competitive advantage", 
+        "Technical approach: Implementation strategy and timeline",
+        "Financial analysis: Investment requirements and returns",
+        "Risk management: Mitigation strategies and contingencies",
+        "Strategic roadmap: 3-year vision and milestones",
+        "Q&A: Dynamic stakeholder response and adaptation"
+      ]
+    }
+  },
+
+  "cognitive_sprint_assessments": {
+    "rapid_representation_switching": {
+      "title": "Cognitive Agility Sprint: Rapid Representation Switching",
+      "timeLimit": 600,
+      "scenario": "Speed round: 8 quantum concepts, 4 representations each. Demonstrate mastery through rapid switching.",
+      "concepts": {
+        "superposition": {
+          "plainspeak": "Quantum bits can exist in multiple states simultaneously, like a coin spinning in the air before landing heads or tails",
+          "code": "circuit.h(0)  # Creates equal superposition of |0⟩ and |1⟩",
+          "circuit": "H gate on single qubit wire",
+          "notation": "|ψ⟩ = (1/√2)(|0⟩ + |1⟩)"
+        },
+        "entanglement": {
+          "plainspeak": "Two quantum particles become correlated so measuring one instantly affects the other, regardless of distance",
+          "code": "circuit.h(0); circuit.cnot(0,1)  # Creates Bell state",
+          "circuit": "H gate followed by CNOT between two qubits",
+          "notation": "|ψ⟩ = (1/√2)(|00⟩ + |11⟩)"
+        },
+        "measurement": {
+          "plainspeak": "Observing a quantum system forces it to choose a definite state, destroying the superposition",
+          "code": "circuit.measure(0, 0)  # Measure qubit 0 into classical bit 0",
+          "circuit": "Measurement symbol on qubit wire to classical wire",
+          "notation": "⟨ψ|M|ψ⟩ where M is measurement operator"
+        },
+        "quantum_advantage": {
+          "plainspeak": "Quantum algorithms solve certain problems exponentially faster than the best known classical algorithms",
+          "code": "# Grover's algorithm: O(√N) vs classical O(N)",
+          "circuit": "Oracle + diffusion operator repeated √N times",
+          "notation": "Quantum: O(√N), Classical: O(N)"
+        }
+      },
+      "speedChallenges": [
+        "Explain superposition in plainspeak, then write code",
+        "Draw entanglement circuit, then express in notation",
+        "Switch between all 4 representations for measurement",
+        "Rapid-fire concept explanations under time pressure"
+      ]
+    }
+  }
+}

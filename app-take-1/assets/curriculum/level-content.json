@@ -1,0 +1,165 @@
+{
+  "level_0_random": {
+    "title": "Random Number Generation Crisis",
+    "duration": "4-6 hours",
+    "description": "Professional quantum literacy through authentic randomness crisis simulation",
+    "phases": {
+      "hook": {
+        "title": "The Randomness Crisis",
+        "duration": 25,
+        "objectives": [
+          "Recognize business impact of poor randomness",
+          "Understand why classical PRNGs fail in critical applications", 
+          "Articulate the problem across all four representations"
+        ],
+        "scenario": {
+          "title": "Emergency: Simulation Patterns Detected",
+          "context": "Your team just discovered that your Monte Carlo financial simulations are generating predictable patterns. The compliance team is demanding answers, and your $50M portfolio is at risk.",
+          "urgency": "high",
+          "stakeholders": ["CTO", "Compliance Officer", "Risk Management", "Trading Team"],
+          "timeline": "Solution needed within 48 hours"
+        },
+        "content": {
+          "plainspeak": "Our Monte Carlo simulations rely on pseudorandom number generators (PRNGs) that follow mathematical formulas. While they appear random, they're actually deterministic sequences that can be predicted if you know the algorithm and seed. For financial simulations handling millions of scenarios, even tiny patterns can compound into massive biases, potentially costing our $50M portfolio up to $2.5M annually in suboptimal decisions.",
+          "code": "# Current PRNG approach - PROBLEMATIC\nimport random\nimport numpy as np\n\n# Standard Python random (Mersenne Twister)\nrandom.seed(12345)  # Deterministic seed!\nportfolio_scenarios = []\n\nfor i in range(1000000):\n    # Generate \"random\" market conditions\n    market_return = random.gauss(0.07, 0.15)\n    correlation = random.uniform(-0.5, 0.5) \n    portfolio_scenarios.append((market_return, correlation))\n\n# Problem: Patterns emerge in high-dimensional space\nprint(f\"Generated {len(portfolio_scenarios)} scenarios\")\nprint(\"But are they truly random?\")",
+          "notation": "\\text{PRNG Sequence: } X_{n+1} = f(X_n) \\text{ (deterministic)}$<br><br>$\\text{Period: } T \\leq 2^{32} \\text{ for standard generators}$<br><br>$\\text{Bias: } |P(\\text{observed}) - P(\\text{expected})| > \\epsilon$<br><br>$\\text{Financial Impact: } \\text{Loss} = \\text{Bias} \\times \\text{Portfolio Size}$<br>$= 0.05\\% \\times \\$50M = \\$25,000 \\text{ per month}$",
+          "circuit": null
+        },
+        "deliverables": [
+          "Problem analysis report",
+          "Stakeholder impact assessment",
+          "Solution requirements definition"
+        ]
+      },
+      
+      "contrast": {
+        "title": "Classical vs Quantum Randomness",
+        "duration": 70,
+        "objectives": [
+          "Compare classical PRNG with quantum randomness",
+          "Experience quadratic fluency across all representations",
+          "Understand why quantum randomness is fundamentally different"
+        ],
+        "content": {
+          "classical_approach": {
+            "plainspeak": "Classical computers generate 'random' numbers using mathematical algorithms. These pseudorandom number generators (PRNGs) start with a seed value and apply deterministic formulas to produce sequences that appear random but are actually predictable. For financial applications, this predictability can create subtle biases that compound over millions of calculations.",
+            "code": "# Classical PRNG - Mersenne Twister\nimport random\nimport numpy as np\n\n# Deterministic sequence\nrandom.seed(42)\nclassical_bits = [random.randint(0, 1) for _ in range(1000)]\n\n# Statistical tests reveal patterns\nfrom scipy import stats\nruns_test = stats.runstest_1samp(classical_bits)\nprint(f\"Runs test p-value: {runs_test.pvalue:.6f}\")\nif runs_test.pvalue < 0.01:\n    print(\"WARNING: Non-random patterns detected!\")",
+            "notation": "\\text{PRNG: } X_{n+1} = (aX_n + c) \\bmod m$<br>$\\text{Period: } \\leq m$<br>$\\text{Predictable given seed and algorithm}",
+            "circuit": null
+          },
+          "quantum_approach": {
+            "plainspeak": "Quantum computers generate truly random numbers by measuring quantum particles in superposition. When a quantum bit (qubit) is in superposition, it exists in all possible states simultaneously. Measurement forces it to 'choose' a random outcome based on quantum mechanical probabilities that are fundamentally unpredictable, even in theory.",
+            "code": "# Quantum True Random Number Generator\nfrom qiskit import QuantumCircuit, execute\n\ndef quantum_random_bits(num_bits):\n    circuit = QuantumCircuit(1, 1)\n    \n    random_bits = []\n    for _ in range(num_bits):\n        # Create superposition\n        circuit.h(0)\n        # Measure (forces random collapse)\n        circuit.measure(0, 0)\n        \n        result = execute(circuit, shots=1).result()\n        bit = int(list(result.get_counts().keys())[0])\n        random_bits.append(bit)\n        \n        circuit.reset(0)  # Reset for next measurement\n    \n    return random_bits\n\nquantum_bits = quantum_random_bits(1000)\nprint(f\"Generated {len(quantum_bits)} truly random bits\")",
+            "notation": "\\text{Quantum: } |\\psi\\rangle = \\frac{1}{\\sqrt{2}}(|0\\rangle + |1\\rangle)$<br>$P(0) = |\\langle 0|\\psi\\rangle|^2 = 0.5$<br>$P(1) = |\\langle 1|\\psi\\rangle|^2 = 0.5$<br>$\\text{Fundamentally unpredictable}",
+            "circuit": {
+              "qubits": 1,
+              "operations": [
+                {"type": "H", "qubit": 0, "time": 0},
+                {"type": "measure", "qubit": 0, "classical_bit": 0, "time": 1}
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "level_1_security": {
+    "title": "Quantum Security and Cryptography",
+    "duration": "5-7 hours",
+    "description": "Quantum threats to current encryption and quantum-safe solutions",
+    "phases": {
+      "hook": {
+        "title": "The Encryption Apocalypse",
+        "scenario": {
+          "title": "Critical: RSA Encryption Compromised",
+          "context": "Intelligence reports suggest adversaries may have quantum computers capable of breaking RSA-2048 within days. All encrypted communications and stored data are at risk.",
+          "urgency": "critical"
+        }
+      }
+    }
+  },
+
+  "level_2_optimization": {
+    "title": "Quantum Optimization Algorithms", 
+    "duration": "6-8 hours",
+    "description": "QAOA, VQE, and quantum advantage in combinatorial problems",
+    "phases": {
+      "hook": {
+        "title": "The Optimization Challenge",
+        "scenario": {
+          "title": "Supply Chain Crisis: NP-Hard Logistics",
+          "context": "Global supply chain disruption requires real-time optimization of 10,000+ routes. Classical algorithms taking 48+ hours while decisions needed in minutes.",
+          "urgency": "high"
+        }
+      }
+    }
+  },
+
+  "level_3_machine_learning": {
+    "title": "Quantum Machine Learning",
+    "duration": "7-9 hours", 
+    "description": "Quantum neural networks, quantum feature maps, and hybrid algorithms",
+    "phases": {
+      "hook": {
+        "title": "The AI Plateau",
+        "scenario": {
+          "title": "Breakthrough Needed: Classical ML Hitting Limits",
+          "context": "Classical machine learning models plateauing on complex financial prediction tasks. Need quantum enhancement to maintain competitive edge.",
+          "urgency": "medium"
+        }
+      }
+    }
+  },
+
+  "progression_pathways": {
+    "data_scientist": {
+      "recommended_sequence": ["level_0_random", "level_2_optimization", "level_3_machine_learning", "level_1_security"],
+      "entry_points": {
+        "level_0_random": "code",
+        "level_2_optimization": "notation", 
+        "level_3_machine_learning": "code"
+      }
+    },
+    "financial_analyst": {
+      "recommended_sequence": ["level_0_random", "level_1_security", "level_2_optimization"],
+      "entry_points": {
+        "level_0_random": "plainspeak",
+        "level_1_security": "plainspeak",
+        "level_2_optimization": "plainspeak"
+      }
+    },
+    "technology_executive": {
+      "recommended_sequence": ["level_0_random", "level_1_security", "level_2_optimization", "level_3_machine_learning"],
+      "entry_points": {
+        "level_0_random": "plainspeak",
+        "level_1_security": "plainspeak", 
+        "level_2_optimization": "plainspeak",
+        "level_3_machine_learning": "plainspeak"
+      }
+    },
+    "research_scientist": {
+      "recommended_sequence": ["level_2_optimization", "level_3_machine_learning", "level_1_security", "level_0_random"],
+      "entry_points": {
+        "level_2_optimization": "notation",
+        "level_3_machine_learning": "notation",
+        "level_1_security": "code",
+        "level_0_random": "circuit"
+      }
+    }
+  },
+
+  "assessment_integration": {
+    "continuous_assessment": {
+      "representation_switching_frequency": "Every 15-20 minutes",
+      "cognitive_agility_checkpoints": "End of each phase",
+      "professional_scenario_integration": "Embedded throughout curriculum"
+    },
+    "mastery_indicators": {
+      "quadratic_fluency": "Seamless switching between all 4 representations",
+      "professional_communication": "Adapts quantum explanations to audience",
+      "practical_application": "Connects quantum concepts to business problems",
+      "strategic_thinking": "Evaluates quantum vs classical trade-offs"
+    }
+  }
+}

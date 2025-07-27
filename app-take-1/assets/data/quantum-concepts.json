@@ -1,0 +1,208 @@
+{
+  "core_concepts": {
+    "superposition": {
+      "definition": "The quantum mechanical principle that allows particles to exist in multiple states simultaneously until measured",
+      "quadratic_representations": {
+        "plainspeak": "Like a coin spinning in the air - it's neither heads nor tails until it lands and we observe the result. Quantum bits can be in all possible states at once.",
+        "code": "# Create superposition with Hadamard gate\ncircuit = QuantumCircuit(1, 1)\ncircuit.h(0)  # |0⟩ → (|0⟩ + |1⟩)/√2\ncircuit.measure(0, 0)",
+        "notation": "|ψ⟩ = α|0⟩ + β|1⟩ where |α|² + |β|² = 1",
+        "circuit": {
+          "qubits": 1,
+          "operations": [{"type": "H", "qubit": 0, "time": 0}]
+        }
+      },
+      "business_applications": [
+        "Parallel computation across multiple solution paths",
+        "Portfolio optimization exploring all asset combinations simultaneously",
+        "Risk modeling with multiple scenario evaluation"
+      ],
+      "common_misconceptions": [
+        "Superposition is NOT classical probability - it's fundamentally different",
+        "Measurement doesn't reveal a pre-existing state - it creates the outcome",
+        "Superposition is fragile and easily destroyed by interaction with environment"
+      ]
+    },
+
+    "entanglement": {
+      "definition": "Quantum correlation between particles where measuring one instantly affects the other, regardless of distance",
+      "quadratic_representations": {
+        "plainspeak": "Two quantum particles become 'spookily' connected - like having two magic coins that always land opposite to each other, no matter how far apart you flip them.",
+        "code": "# Create Bell state (maximally entangled)\ncircuit = QuantumCircuit(2, 2)\ncircuit.h(0)  # Superposition on first qubit\ncircuit.cnot(0, 1)  # Entangle second qubit\ncircuit.measure_all()",
+        "notation": "|Φ⁺⟩ = (|00⟩ + |11⟩)/√2 - Bell state",
+        "circuit": {
+          "qubits": 2,
+          "operations": [
+            {"type": "H", "qubit": 0, "time": 0},
+            {"type": "CNOT", "control": 0, "target": 1, "time": 1}
+          ]
+        }
+      },
+      "business_applications": [
+        "Quantum communication networks for unhackable financial transactions",
+        "Coordinated optimization across multiple business units",
+        "Quantum key distribution for cryptographic security"
+      ],
+      "key_insights": [
+        "Entanglement enables quantum advantage in communication protocols",
+        "Breaking entanglement destroys quantum correlations",
+        "Entanglement is a resource that can be consumed and replenished"
+      ]
+    },
+
+    "measurement": {
+      "definition": "The process of observing a quantum system, which forces it to collapse from superposition into a definite state",
+      "quadratic_representations": {
+        "plainspeak": "Opening the box to check Schrödinger's cat - the act of looking forces the quantum system to 'decide' its state. Before measurement, all possibilities exist simultaneously.",
+        "code": "# Measurement collapses superposition\ncircuit = QuantumCircuit(1, 1)\ncircuit.h(0)  # Create superposition\n# System is now in (|0⟩ + |1⟩)/√2\ncircuit.measure(0, 0)  # Force collapse to |0⟩ or |1⟩\nresult = execute(circuit, shots=1000).result().get_counts()",
+        "notation": "⟨M⟩ = ⟨ψ|M|ψ⟩ - expectation value of measurement",
+        "circuit": {
+          "qubits": 1,
+          "operations": [
+            {"type": "H", "qubit": 0, "time": 0},
+            {"type": "measure", "qubit": 0, "classical_bit": 0, "time": 1}
+          ]
+        }
+      },
+      "business_applications": [
+        "Quantum random number generation for Monte Carlo simulations",
+        "Quantum sampling for market analysis",
+        "Decision point extraction from quantum optimization"
+      ],
+      "critical_insights": [
+        "Measurement is irreversible - information is lost",
+        "Measurement basis determines what information we extract",
+        "Quantum algorithms minimize measurements to preserve quantum advantage"
+      ]
+    },
+
+    "interference": {
+      "definition": "Quantum waves can add constructively or destructively, amplifying desired outcomes and canceling unwanted ones",
+      "quadratic_representations": {
+        "plainspeak": "Like noise-canceling headphones for quantum computers - we amplify the correct answers and cancel out the wrong ones through wave interference patterns.",
+        "code": "# Quantum interference in Grover's algorithm\ncircuit = QuantumCircuit(2, 2)\n# Create uniform superposition\nfor qubit in range(2):\n    circuit.h(qubit)\n# Oracle marks target state\ncircuit.cz(0, 1)  # Mark |11⟩ state\n# Diffusion amplifies marked state\nfor qubit in range(2):\n    circuit.h(qubit)\n    circuit.x(qubit)\ncircuit.cz(0, 1)\nfor qubit in range(2):\n    circuit.x(qubit)\n    circuit.h(qubit)",
+        "notation": "Amplitude: A_target ↑, A_others ↓ through interference",
+        "circuit": {
+          "qubits": 2,
+          "operations": [
+            {"type": "H", "qubit": 0, "time": 0},
+            {"type": "H", "qubit": 1, "time": 0},
+            {"type": "CZ", "control": 0, "target": 1, "time": 1}
+          ]
+        }
+      },
+      "business_applications": [
+        "Search algorithms that find optimal solutions faster",
+        "Portfolio optimization with enhanced convergence",
+        "Machine learning with quantum feature enhancement"
+      ]
+    }
+  },
+
+  "quantum_algorithms": {
+    "grovers_search": {
+      "purpose": "Search unsorted databases quadratically faster than classical algorithms",
+      "complexity": "O(√N) vs Classical O(N)",
+      "business_use_cases": [
+        "Database search optimization",
+        "Portfolio rebalancing with constraint satisfaction",
+        "Risk scenario identification"
+      ],
+      "quadratic_content": {
+        "plainspeak": "Grover's algorithm is like having a magical search tool that can find a needle in a haystack much faster than checking every piece of hay. It uses quantum interference to amplify the correct answer while suppressing wrong answers.",
+        "code": "def grovers_algorithm(marked_items, total_items):\n    num_qubits = int(np.log2(total_items))\n    circuit = QuantumCircuit(num_qubits, num_qubits)\n    \n    # Initialize superposition\n    for i in range(num_qubits):\n        circuit.h(i)\n    \n    # Optimal number of iterations\n    iterations = int(np.pi/4 * np.sqrt(total_items/marked_items))\n    \n    for _ in range(iterations):\n        # Oracle (marks target items)\n        oracle(circuit, marked_items)\n        # Diffusion (amplifies marked items)\n        diffusion(circuit)\n    \n    return circuit",
+        "notation": "Iterations: ⌊π/4 √(N/M)⌋ where N=total, M=marked items",
+        "circuit": "Oracle + Diffusion operator repeated √N times"
+      }
+    },
+
+    "qaoa": {
+      "purpose": "Quantum Approximate Optimization Algorithm for combinatorial problems",
+      "complexity": "Approximation algorithm with quantum advantage potential",
+      "business_use_cases": [
+        "Portfolio optimization with constraints",
+        "Supply chain route optimization", 
+        "Resource allocation problems"
+      ],
+      "quadratic_content": {
+        "plainspeak": "QAOA solves complex business optimization problems by encoding them into quantum circuits. It alternates between exploring the problem space and mixing solutions to find near-optimal answers faster than classical methods.",
+        "code": "def qaoa_portfolio_optimization(returns, correlations, p_layers=3):\n    num_assets = len(returns)\n    circuit = QuantumCircuit(num_assets)\n    \n    # Initialize equal superposition\n    for i in range(num_assets):\n        circuit.h(i)\n    \n    # QAOA layers\n    for layer in range(p_layers):\n        # Cost Hamiltonian (encode portfolio constraints)\n        cost_layer(circuit, returns, correlations)\n        # Mixer Hamiltonian (explore solution space)\n        mixer_layer(circuit)\n    \n    return circuit",
+        "notation": "H_C = Σᵢⱼ Jᵢⱼ ZᵢZⱼ + Σᵢ hᵢZᵢ (cost function)",
+        "circuit": "Alternating cost and mixer layers with parameterized gates"
+      }
+    }
+  },
+
+  "business_quantum_concepts": {
+    "quantum_advantage": {
+      "definition": "Problems where quantum computers significantly outperform classical computers",
+      "categories": {
+        "proven_advantage": [
+          "Quantum simulation of molecular systems",
+          "Certain number theory problems (Shor's algorithm)",
+          "Quantum key distribution"
+        ],
+        "expected_advantage": [
+          "Optimization problems (QAOA)",
+          "Machine learning (quantum neural networks)",
+          "Monte Carlo simulation acceleration"
+        ],
+        "speculative_advantage": [
+          "General artificial intelligence",
+          "Complex financial modeling",
+          "Large-scale logistics optimization"
+        ]
+      },
+      "business_evaluation_framework": {
+        "criteria": [
+          "Problem size and complexity",
+          "Classical algorithm limitations",
+          "Quantum hardware requirements",
+          "Error tolerance and noise sensitivity",
+          "Time-to-solution requirements"
+        ]
+      }
+    },
+
+    "quantum_error_correction": {
+      "business_relevance": "Essential for reliable quantum computing in production environments",
+      "current_limitations": [
+        "High overhead (1000+ physical qubits per logical qubit)",
+        "Complex engineering requirements",
+        "Significant cost implications"
+      ],
+      "timeline_implications": {
+        "near_term": "Noisy Intermediate-Scale Quantum (NISQ) era",
+        "medium_term": "Early error-corrected quantum computers",
+        "long_term": "Fault-tolerant quantum computing"
+      }
+    }
+  },
+
+  "professional_scenarios": {
+    "financial_services": {
+      "portfolio_optimization": {
+        "classical_approach": "Mean-variance optimization with quadratic programming",
+        "quantum_enhancement": "QAOA for constraint satisfaction with quantum parallelism",
+        "business_impact": "15-25% improvement in risk-adjusted returns"
+      },
+      "risk_modeling": {
+        "classical_approach": "Monte Carlo simulation with pseudorandom sampling",
+        "quantum_enhancement": "Quantum Monte Carlo with true random sampling",
+        "business_impact": "Reduced model risk and regulatory compliance"
+      }
+    },
+    
+    "technology_companies": {
+      "machine_learning": {
+        "classical_approach": "Classical neural networks with gradient descent",
+        "quantum_enhancement": "Quantum feature maps and variational quantum classifiers",
+        "business_impact": "Potential exponential speedup for specific data structures"
+      },
+      "optimization": {
+        "classical_approach": "Heuristic algorithms for NP-hard problems",
+        "quantum_enhancement": "QAOA and quantum annealing approaches",
+        "business_impact": "Better solutions for supply chain and logistics"
+      }
+    }
+  }
+}
